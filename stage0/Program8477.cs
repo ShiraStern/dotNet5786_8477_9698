@@ -1,20 +1,15 @@
 ﻿using System;
-namespace Stage0 
+namespace stage0
 {
     partial class Program
-    {
-        private static void Main(string[] args)
+     {
+        static void Main(string[] args)
         {
             Wellcome8477();
             Wellcome9698();
-
-        }
-
-        private static void Wellcome9698()
-        {
             Console.ReadKey();
         }
-
+        static partial void Wellcome9698();
         private static void Wellcome8477()
         {
             Console.Write("Enter your name: ");
@@ -22,9 +17,5 @@ namespace Stage0
             Console.WriteLine("{0}, wellcome to my first console application", name);
 
         }
-
-
     }
 }
-
-
