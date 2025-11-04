@@ -1,19 +1,20 @@
-﻿using System;
+﻿// <summary>
 
 namespace DO;
 
 /// <summary>
 /// Courier Entity represents a courier with all its properties.
 /// </summary>
-/// <param name="Id">Courier’s unique ID number (cannot be null or modified)</param>
-/// <param name="FullName">Courier’s full name (first and last name)</param>
-/// <param name="Phone">Courier’s phone number (10 digits, validated in logic layer)</param>
-/// <param name="Email">Courier’s email address (validated in logic layer)</param>
-/// <param name="Password">Courier’s password, used for login</param>
-/// <param name="Active">Indicates whether the courier is currently active</param>
-/// <param name="MaxDistance">Maximum delivery distance in kilometers for this courier , can be null (validated in logic layer)</param>
-/// <param name="DeliveryType">Type of delivery vehicle or method used by the courier</param>
-/// <param name="EmploymentStartDate">date and time when the courier started the job </param>
+/// <param name = "Id" > Courier’s unique ID number(cannot be null or modified)</param>
+/// <param name = "FullName" > Courier’s full name(first and last name)</param>
+/// <param name = "Phone" > Courier’s phone number(10 digits, validated in logic layer)</param>
+/// <param name = "Email" > Courier’s email address(validated in logic layer)</param>
+/// <param name = "Password" > Courier’s password, used for login</param>
+/// <param name = "Active" > Indicates whether the courier is currently active</param>
+/// <param name = "MaxDistance" > Maximum delivery distance in kilometers for this courier , can be null (validated in logic layer)</param>
+/// <param name = "DeliveryType" > Type of delivery vehicle or method used by the courier</param>
+/// <param name = "EmploymentStartDate" > date and time when the courier started the job</param>
+
 public record Courier
 (
     int Id,
@@ -23,13 +24,13 @@ public record Courier
     string Password,
     bool Active,
     double? MaxDistance = null,
-   /// DeliveryType? DeliveryType= null ,//לשאול את אפרת מחרר בדחיפוות
-    DateTime? EmploymentStartDate= null 
+    DeliveryType DeliveryType= DeliveryType.None ,
+    DateTime EmploymentStartDate 
 )
 {
     /// <summary>
     /// Default constructor for stage 3
     /// </summary>
-    public Courier() : this (0,"","","","",true) { }
+    public Courier() : this (0,"","","","",true,DateTime.Now) { }
 }
 
