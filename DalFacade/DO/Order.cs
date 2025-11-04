@@ -1,4 +1,6 @@
 ﻿// <summary>
+using DO;
+
 /// Order Entity represents a single order in the system,
 /// containing information about the ordered product, customer,
 /// delivery address, and time stamps.
@@ -25,6 +27,8 @@ public record Order
     DateTime? OrderDate = null,
     DateTime? ShipDate = null,
     DateTime? DeliveryDate = null
+    DeliveryTerminationType DeliveryTerminationType
+
 )
 {
     /// <summary>
