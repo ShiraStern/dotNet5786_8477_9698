@@ -13,6 +13,7 @@ namespace DO;
 /// <param name="Active">Indicates whether the courier is currently active</param>
 /// <param name="MaxDistance">Maximum delivery distance in kilometers for this courier , can be null (validated in logic layer)</param>
 /// <param name="DeliveryType">Type of delivery vehicle or method used by the courier</param>
+/// <param name="EmploymentStartDate">date and time when the courier started the job </param>
 public record Courier
 (
     int Id,
@@ -21,24 +22,14 @@ public record Courier
     string Email,
     string Password,
     bool Active,
-    double? MaxDistance,
-    DeliveryType DeliveryType ,//לשאול את אפרת מחרר בדחיפוות
-    DateTime EmploymentStartDate 
+    double? MaxDistance = null,
+   /// DeliveryType? DeliveryType= null ,//לשאול את אפרת מחרר בדחיפוות
+    DateTime? EmploymentStartDate= null 
 )
 {
     /// <summary>
     /// Default constructor for stage 3
     /// </summary>
-    public Courier() : this(0, "", "", "", "", false, 0, DeliveryType.None, DateTime.Now) { }
+    public Courier() : this (0,"","","","",true) { }
 }
 
-/// <summary>
-/// Enum representing different types of delivery methods.
-/// </summary>
-public enum DeliveryType
-{
-    None,
-    Drone,
-    Motorcycle,
-    Car
-}
