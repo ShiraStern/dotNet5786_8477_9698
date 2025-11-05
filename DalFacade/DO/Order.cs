@@ -1,5 +1,4 @@
-﻿// <summary>
-
+﻿
 using DO;
 
 /// Order Entity represents a single order in the system,
@@ -37,6 +36,5 @@ public record Order
     /// Default constructor for stage 3
     /// </summary>
     public Order() : this(0,OrderType.TypeA,"","",0,0,"","", DateTime.Now ) { }
-    /// להחליף את הערך ברירת מחדל של המספר הרץ לממספר מהקונפיג
 }
 

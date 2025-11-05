@@ -1,5 +1,4 @@
-﻿// <summary>
-
+﻿
 namespace DO;
 
 /// <summary>

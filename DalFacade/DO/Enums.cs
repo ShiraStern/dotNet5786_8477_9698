@@ -21,6 +21,9 @@ public enum OrderType
     TypeC
 }
 
+/// <summary>
+/// Specifies the possible outcomes for the termination of a delivery process.
+/// </summary>
 public enum DeliveryTermintionType
 {
     DeliveredSeccessfully,
