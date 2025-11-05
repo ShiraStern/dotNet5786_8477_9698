@@ -1,5 +1,10 @@
 ﻿
 namespace Dal;
+/// <summary>
+/// Provides configuration settings and utility methods for managing application-wide constants, identifiers, and state.
+/// This class includes functionality for generating unique IDs, managing the application clock, and storing global
+/// settings such as manager credentials and company information.
+/// </summary>
 
  internal static class Config
 {
