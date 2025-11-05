@@ -9,7 +9,7 @@ using DO;
 /// <param name="Id">Order unique ID number(auto number).</param>
 /// <param name="OrderType">Order type.</param>
 /// <param name="OrderNote">Verbal description of the order content.</param>
-/// <param name="CustomerAddress">Full address of the customer (for billing/contact).</param>
+/// <param name="CustomerAddress">Full address of the customer.</param>
 /// <param name="Latitude">Latitude coordinate of the delivery destination (double).</param>
 /// <param name="Longitude">Longitude coordinate of the delivery destination (double).</param>
 /// <param name="CustomerFullName">Full name of the customer who placed the order.</param>
@@ -17,7 +17,7 @@ using DO;
 /// <param name="OrderProperties"> additional properties about the order.</param>
 /// <param name="ShipDate">The date and time the order was shipped.</param>
 /// <param name="DeliveryDate">The date and time the order was successfully delivered.</param>
-/// <param name="OrderDate">The date and time the order was placed.</param>
+/// <param name="OrderDate">The date and time when the order was placed.</param>
 public record Order
 (
     int Id,//כשנעשה את היישות תצורה להוסיף מספר רץ
@@ -30,7 +30,7 @@ public record Order
     string CustomerPhone,
     string? OrderProperties= null,
     DateTime? OrderDate = DateTime.Now
-)
+    )
 {
     /// <summary>
     /// Default constructor for stage 3
