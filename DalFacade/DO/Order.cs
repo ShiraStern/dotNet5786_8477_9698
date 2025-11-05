@@ -29,7 +29,7 @@ public record Order
     string CustomerFullName,
     string CustomerPhone,
     string? OrderProperties= null,
-    DateTime? OrderDate = DateTime.Now
+    DateTime? OrderDate = null
     )
 {
     /// <summary>
