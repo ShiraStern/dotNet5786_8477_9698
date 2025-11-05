@@ -16,8 +16,8 @@ using DO;
 /// <param name="CustomerPhone">Phone number of the customer.</param>
 /// <param name="OrderProperties"> additional properties about the order.</param>
 /// <param name="ShipDate">The date and time the order was shipped.</param>
-/// <param name="DeliveryDate">The date and time the order was successfully delivered.</param>
 /// <param name="OrderDate">The date and time when the order was placed.</param>
+/// <param name="DeliveryDate">The date and time the order was successfully delivered.</param>
 public record Order
 (
     int Id,//כשנעשה את היישות תצורה להוסיף מספר רץ
@@ -28,14 +28,15 @@ public record Order
     double Longitude,
     string CustomerFullName,
     string CustomerPhone,
-    string? OrderProperties= null,
-    DateTime? OrderDate = null
+    DateTime OrderDate ,
+    string? OrderProperties= null
+
     )
 {
     /// <summary>
     /// Default constructor for stage 3
     /// </summary>
-    public Order() : this(0,OrderType.TypeA,"","",0,0,"","") { }
+    public Order() : this(0,OrderType.TypeA,"","",0,0,"","", DateTime.Now ) { }
     /// להחליף את הערך ברירת מחדל של המספר הרץ לממספר מהקונפיג
 }
 

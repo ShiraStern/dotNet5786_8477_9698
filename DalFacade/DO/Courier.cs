@@ -23,14 +23,14 @@ public record Courier
     string Email,
     string Password,
     bool Active,
-    double? MaxDistance = null,
-    DeliveryType DeliveryType= DeliveryType.None ,
+    double? MaxDistance,
+    DeliveryType DeliveryType,
     DateTime EmploymentStartDate 
 )
 {
     /// <summary>
     /// Default constructor for stage 3
     /// </summary>
-    public Courier() : this (0,"","","","",true,DateTime.Now) { }
+    public Courier() : this (0,"","","","",true, null, DeliveryType.None, DateTime.Now) { }
 }
 
