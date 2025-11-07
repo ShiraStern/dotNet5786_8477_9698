@@ -7,11 +7,7 @@ public class DeliveryImplementation : IDelivery
 {
     public void Create(Delivery item)
     {
-        if (item.Id != 0)
-            throw new InvalidOperationException("Id must be zero when creating a new delivery.");
-        int _id = Config.NextDeliveryId;
-        DataSource.Deliveries.Add(item with { Id = _id });
-        throw new NotImplementedException();
+        DataSource.Deliveries.Add(item with { Id = Config.NextDeliveryId });
     }
 
     public void Delete(int id)
@@ -27,18 +23,14 @@ public class DeliveryImplementation : IDelivery
         DataSource.Deliveries.Clear();
     }
 
-    public Delivery? Read(int id)
-    {
-        if (DataSource.Deliveries.FirstOrDefault(d => d.Id == id) is not Delivery delivery)
-            return null;    
-        return delivery;
-        throw new NotImplementedException();
-    }
+   
+    public Delivery? Read(int id) =>
+        DataSource.Deliveries.FirstOrDefault(c => c.Id == id);
+
 
     public List<Delivery> ReadAll()
     {
         return new List<Delivery>(DataSource.Deliveries);
-        throw new NotImplementedException();
     }
 
     public void Update(Delivery item)

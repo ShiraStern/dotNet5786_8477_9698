@@ -1,5 +1,5 @@
 ﻿
-using DO;
+namespace DO;
 
 /// Order Entity represents a single order in the system,
 /// containing information about the ordered product, customer,
@@ -19,7 +19,7 @@ using DO;
 /// <param name="DeliveryDate">The date and time the order was successfully delivered.</param>
 public record Order
 (
-    int Id,//כשנעשה את היישות תצורה להוסיף מספר רץ
+    int Id,
     OrderType OrderType,
     string OrderNote,
     string CustomerAddress,
@@ -30,10 +30,10 @@ public record Order
     DateTime OrderDate ,
     string? OrderProperties= null
 
-    )
+ )
 {
     /// <summary>
-    /// Default constructor for stage 3
+    /// Default constructor for stage 1.3
     /// </summary>
     public Order() : this(0,OrderType.TypeA,"","",0,0,"","", DateTime.Now ) { }
 }

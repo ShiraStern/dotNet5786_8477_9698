@@ -21,27 +21,20 @@ public class CourierImplementation : ICourier
         DataSource.Couriers.Remove(courier);
     }
 
-    public void DeleteAll()
-    {
-        DataSource.Couriers.Clear();
-    }
+    public void DeleteAll()=> DataSource.Couriers.Clear();
 
-    public Courier? Read(int id)
-    {
-        if (DataSource.Couriers.FirstOrDefault(c => c.Id == id) is not Courier courier)
-            return null;
-        return courier;
-        throw new NotImplementedException();
-    }
+
+    public Courier? Read(int id) =>
+        DataSource.Couriers.FirstOrDefault(c => c.Id == id);
 
     public List<Courier> ReadAll()
     {
         return new List<Courier>(DataSource.Couriers);
-        throw new NotImplementedException();
     }
 
     public void Update(Courier item)
     {
-        throw new NotImplementedException();
+        Delete(item.Id);
+        DataSource.Couriers.Add(item);
     }
 }

@@ -1,19 +1,15 @@
 ﻿
-namespace Dal;
+
 using DalApi;
 using DO;
 
+namespace Dal;
 public class OrederImplementation : IOrder
 {
     public void Create(Order item)
     {
-        if (item.Id != 0)
-            throw new InvalidOperationException("Id must be zero when creating a new order.");
-        int _id = Config.NextOrderId;
-        DataSource.Orders.Add(item with { Id = _id });
-        throw new NotImplementedException();
+        DataSource.Orders.Add(item with { Id = Config.NextOrderId });
     }
-
     public void Delete(int id)
     {
         Order? order = DataSource.Orders.FirstOrDefault(o => o.Id == id);
@@ -27,18 +23,12 @@ public class OrederImplementation : IOrder
         DataSource.Orders.Clear();
     }
 
-    public Order? Read(int id)
-    {
-        if (DataSource.Orders.FirstOrDefault(o => o.Id == id) is not Order order)
-            return null;
-        return order;
-        throw new NotImplementedException();
-    }
+     public Order? Read(int id) =>
+        DataSource.Orders.FirstOrDefault(c => c.Id == id);
 
     public List<Order> ReadAll()
     {
         return new List<Order>(DataSource.Orders);
-        throw new NotImplementedException();
     }
 
     public void Update(Order item)

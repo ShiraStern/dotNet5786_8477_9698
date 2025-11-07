@@ -28,7 +28,7 @@ public record Courier
 )
 {
     /// <summary>
-    /// Default constructor for stage 3
+    /// Default constructor for stage 1.3
     /// </summary>
     public Courier() : this (0,"","","","",true, null, DeliveryType.None, DateTime.Now) { }
 }

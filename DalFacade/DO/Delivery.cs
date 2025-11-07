@@ -32,6 +32,6 @@ public record Delivery
     /// <summary>
     /// Default constructor for stage 3
     /// </summary>
-    public Delivery() : this(0, 0, 0, DeliveryType.None, DateTime.Now)
-    { }
+    public Delivery() : this(0, 0, 0, DeliveryType.None, DateTime.Now) { }
+    
 }

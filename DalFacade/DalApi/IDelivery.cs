@@ -1,7 +1,4 @@
-﻿
-
-using DO;
-
+﻿using DO;
 namespace DalApi;
 /// <summary>
 /// Defines the contract for managing delivery entities, including operations to create, read, update, and delete.

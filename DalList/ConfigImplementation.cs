@@ -5,19 +5,66 @@ namespace Dal;
 
 public class ConfigImplementation : IConfig
 {
-    public DateTime Clock { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public string? CompanyAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double? Latitude { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double? Longitude { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double? MaxRange { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double AvgCarSpeed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double AvgMotorcycleSpeed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double AvgDroneSpeed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double AvgWalkingSpeed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public TimeSpan MaxDeliveryDuration { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public TimeSpan DelayRiskTime { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public TimeSpan InactivityThreshold { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
+    public DateTime Clock
+    {
+        get => Config.Clock;
+        set => Config.Clock = value;
+    }
+    public string? CompanyAddress
+    {
+        get => Config.CompanyAddress;
+        set => Config.CompanyAddress = value;
+    }
+    public double? Latitude
+    {
+        get => Config.Latitude;
+        set => Config.Latitude = value;
+    }
+    public double? Longitude
+    {
+        get => Config.Longitude;
+        set => Config.Longitude = value;
+    }
+    public double? MaxRange
+    {
+        get => Config.MaxRange;
+        set => Config.MaxRange = value;
+    }
+    public double AvgCarSpeed
+    {
+        get => Config.AvgCarSpeed;
+        set => Config.AvgCarSpeed = value;
+    }
+    public double AvgMotorcycleSpeed
+    {
+        get => Config.AvgMotorcycleSpeed;
+        set => Config.AvgMotorcycleSpeed = value;
+    }
+    public double AvgDroneSpeed
+    {
+        get => Config.AvgDroneSpeed;
+        set => Config.AvgDroneSpeed = value;
+    }
+    public double AvgWalkingSpeed
+    {
+        get => Config.AvgWalkingSpeed;
+        set => Config.AvgWalkingSpeed = value;
+    }
+    public TimeSpan MaxDeliveryDuration
+    {
+        get => Config.MaxDeliveryDuration;
+        set => Config.MaxDeliveryDuration = value;
+    }
+    public TimeSpan DelayRiskTime
+    {
+        get => Config.DelayRiskTime;
+        set => Config.DelayRiskTime = value;
+    }
+    public TimeSpan InactivityThreshold
+    {
+        get => Config.InactivityThreshold;
+        set => Config.InactivityThreshold = value;
+    }
     public void Reset()
     {
         Config.Reset(); 
