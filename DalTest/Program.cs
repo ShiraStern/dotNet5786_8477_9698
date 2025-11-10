@@ -1,19 +1,21 @@
 ﻿using Dal;
 using DalApi;
 using DO;
+using DalList;
+
 using System;
 using System.Diagnostics;
 using System.Linq;
 namespace DalTest
 {
-   
     internal class Program
     {
-        
-        private static ICourier? s_dalCourier = new CourierImplementation(); //stage 1
-        private static IDelivery? s_dalDelivery = new DeliveryImplementation(); //stage 1
-        private static IOrder? s_dalOrder = new OrederImplementation(); //stage 1
-        private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
+        static readonly IDal s_dal = new DalLists(); //stage 2
+
+        //private static ICourier? s_dalCourier = new CourierImplementation(); //stage 1
+        //private static IDelivery? s_dalDelivery = new DeliveryImplementation(); //stage 1
+        //private static IOrder? s_dalOrder = new OrederImplementation(); //stage 1
+        //private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
         //---------------------------------------------------------------------------------------------------------------------------------------
         // courier mnue functions
         private static void addCourier() 
@@ -60,7 +62,7 @@ namespace DalTest
                 DeliveryType = deliveryType,
                 EmploymentStartDate = employmentStartDate
             };
-            s_dalCourier.Create(courier);
+            s_dal.Courier.Create(courier);
             Console.WriteLine("Courier created successfully!");
 
         }
@@ -70,12 +72,12 @@ namespace DalTest
             int? id= int.Parse(Console.ReadLine());
             if (id == null)
                 throw new Exception(@"invalid ID");
-            Console.WriteLine(s_dalCourier.Read((int)id)); 
+            Console.WriteLine(s_dal.Courier.Read((int)id)); 
 
         }
         private static void viewAllCouriers()
         {
-            foreach (var item in s_dalCourier!.ReadAll())
+            foreach (var item in s_dal.Courier!.ReadAll())
             {
                 Console.WriteLine(item.ToString());
             }
@@ -83,7 +85,7 @@ namespace DalTest
         private static void updateCourier() 
         {
             Courier courier = new Courier();
-            s_dalCourier!.Update(courier); 
+            s_dal.Courier!.Update(courier); 
         }
         private static void deleteCourier()
         {
@@ -91,9 +93,9 @@ namespace DalTest
             int? id = int.Parse(Console.ReadLine());
             if (id == null)
                 throw new Exception(@"invalid delivery ID");
-            s_dalDelivery.Delete((int)id);
+            s_dal.Delivery.Delete((int)id);
         }
-        private static void deleteAllCouriers() { s_dalCourier.DeleteAll(); }
+        private static void deleteAllCouriers() { s_dal.Courier.DeleteAll(); }
 
         //---------------------------------------------------------------------------------------------------------------------------------------
         // order mnue functions
@@ -104,11 +106,11 @@ namespace DalTest
             int? id = int.Parse(Console.ReadLine());
             if (id == null)
                 throw new Exception(@"invalid order ID");
-            Console.WriteLine(s_dalOrder.Read((int)id));
+            Console.WriteLine(s_dal.Order.Read((int)id));
         }
         private static void viewAllOrders() 
         {
-            foreach (var item in s_dalOrder!.ReadAll())
+            foreach (var item in s_dal.Order!.ReadAll())
             {
                 Console.WriteLine(item.ToString());
             }
@@ -118,7 +120,7 @@ namespace DalTest
             Order order= new Order(
             // לקלוט מהמשתמש את כל שדות המשלוח לעדכון
                 );
-            s_dalOrder.Update(order);
+            s_dal.Order.Update(order);
         }
         private static void deleteOrder()
         {
@@ -126,9 +128,9 @@ namespace DalTest
             int? id = int.Parse(Console.ReadLine());
             if (id == null)
                 throw new Exception(@"invalid order ID");
-           s_dalOrder.Delete((int)id);
+           s_dal.Order.Delete((int)id);
         }
-        private static void deleteAllOrders() { s_dalOrder.DeleteAll(); }
+        private static void deleteAllOrders() { s_dal!.Order.DeleteAll(); }
 
         //---------------------------------------------------------------------------------------------------------------------------------------
         // delivery menu functions
@@ -139,11 +141,11 @@ namespace DalTest
             int? id = int.Parse(Console.ReadLine());
             if (id == null)
                 throw new Exception(@"invalid delivery ID");
-            Console.WriteLine(  s_dalDelivery.Read((int)id));
+            Console.WriteLine(  s_dal.Delivery.Read((int)id));
         }
         private static void viewAllDeliveries() 
         {
-            foreach (var item in s_dalDelivery!.ReadAll())
+            foreach (var item in s_dal.Delivery!.ReadAll())
             {
                 Console.WriteLine(item.ToString());
             }
@@ -153,7 +155,7 @@ namespace DalTest
             Delivery delivery= new Delivery(
                 // לקלוט מהמשתמש את כל שדות המשלוח לעדכון
                 );
-            s_dalDelivery.Update(delivery); 
+            s_dal.Delivery.Update(delivery); 
         }
         private static void deleteDelivery()
         {
@@ -161,9 +163,9 @@ namespace DalTest
             int? id = int.Parse(Console.ReadLine());
             if (id == null)
                 throw new Exception(@"invalid delivery ID");
-            s_dalDelivery.Delete((int)id);
+            s_dal.Delivery.Delete((int)id);
         }
-        private static void deleteAllDeliveries() { s_dalDelivery.DeleteAll(); }
+        private static void deleteAllDeliveries() { s_dal.Delivery.DeleteAll(); }
         //---------------------------------------------------------------------------------------------------------------------------------------
         // main mnue functions
         private static void courierMenu() 
@@ -374,7 +376,8 @@ namespace DalTest
             } while (continueLoop);
         }
         private static void initializationData() 
-        { Initialization.Do(s_dalConfig, s_dalCourier, s_dalDelivery, s_dalOrder);
+        {
+            Initialization.Do(s_dal);
             Console.WriteLine("Data initialization completed successfully.");
         }
         private static void viewData()
@@ -385,10 +388,7 @@ namespace DalTest
         }
         private static void resetData()
         {
-            s_dalConfig!.Reset();
-            s_dalCourier.DeleteAll();
-            s_dalDelivery!.DeleteAll();
-            s_dalOrder!.DeleteAll();
+            s_dal.ResetDB();    
         }
 
         //---------------------------------------------------------------------------------------------------------------------------------------
@@ -417,9 +417,9 @@ namespace DalTest
         {
             try
             {
-                List<DO.Courier> courier=s_dalCourier!.ReadAll(); 
-                List<DO.Order> orders = s_dalOrder!.ReadAll();
-                List<DO.Delivery> deliveries = s_dalDelivery!.ReadAll();
+                //List<DO.Courier> courier=s_dalCourier!.ReadAll(); 
+                //List<DO.Order> orders = s_dalOrder!.ReadAll();
+                //List<DO.Delivery> deliveries = s_dalDelivery!.ReadAll();
                 // gets user choice and call the suitable function
                 int choice=mainMenu();
                 while(choice!=0)

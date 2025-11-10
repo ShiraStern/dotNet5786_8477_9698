@@ -3,13 +3,7 @@ using DalApi;
 using DO;
 public static class Initialization
 {
-    private static ICourier? s_dalCourier; //stage 1
-    private static IDelivery? s_dalDelivery; //stage 1
-    private static IOrder? s_dalOrder; //stage 1
-    private static IConfig? s_dalConfig; //stage 1
-
-
-
+    private static IDal? s_dal; //stage 2
     private static readonly Random s_random = new();
     private static void createCouriers()
     {
@@ -22,7 +16,7 @@ public static class Initialization
             int id;
             do
                 id = s_random.Next(200000000, 400000000);
-            while (s_dalCourier!.Read(id) is not null);
+            while (s_dal!.Courier.Read(id) is not null);
             Courier courier = new()
             {
                 Id = id,
@@ -31,11 +25,11 @@ public static class Initialization
                 Email = $"{name.Replace(" ", "")}@gmail.com",
                 Password = $"{name.Length % 97}{s_random.Next(1000, 9999)}",
                 Active = s_random.Next(0, 2) == 1,
-                MaxDistance = s_random.Next(40, (int)(s_dalConfig!.MaxRange ?? 297)),
+                MaxDistance = s_random.Next(40, (int)(s_dal!.Config.MaxRange ?? 297)),
                 DeliveryType = (DeliveryType)s_random.Next(0, 4),
-                EmploymentStartDate = s_dalConfig!.Clock.AddYears(-s_random.Next(0, 10))
+                EmploymentStartDate = s_dal!.Config.Clock.AddYears(-s_random.Next(0, 10))
             };
-            s_dalCourier!.Create(courier);
+            s_dal!.Courier.Create(courier);
         }
     }
     private static void createOrders()
@@ -159,52 +153,46 @@ public static class Initialization
                 Latitude = s_random.NextDouble() * 90,
                 Longitude = s_random.NextDouble() * 180,
                 CustomerFullName = customerFullNames[i],
-                OrderDate = s_dalConfig!.Clock.AddDays(-s_random.Next(0, 500)),
+                OrderDate = s_dal!.Config.Clock.AddDays(-s_random.Next(0, 500)),
                 OrderProperties = ""
             };
-            s_dalOrder!.Create(order);
+            s_dal!.Order.Create(order);
         }
     }
     private static void createDelivery()
     {
-        List<Order> orders = s_dalOrder!.ReadAll();
-        List<Courier> couriers = s_dalCourier!.ReadAll();
+        //List<Order> orders = s_dal!.Order.ReadAll();
+        //List<Courier> couriers = s_dal!.Courier.ReadAll();
         for (int i = 0; i < 30; i++)
         {
-            Order order = orders[s_random.Next(orders.Count)];
-            Courier courier = couriers[s_random.Next(couriers.Count)];
-            
+            Order order = s_dal!.Order.ReadAll().ElementAt(s_random.Next(s_dal!.Order.ReadAll().Count()));
+            Courier courier = s_dal!.Courier.ReadAll().ElementAt(s_random.Next(s_dal!.Courier.ReadAll().Count()));
             Delivery delivery = new()
             {
                 Id = 0,
                 OrderId = order.Id,
                 CourierId = courier.Id,
                 DeliveryType = (DeliveryType)s_random.Next(0, 4),
-                DeliveryStartTime = s_dalConfig!.Clock.AddDays(-s_random.Next(0, 500)),
+                DeliveryStartTime = s_dal!.Config.Clock.AddDays(-s_random.Next(0, 500)),
                 ActualDistance = null,
                 DeliveryTermintionType = (DeliveryTermintionType)s_random.Next(0, 5),
                 DeliveryEndTime = null
             };
-            s_dalDelivery!.Create(delivery);    
+            s_dal!.Delivery.Create(delivery);    
         }
     }
-    public static void Do(IConfig? dalConfig, ICourier? dalCourier, IDelivery? dalDelivery,IOrder? dalOrder)
+    public static void Do(IDal? dal)
     {
-        s_dalCourier = dalCourier?? throw new NullReferenceException("dalCourier is null, DAL object can not be null!");
-        s_dalDelivery = dalDelivery ?? throw new NullReferenceException("dalDelivery is null, DAL object can not be null!");
-        s_dalOrder = dalOrder ?? throw new NullReferenceException("dalOrder is null, DAL object can not be null!");
-        s_dalConfig = dalConfig ?? throw new NullReferenceException("dalConfig is null, DAL object can not be null!");
-        Console.WriteLine("Reset Configuration values and List values...");
-        s_dalConfig.Reset(); //stage 1
-        s_dalCourier.DeleteAll(); //stage 1
-        s_dalDelivery.DeleteAll(); //stage 1
-        s_dalOrder.DeleteAll(); //stage 1
-        Console.WriteLine("Initializing Couriers list ...");
-        createCouriers();
-        Console.WriteLine("Initializing Orders list ...");
-        createOrders();
-        Console.WriteLine("Initializing Delivery list ...");
+        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
+
+        Console.WriteLine("Reset Configuration values and List values...");//stage 2
+
+        s_dal.ResetDB();//stage 2
+
         createDelivery();
+        createOrders();
+        createCouriers();
+
     }
 }
 

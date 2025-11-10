@@ -4,7 +4,7 @@ using DalApi;
 using DO;
 
 namespace Dal;
-public class OrederImplementation : IOrder
+internal class OrederImplementation : IOrder
 {
     public void Create(Order item)
     {
@@ -24,12 +24,17 @@ public class OrederImplementation : IOrder
     }
 
      public Order? Read(int id) =>
-        DataSource.Orders.FirstOrDefault(c => c.Id == id);
+        DataSource.Orders.Find(c => c.Id == id);
 
-    public List<Order> ReadAll()
-    {
-        return new List<Order>(DataSource.Orders);
-    }
+    //public List<Order> ReadAll()
+    //{
+    //    return new List<Order>(DataSource.Orders);
+    //}
+    public IEnumerable<Order> ReadAll(Func<Order, bool>? filter = null) //stage 2
+        => filter == null
+            ? DataSource.Orders.Select(item => item)
+            : DataSource.Orders.Where(filter);
+
 
     public void Update(Order item)
     {

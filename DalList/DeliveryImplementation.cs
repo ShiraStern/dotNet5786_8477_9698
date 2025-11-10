@@ -3,7 +3,7 @@ using DO;
 
 namespace Dal;
 
-public class DeliveryImplementation : IDelivery
+internal class DeliveryImplementation : IDelivery
 {
     public void Create(Delivery item)
     {
@@ -25,19 +25,29 @@ public class DeliveryImplementation : IDelivery
 
    
     public Delivery? Read(int id) =>
-        DataSource.Deliveries.FirstOrDefault(c => c.Id == id);
+        DataSource.Deliveries.Find(c => c.Id == id);
 
 
-    public List<Delivery> ReadAll()
-    {
-        return new List<Delivery>(DataSource.Deliveries);
-    }
+    //public List<Delivery> ReadAll()
+    //{
+    //    return new List<Delivery>(DataSource.Deliveries);
+    //}
+    public IEnumerable<Delivery> ReadAll(Func<Delivery, bool>? filter = null) //stage 2
+        => filter == null
+            ? DataSource.Deliveries.Select(item => item)
+            : DataSource.Deliveries.Where(filter);
+
 
     public void Update(Delivery item)
     {
         if (DataSource.Deliveries.FirstOrDefault(d => d.Id == item.Id) is not Delivery)
             throw new InvalidOperationException("Delivery with the given Id does not exist.");
         //DataSource.Deliveries.Remove(item.)
+        throw new NotImplementedException();
+    }
+
+    Delivery? ICrud<Delivery>.Read(Func<Delivery, bool> filter)
+    {
         throw new NotImplementedException();
     }
 }

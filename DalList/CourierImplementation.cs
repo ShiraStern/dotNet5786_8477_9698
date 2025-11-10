@@ -4,7 +4,7 @@ using DalApi;
 using DO;
 
 namespace Dal;
-public class CourierImplementation : ICourier
+internal class CourierImplementation : ICourier
 {
     public void Create(Courier item)
     {
@@ -25,12 +25,16 @@ public class CourierImplementation : ICourier
 
 
     public Courier? Read(int id) =>
-        DataSource.Couriers.FirstOrDefault(c => c.Id == id);
+        DataSource.Couriers.Find(c => c.Id == id);
 
     public List<Courier> ReadAll()
     {
         return new List<Courier>(DataSource.Couriers);
     }
+    public IEnumerable<Courier> ReadAll(Func<Courier, bool>? filter = null) //stage 2
+         => filter == null
+             ? DataSource.Couriers.Select(item => item)
+             : DataSource.Couriers.Where(filter);
 
     public void Update(Courier item)
     {

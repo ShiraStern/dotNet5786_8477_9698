@@ -2,7 +2,7 @@
 namespace Dal;
 using DalApi;
 using Dal;
-sealed public class DalList : IDal
+ public class DalLists : IDal
 
 {
     public IOrder Order { get; } = new OrederImplementation();
