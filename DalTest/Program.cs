@@ -75,13 +75,13 @@ namespace DalTest
         }
         private static void viewAllCouriers()
         {
-            var courier = s_dalCourier!.ReadAll().ToArray();
-            for (int i = 0; i < s_dalCourier.ReadAll().Count; i++)
+            foreach (var item in s_dalCourier!.ReadAll())
             {
-                Console.WriteLine(courier[i].ToString());
+                Console.WriteLine(item.ToString());
             }
         }
-        private static void updateCourier(Courier courier) { s_dalCourier.Update(courier); }
+        private static void updateCourier(Courier courier) 
+        { s_dalCourier.Update(courier); }
         private static void deleteCourier()
         {
             Console.WriteLine("Please enter delivery ID number of coureir you wish to delete.");
@@ -105,13 +105,18 @@ namespace DalTest
         }
         private static void viewAllOrders() 
         {
-            var order = s_dalOrder!.ReadAll().ToArray();
-            for (int i = 0; i < s_dalOrder.ReadAll().Count; i++)
+            foreach (var item in s_dalOrder!.ReadAll())
             {
-                Console.WriteLine(order[i].ToString());
+                Console.WriteLine(item.ToString());
             }
         }
-        private static void updateOrder(Order order) { s_dalOrder.Update(order); }
+        private static void updateOrder() 
+        {
+            Order order= new Order(
+            // לקלוט מהמשתמש את כל שדות המשלוח לעדכון
+                );
+            s_dalOrder.Update(order);
+        }
         private static void deleteOrder()
         {
             Console.WriteLine("Please enter order ID number you wish to deiete.");
@@ -135,13 +140,18 @@ namespace DalTest
         }
         private static void viewAllDeliveries() 
         {
-            var delivery = s_dalDelivery!.ReadAll().ToArray();
-            for (int i = 0; i < s_dalDelivery.ReadAll().Count; i++)
+            foreach (var item in s_dalDelivery!.ReadAll())
             {
-                Console.WriteLine(delivery[i].ToString());
+                Console.WriteLine(item.ToString());
             }
         }
-        private static void updateDelivery(Delivery delivery) { s_dalDelivery.Update(delivery); }
+        private static void updateDelivery() 
+        {
+            Delivery delivery= new Delivery(
+                // לקלוט מהמשתמש את כל שדות המשלוח לעדכון
+                );
+            s_dalDelivery.Update(delivery); 
+        }
         private static void deleteDelivery()
         {
             Console.WriteLine("Please enter delivery ID number you wish to delete.");
