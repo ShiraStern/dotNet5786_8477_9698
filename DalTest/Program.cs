@@ -80,8 +80,11 @@ namespace DalTest
                 Console.WriteLine(item.ToString());
             }
         }
-        private static void updateCourier(Courier courier) 
-        { s_dalCourier.Update(courier); }
+        private static void updateCourier() 
+        {
+            Courier courier = new Courier();
+            s_dalCourier!.Update(courier); 
+        }
         private static void deleteCourier()
         {
             Console.WriteLine("Please enter delivery ID number of coureir you wish to delete.");
