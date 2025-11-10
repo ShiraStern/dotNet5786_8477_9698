@@ -24,6 +24,12 @@ namespace DalTest
 
             Console.Write("ID number: ");
             int id = int.Parse(Console.ReadLine() ?? "0");
+             
+             Courier tempCourier = s_dal.Courier!.Read(id); // to check if the ID already exists
+            if(tempCourier != null)
+            {
+                throw new DalAlreadyExistsException($"Courier with ID {id} already exists.");
+            }
 
             Console.Write("Full name: ");
             string fullName = Console.ReadLine() ?? "";
@@ -93,6 +99,8 @@ namespace DalTest
             int? id = int.Parse(Console.ReadLine());
             if (id == null)
                 throw new Exception(@"invalid delivery ID");
+            if(s_dal.Delivery!.ReadAll(d => d.CourierId == id).Any())
+                throw new DalDoesNotExistException($"Cannot delete courier with ID {id} because there are deliveries associated with it.");
             s_dal.Delivery.Delete((int)id);
         }
         private static void deleteAllCouriers() { s_dal.Courier.DeleteAll(); }
@@ -134,7 +142,10 @@ namespace DalTest
 
         //---------------------------------------------------------------------------------------------------------------------------------------
         // delivery menu functions
-        private static void addDelivery() { }
+        private static void addDelivery() 
+        { 
+            
+        }
         private static void viewDelivery()
         {
             Console.WriteLine("Please enter delivery ID number you wish to display.");
