@@ -48,6 +48,7 @@ internal class DeliveryImplementation : IDelivery
 
     Delivery? ICrud<Delivery>.Read(Func<Delivery, bool> filter)
     {
+        return DataSource.Deliveries.FirstOrDefault(filter);    
         throw new NotImplementedException();
     }
 }

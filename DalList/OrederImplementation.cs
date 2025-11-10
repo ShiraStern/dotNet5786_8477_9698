@@ -2,6 +2,7 @@
 
 using DalApi;
 using DO;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Dal;
 internal class OrederImplementation : IOrder
@@ -38,6 +39,12 @@ internal class OrederImplementation : IOrder
 
     public void Update(Order item)
     {
+        throw new NotImplementedException();
+    }
+
+    Order? ICrud<Order>.Read(Func<Order, bool> filter)
+    {
+        return DataSource.Orders.FirstOrDefault(filter);
         throw new NotImplementedException();
     }
 }

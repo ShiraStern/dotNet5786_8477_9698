@@ -41,4 +41,10 @@ internal class CourierImplementation : ICourier
         Delete(item.Id);
         DataSource.Couriers.Add(item);
     }
+
+    Courier? ICrud<Courier>.Read(Func<Courier, bool> filter)
+    {
+        return DataSource.Couriers.FirstOrDefault(filter);
+        throw new NotImplementedException();
+    }
 }
