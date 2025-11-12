@@ -161,7 +161,7 @@ public static class Initialization
     }
     private static void createDelivery()
     {
-        //List<Order> orders = s_dal!.Order.ReadAll();
+        //List<Order> orders = s_dal!.Order.ReadAll()   ;
         //List<Courier> couriers = s_dal!.Courier.ReadAll();
         for (int i = 0; i < 30; i++)
         {
