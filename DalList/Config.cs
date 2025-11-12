@@ -21,7 +21,7 @@ internal static class Config
 
     internal static DateTime Clock { get; set; } = DateTime.Now;
     internal static int ManagerID { get; set; } = 216318477;
-    //internal static string ManagerPassword { get; set; } = Console.ReadLine() ?? "";/// תוספת
+    internal static string ManagerPassword { get; set; } = "1111";
     internal static string? CompanyAddress { get; set; } = "בית הדפוס 9 ירושלים";
     internal static double? Latitude { get; set; } = null;
     internal static double? Longitude { get; set; } = null;
@@ -35,8 +35,6 @@ internal static class Config
     internal static TimeSpan InactivityThreshold { get; set; } = TimeSpan.FromDays(30);
     public const int MIN_ID = 200000000;
     public const int MAX_ID = 400000000;
-
-
 
     internal static void Reset()
     {
@@ -55,5 +53,4 @@ internal static class Config
         DelayRiskTime = TimeSpan.FromDays(25);
         InactivityThreshold = TimeSpan.FromDays(30);
     }
-
 }
