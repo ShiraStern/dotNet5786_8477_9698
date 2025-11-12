@@ -4,41 +4,60 @@ using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 internal class DeliveryImplementation : IDelivery
 {
     public void Create(Delivery item)
     {
-        throw new NotImplementedException();
+        List<Delivery> Delivery = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_delivery_xml);
+        if (Delivery.Exists(it => it.Id == item.Id))
+            throw new DalAlreadyExistsException($"Order with ID={item.Id} already exists");
+        Delivery.Add(item);
+        XMLTools.SaveListToXMLSerializer(Delivery, Config.s_delivery_xml);
     }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        List<Delivery> Delivery = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_delivery_xml);
+        if (Delivery.RemoveAll(it => it.Id == id) == 0)
+            throw new DalDoesNotExistException($"Course with ID={id} does Not exist");
+        XMLTools.SaveListToXMLSerializer(Delivery, Config.s_delivery_xml);
     }
 
     public void DeleteAll()
     {
-        throw new NotImplementedException();
+        XMLTools.SaveListToXMLSerializer(new List<Delivery>(), Config.s_delivery_xml);
     }
 
     public Delivery? Read(int id)
     {
-        throw new NotImplementedException();
+        List<Delivery> delivery = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_delivery_xml);
+        return delivery.FirstOrDefault(it => it.Id == id);
     }
 
     public Delivery? Read(Func<Delivery, bool> filter)
     {
-        throw new NotImplementedException();
+        List<Delivery> delivery = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_delivery_xml);
+        return delivery.FirstOrDefault(filter);
     }
 
     public IEnumerable<Delivery> ReadAll(Func<Delivery, bool>? filter = null)
     {
-        throw new NotImplementedException();
+        List<Delivery> delivery = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_delivery_xml);
+        return filter == null
+            ? delivery
+            : delivery.Where(filter);
     }
 
     public void Update(Delivery item)
     {
-        throw new NotImplementedException();
+        List<Delivery> Delivery = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_delivery_xml);
+        Delivery? delivery = Delivery.FirstOrDefault(it => it.Id == item.Id);
+        if (Delivery == null)
+            throw new DalDoesNotExistException($"Delivery with ID={item.Id} does Not exist");
+        Delivery.Remove(delivery!);
+        Delivery.Add(item);
+        XMLTools.SaveListToXMLSerializer(Delivery, Config.s_delivery_xml);
     }
 }

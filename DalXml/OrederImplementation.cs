@@ -9,39 +9,54 @@ internal class OrederImplementation : IOrder
 {
     public void Create(Order item)
     {
-        throw new NotImplementedException();
+        List<Order> Order = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);
+        if (Order.Exists(it => it.Id == item.Id))
+            throw new DalAlreadyExistsException($"Order with ID={item.Id} already exists");
+        Order.Add(item);
+        XMLTools.SaveListToXMLSerializer(Order, Config.s_order_xml);
     }
 
     public void Delete(int id)
     {
-        List<> Courses = XMLTools.LoadListFromXMLSerializer<Course>(Config.s_courses_xml);
-        if (Courses.RemoveAll(it => it.Id == id) == 0)
-            throw new DalDoesNotExistException($"Course with ID={id} does Not exist");
-        XMLTools.SaveListToXMLSerializer(Courses, Config.);
+        List<Order> Order = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);
+        if (Order.RemoveAll(it => it.Id == id) == 0)
+            throw new DalDoesNotExistException($"Order with ID={id} does Not exist");
+        XMLTools.SaveListToXMLSerializer(Order, Config.s_order_xml);
     }
 
     public void DeleteAll()
     {
-        throw new NotImplementedException();
+        XMLTools.SaveListToXMLSerializer(new List<Order>(), Config.s_order_xml);
     }
 
     public Order? Read(int id)
     {
-        throw new NotImplementedException();
+        List<Order> Order = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);
+        return Order.FirstOrDefault(it => it.Id==id);
     }
 
     public Order? Read(Func<Order, bool> filter)
     {
-        throw new NotImplementedException();
+        List<Order> Order = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);
+            return  Order.FirstOrDefault(filter);
     }
 
     public IEnumerable<Order> ReadAll(Func<Order, bool>? filter = null)
     {
-        throw new NotImplementedException();
+        List<Order> Order = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);
+        return filter == null
+            ? Order
+            : Order.Where(filter);
     }
 
     public void Update(Order item)
     {
-        throw new NotImplementedException();
+        List<Order> Order = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);
+        Order? order= Order.FirstOrDefault(it => it.Id == item.Id);
+        if(order == null)
+            throw new DalDoesNotExistException($"Order with ID={item.Id} does Not exist");
+        Order.Remove(order);
+        Order.Add(item);
+        XMLTools.SaveListToXMLSerializer(Order, Config.s_order_xml);
     }
 }
