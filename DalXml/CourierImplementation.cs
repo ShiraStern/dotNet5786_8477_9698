@@ -32,7 +32,7 @@ internal class CourierImplementation : ICourier
         XElement? courierElem =
         XMLTools.LoadListFromXMLElement(Config.s_courier_xml).Elements().FirstOrDefault(st => (int?)st.Element("Id") == item.Id);
         if (courierElem is not null)
-            throw new DalAlreadyExistsException($"Order with ID={item.Id} already exists");
+            throw new DalAlreadyExistsException($"Courier with ID={item.Id} already exists");
         courierElem!.Add(new XElement("Courier", item));
     }
 
@@ -40,7 +40,7 @@ internal class CourierImplementation : ICourier
     {
         List<Courier> Courier = XMLTools.LoadListFromXMLSerializer<Courier>(Config.s_courier_xml);
         if (Courier.RemoveAll(it => it.Id == id) == 0)
-            throw new DalDoesNotExistException($"Course with ID={id} does Not exist");
+            throw new DalDoesNotExistException($"Course with ID={id} does not exist");
         XMLTools.SaveListToXMLSerializer(Courier, Config.s_courier_xml);
     }
 
