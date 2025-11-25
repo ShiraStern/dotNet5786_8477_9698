@@ -43,7 +43,7 @@ internal class CourierImplementation : ICourier
 
     public void DeleteAll()
     {
-        throw new NotImplementedException();
+        XMLTools.SaveListToXMLSerializer(new List<Courier>(), Config.s_courier_xml);
     }
 
     public Courier? Read(int id)
