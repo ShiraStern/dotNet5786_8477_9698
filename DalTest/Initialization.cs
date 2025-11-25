@@ -34,7 +34,6 @@ public static class Initialization
     }
     private static void createOrders()
     {
-        // קונ אורך
         string[] Longitude =
             {
                 "32.062309",
@@ -300,10 +299,10 @@ public static class Initialization
         Console.WriteLine("Reset Configuration values and List values...");//stage 2
 
         s_dal.ResetDB();//stage 2
-
-        createDelivery();
         createOrders();
         createCouriers();
+        createDelivery();
+       
 
     }
 }

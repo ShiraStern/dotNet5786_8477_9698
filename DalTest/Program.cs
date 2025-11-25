@@ -2,6 +2,7 @@
 using DalApi;
 using DO;
 using DalList;
+using DalXml;
 
 using System;
 using System.Diagnostics;
@@ -10,13 +11,15 @@ namespace DalTest
 {
     internal class Program
     {
-        static readonly IDal s_dal = new DalLists(); //stage 2
+      // static readonly IDal s_dal = new DalLists(); //stage 2
+        static readonly IDal s_dal = new DalXML(); //stage 3
 
         //private static ICourier? s_dalCourier = new CourierImplementation(); //stage 1
         //private static IDelivery? s_dalDelivery = new DeliveryImplementation(); //stage 1
         //private static IOrder? s_dalOrder = new OrederImplementation(); //stage 1
         //private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
         //---------------------------------------------------------------------------------------------------------------------------------------
+        
         // courier mnue functions
         private static void addCourier() 
         {
@@ -55,6 +58,7 @@ namespace DalTest
 
             Console.Write("Employment start date (YYYY-MM-DD): ");
             DateTime employmentStartDate = DateTime.Parse(Console.ReadLine() ?? DateTime.Now.ToString("yyyy-MM-dd"));
+            Console.WriteLine(" ;-) אני לא אמור לכתוב תאריך בעצמי");
 
             Courier courier = new Courier()
             {
@@ -91,6 +95,8 @@ namespace DalTest
         private static void updateCourier() 
         {
             Courier courier = new Courier();
+            Console.WriteLine("תקלטו את הפרטים שצריך לעדכן ");
+            // לקלוט מהמשתמש את כל השדות  לעדכון
             s_dal.Courier!.Update(courier); 
         }
         private static void deleteCourier()
@@ -107,7 +113,10 @@ namespace DalTest
 
         //---------------------------------------------------------------------------------------------------------------------------------------
         // order mnue functions
-        private static void addOrder() { }
+        private static void addOrder()
+        {
+            Console.WriteLine(" ;-) אין מימוש לפונקציה");
+        }
         private static void viewOrder() 
         {
             Console.WriteLine("Please enter order ID number you wish to display.");
@@ -143,8 +152,8 @@ namespace DalTest
         //---------------------------------------------------------------------------------------------------------------------------------------
         // delivery menu functions
         private static void addDelivery() 
-        { 
-            
+        {
+            Console.WriteLine(" ;-) אין מימוש לפונקציה");
         }
         private static void viewDelivery()
         {
@@ -163,7 +172,9 @@ namespace DalTest
         }
         private static void updateDelivery() 
         {
-            Delivery delivery= new Delivery(
+            Console.WriteLine(" ;-) אין מימוש לפונקציה");
+
+            Delivery delivery = new Delivery(
                 // לקלוט מהמשתמש את כל שדות המשלוח לעדכון
                 );
             s_dal.Delivery.Update(delivery); 
