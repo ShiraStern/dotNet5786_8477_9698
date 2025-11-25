@@ -4,6 +4,7 @@ using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Xml.Linq;
 
 
@@ -12,16 +13,18 @@ internal class CourierImplementation : ICourier
 {
     static Courier getCourier(XElement s)
     {
-        return new DO.Courier()
-        {
-            //Id = s.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
-            //Name = (string?)s.Element("Name") ?? "",
-            //Alias = (string?)s.Element("Alias") ?? null,
-            //IsActive = (bool?)s.Element("IsActive") ?? false,
-            ////CurrentYear = s.ToEnumNullable<Year>("CurrentYear") ?? Year.FirstYear,
-            //BirthDate = s.ToDateTimeNullable("BirthDate"),
-            //RegistrationDate = s.ToDateTimeNullable("RegistrationDate")
-        };
+        return new DO.Courier
+        (
+            Id: s.ToIntNullable("Id") ?? throw new FormatException("Can't convert Id"),
+            FullName: (string?)s.Element("FullName") ?? "",
+            Phone: (string?)s.Element("Phone") ?? "",
+            Email: (string?)s.Element("Email") ?? "",
+            Password: (string?)s.Element("Password"),
+            Active: (bool?)s.Element("Active") ?? false,
+            MaxDistance:(double?)s.Element("MaxDistance"),
+            DeliveryType: s.ToEnumNullable<DO.DeliveryType>("DeliveryType") ?? DO.DeliveryType.Motorcycle,
+            EmploymentStartDate: (DateTime)s.ToDateTimeNullable("EmploymentStartDate")
+            );
     }
 
     public void Create(Courier item)
