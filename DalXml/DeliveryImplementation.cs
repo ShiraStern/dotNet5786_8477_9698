@@ -16,7 +16,6 @@ internal class DeliveryImplementation : IDelivery
         deliveries.Add(item);        //-ID נוצר כרגע באופן ייחודי.
         XMLTools.SaveListToXMLSerializer(deliveries, Config.s_delivery_xml);
     }
-
     public void Delete(int id)
     {
         List<Delivery> Delivery = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_delivery_xml);
