@@ -7,13 +7,9 @@ using Dal;
 sealed public class DalXML : IDal
 {
     public IOrder Order { get; } = new OrederImplementation();
-
     public ICourier Courier { get; } = new CourierImplementation();
-
     public IDelivery Delivery { get; } = new DeliveryImplementation();
-
     public IConfig Config { get; } = new ConfigImplementation();
-
     public void ResetDB()
     {
         Order.DeleteAll();
