@@ -6,8 +6,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Dal;
 internal class OrederImplementation : IOrder
-{
-    public void Create(Order item)
+{ public void Create(Order item)
     {
         DataSource.Orders.Add(item with { Id = Config.NextOrderId });
     }
@@ -23,14 +22,11 @@ internal class OrederImplementation : IOrder
     {
         DataSource.Orders.Clear();
     }
-
-     public Order? Read(int id) =>
+    public Order? Read(int id) =>
         DataSource.Orders.Find(c => c.Id == id);
 
     //public List<Order> ReadAll()
-    //{
-    //    return new List<Order>(DataSource.Orders);
-    //}
+    //    return new List<Order>(DataSource.Orders)
     public IEnumerable<Order> ReadAll(Func<Order, bool>? filter = null) //stage 2
         => filter == null
             ? DataSource.Orders.Select(item => item)
