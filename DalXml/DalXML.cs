@@ -1,11 +1,14 @@
 ﻿
 namespace Dal;
-using DalApi;
 using Dal;
+using DalApi;
+using System.Diagnostics;
 
 
-sealed public class DalXML : IDal
+sealed internal class DalXML : IDal
 {
+    public static IDal Instance { get; } = new DalXML();
+    private DalXML() { }    
     public IOrder Order { get; } = new OrederImplementation();
 
     public ICourier Courier { get; } = new CourierImplementation();

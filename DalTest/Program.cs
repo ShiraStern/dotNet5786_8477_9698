@@ -11,8 +11,8 @@ namespace DalTest
 {
     internal class Program
     {
-      // static readonly IDal s_dal = new DalLists(); //stage 2
-        static readonly IDal s_dal = new DalXML(); //stage 3
+        static readonly IDal s_dal = new DalLists(); //stage 2
+       // static readonly IDal s_dal = new DalXML(); //stage 3
 
         //private static ICourier? s_dalCourier = new CourierImplementation(); //stage 1
         //private static IDelivery? s_dalDelivery = new DeliveryImplementation(); //stage 1

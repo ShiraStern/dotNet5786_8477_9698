@@ -2,9 +2,11 @@
 namespace Dal;
 using DalApi;
 using Dal;
- public class DalLists : IDal
+ sealed internal class DalLists : IDal
 
 {
+    public static IDal Instance { get; } = new DalLists();
+    private DalLists() { }  
     public IOrder Order { get; } = new OrederImplementation();
 
     public ICourier Courier { get; } = new CourierImplementation();
