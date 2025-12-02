@@ -13,7 +13,11 @@ internal class Config
         get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextOrderId");
         private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextOrderId", value);
     }
-
+    internal static int NextCourierId
+    {
+        get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextCourierId");
+        private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextCourierId", value);
+    }
     internal static int NextDeliveryId
     {
         get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextDeliveryId");

@@ -10,13 +10,12 @@ internal class DeliveryImplementation : IDelivery
 {
     public void Create(Delivery item)
     {
-        List<Delivery> Delivery = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_delivery_xml);
-        if (Delivery.Exists(it => it.Id == item.Id))
-            throw new DalAlreadyExistsException($"Order with ID={item.Id} already exists");
-        Delivery.Add(item);
-        XMLTools.SaveListToXMLSerializer(Delivery, Config.s_delivery_xml);
+        int nextId = Config.NextDeliveryId;        // 1. קבלת ID חדש מ-Config. (מוודא ייחודיות ומקדם את המונה)
+        item = item with { Id = nextId }; // עדכון הפריט ב-ID החדש
+        List<Delivery> deliveries = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_delivery_xml);        // 2. טעינה, הוספה ושמירה
+        deliveries.Add(item);        //-ID נוצר כרגע באופן ייחודי.
+        XMLTools.SaveListToXMLSerializer(deliveries, Config.s_delivery_xml);
     }
-
     public void Delete(int id)
     {
         List<Delivery> Delivery = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_delivery_xml);

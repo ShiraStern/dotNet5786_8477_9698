@@ -9,11 +9,11 @@ internal class OrederImplementation : IOrder
 {
     public void Create(Order item)
     {
-        List<Order> Order = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);
-        if (Order.Exists(it => it.Id == item.Id))
-            throw new DalAlreadyExistsException($"Order with ID={item.Id} already exists");
-        Order.Add(item);
-        XMLTools.SaveListToXMLSerializer(Order, Config.s_order_xml);
+        int nextId = Config.NextOrderId;        //  קבלת ID חדש מ-Config.
+        item = item with { Id = nextId };        //  עדכון האובייקט שנכנס למתודה עם ה-ID החדש.
+        List<Order> orders = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);        //  טעינת הרשימה
+        orders.Add(item);        // 5. הוספה ושמירה
+        XMLTools.SaveListToXMLSerializer(orders, Config.s_order_xml);
     }
 
     public void Delete(int id)
