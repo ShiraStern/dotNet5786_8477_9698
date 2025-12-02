@@ -292,9 +292,11 @@ public static class Initialization
             s_dal!.Delivery.Create(delivery);    
         }
     }
-    public static void Do(IDal? dal)
+    //public static void Do(IDal? dal) 
+    public static void Do() // stage 4
     {
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
+        // s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
+        s_dal = DalApi.Factory.Get; //stage 4
 
         Console.WriteLine("Reset Configuration values and List values...");//stage 2
 
