@@ -59,7 +59,7 @@ internal class Config
     {
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "MaxRange");
         set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "MaxRange", value = 290);
-    }  // in KM, in Israel
+    }  // in KM,only in Israel
     internal static double AvgCarSpeed
     {
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "AvgCarSpeed");
