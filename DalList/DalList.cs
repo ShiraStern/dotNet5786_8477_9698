@@ -8,7 +8,7 @@ using Dal;
     private static readonly Lazy<IDal> _instance =
         new Lazy<IDal>(() => new DalList(), LazyThreadSafetyMode.ExecutionAndPublication); // זה הבונוס - להוסיף סינגלטאון עצל כלומר פה יש פונקציה שרק כאשר קוראים לה רק אז זה מקצה את האובייקט  
 
-    public static IDal Instance => _instance.Value;
+    public static IDal Instance => _instance.Value;// זה מוגדר כציבורי ומפה המשתמש יקרא לפונקציה כדי שתגדיר את האובייקט
     private DalList() { }  
     public IOrder Order { get; } = new OrederImplementation();
 
