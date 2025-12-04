@@ -252,7 +252,7 @@ public static class Initialization
             "Ran Amar"
         };
         
-
+        
         for (int i = 0; i < 50; i++)
         {
             Order order = new()
@@ -264,7 +264,9 @@ public static class Initialization
                 Latitude = s_random.NextDouble() * 90,
                 Longitude = s_random.NextDouble() * 180,
                 CustomerFullName = customerFullNames[i],
-                OrderDate = s_dal!.Config.Clock.AddDays(-s_random.Next(0, 500)),
+                CustomerPhone = "",
+             //   CustomerPhone = ("05"+{0},s_random.NextDouble())  איך מקשרים את מספר הטלפון של הלקוח?
+                OrderDate = s_dal!.Config.Clock.AddDays(-s_random.Next(0, 600)),
                 OrderProperties = ""
             };
             s_dal!.Order.Create(order);

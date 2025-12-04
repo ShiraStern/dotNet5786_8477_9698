@@ -1,27 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-	<startOrderId>1000</startOrderId>
-	<startDeliveryId>100</startDeliveryId>
-	<clock> 03/12/2026 13:55</clock>
-	<ManagerID>216318477</ManagerID>
-	<ManagerPassword>1111</ManagerPassword>
-	<CompanyAddress>בית הדפוס 9 ירושלים</CompanyAddress>
-	<Latitude>31.785824401794827</Latitude> <!--רוחב-->
-	<Longitude>35.18925479816518</Longitude> <!--אורך-->
-	<MaxRange>297</MaxRange>
-	<AvgCarSpeed>50</AvgCarSpeed>
-	<AvgMotorcycleSpeed>60</AvgMotorcycleSpeed>
-	<AvgDroneSpeed>20</AvgDroneSpeed>
-	<AvgWalkingSpeed>6</AvgWalkingSpeed>
-	<MaxDeliveryDuration>30</MaxDeliveryDuration>
-	<DelayRiskTime>25</DelayRiskTime>
-	<InactivityThreshold>30</InactivityThreshold>
-	<MIN_ID>200000000</MIN_ID>
-	<MAX_ID>400000000</MAX_ID>
+  <startOrderId>1000</startOrderId>
+  <startDeliveryId>100</startDeliveryId>
+  <clock> 13:55</clock>
+  <ManagerID>216318477</ManagerID>
+  <ManagerPassword>1111</ManagerPassword>
+  <CompanyAddress>בית הדפוס 9 ירושלים</CompanyAddress>
+  <Latitude>31.785824401794827</Latitude>
+  <!--רוחב-->
+  <Longitude>35.18925479816518</Longitude>
+  <!--אורך-->
+  <MaxRange>290</MaxRange>
+  <AvgCarSpeed>50</AvgCarSpeed>
+  <AvgMotorcycleSpeed>60</AvgMotorcycleSpeed>
+  <AvgDroneSpeed>20</AvgDroneSpeed>
+  <AvgWalkingSpeed>6</AvgWalkingSpeed>
+  <MaxDeliveryDuration>30</MaxDeliveryDuration>
+  <DelayRiskTime>25</DelayRiskTime>
+  <InactivityThreshold>30</InactivityThreshold>
+  <MIN_ID>200000000</MIN_ID>
+  <MAX_ID>400000000</MAX_ID>
 </config>
-
-
-
-
-
-
