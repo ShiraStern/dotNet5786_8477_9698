@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-  <startOrderId>1000</startOrderId>
-  <startDeliveryId>100</startDeliveryId>
+  <NextOrderId>1050</NextOrderId>
+  <NextDeliveryId>130</NextDeliveryId>
   <clock> 13:55</clock>
   <ManagerID>216318477</ManagerID>
   <ManagerPassword>1111</ManagerPassword>

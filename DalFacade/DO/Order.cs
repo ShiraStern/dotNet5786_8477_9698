@@ -35,6 +35,6 @@ public record Order
     /// <summary>
     /// Default constructor for stage 1.3
     /// </summary>
-    public Order() : this(0,OrderType.TypeA,"","",0,0,"","", DateTime.Now ) { }
+    public Order() : this(0,OrderType.Medium,"","",0,0,"","", DateTime.Now ) { }
 }
 

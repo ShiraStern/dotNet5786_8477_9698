@@ -1,6 +1,8 @@
 ﻿namespace Dal;
 using DalApi;
 using DO;
+using System.Numerics;
+
 public static class Initialization
 {
     private static IDal? s_dal; //stage 2
@@ -27,14 +29,14 @@ public static class Initialization
                 Active = s_random.Next(0, 2) == 1,
                 MaxDistance = s_random.Next(40, (int)(s_dal!.Config.MaxRange ?? 297)),
                 DeliveryType = (DeliveryType)s_random.Next(0, 4),
-                EmploymentStartDate = s_dal!.Config.Clock.AddYears(-s_random.Next(0, 10))
+                EmploymentStartDate = DateTime.Now.AddYears(-s_random.Next(0, 10))
             };
             s_dal!.Courier.Create(courier);
         }
     }
     private static void createOrders()
     {
-        string[] Longitude =
+        string[] Longitudes =
             {
                 "32.062309",
             "32.0642206",
@@ -89,7 +91,7 @@ public static class Initialization
 
         };
         // קו רוחב
-        string[] Latitude =
+        string[] Latitudes =
         {
                "34.770001",
             "34.7747952",
@@ -255,6 +257,16 @@ public static class Initialization
         
         for (int i = 0; i < 50; i++)
         {
+            //int id = 0;
+            //OrderType orderType = (OrderType)s_random.Next(0, 3);
+            //string customerAddress = customerAddresses[i];
+            //double l1=s_random.NextDouble() * 90;
+            //double l2 = s_random.NextDouble() * 180;
+            //string customerFullName = customerFullNames[i];
+            //string customerPhone=  "05" + Random.Shared.Next(0, 10) + Random.Shared.Next(1000000, 9999999);
+            //DateTime orderDate= DateTime.Now.AddDays(-s_random.Next(0, 600));
+
+
             Order order = new()
             {
                 Id = 0,
@@ -264,9 +276,8 @@ public static class Initialization
                 Latitude = s_random.NextDouble() * 90,
                 Longitude = s_random.NextDouble() * 180,
                 CustomerFullName = customerFullNames[i],
-                CustomerPhone = "",
-             //   CustomerPhone = ("05"+{0},s_random.NextDouble())  איך מקשרים את מספר הטלפון של הלקוח?
-                OrderDate = s_dal!.Config.Clock.AddDays(-s_random.Next(0, 600)),
+                CustomerPhone = "05" + Random.Shared.Next(0, 10) + Random.Shared.Next(1000000, 9999999),
+                OrderDate = DateTime.Now.AddDays(-s_random.Next(0, 600)),
                 OrderProperties = ""
             };
             s_dal!.Order.Create(order);
@@ -286,7 +297,7 @@ public static class Initialization
                 OrderId = order.Id,
                 CourierId = courier.Id,
                 DeliveryType = (DeliveryType)s_random.Next(0, 4),
-                DeliveryStartTime = s_dal!.Config.Clock.AddDays(-s_random.Next(0, 500)),
+                DeliveryStartTime = DateTime.Now.AddDays(-s_random.Next(0, 500)),
                 ActualDistance = null,
                 DeliveryTermintionType = (DeliveryTermintionType)s_random.Next(0, 5),
                 DeliveryEndTime = null

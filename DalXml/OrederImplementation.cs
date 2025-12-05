@@ -4,15 +4,15 @@ using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
-
+//C:\Users\User\source\repos\dotNet5786_8477_9698\DalXml\OrederImplementation.cs
 internal class OrederImplementation : IOrder
 {
     public void Create(Order item)
     {
+        List<Order> orders = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);        //  טעינת הרשימה
         int nextId = Config.NextOrderId;        //  קבלת ID חדש מ-Config.
         item = item with { Id = nextId };        //  עדכון האובייקט שנכנס למתודה עם ה-ID החדש.
-        List<Order> orders = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);        //  טעינת הרשימה
-        orders.Add(item);        // 5. הוספה ושמירה
+        orders.Add(item);        //  הוספה ושמירה
         XMLTools.SaveListToXMLSerializer(orders, Config.s_order_xml);
     }
 

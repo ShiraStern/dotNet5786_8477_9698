@@ -16,9 +16,9 @@ public enum DeliveryType
 /// </summary>
 public enum OrderType
 {
-    TypeA,
-    TypeB,
-    TypeC
+    Large,
+    Medium,
+    Small
 }
 
 /// <summary>

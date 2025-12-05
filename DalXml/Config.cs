@@ -1,9 +1,9 @@
 ﻿namespace Dal;
-
+//C:\Users\User\source\repos\dotNet5786_8477_9698\DalXml\Config.cs
 internal class Config
 {
     internal const string s_data_config_xml = "data-config.xml";
-    internal const string s_courier_xml = "courier.xml";
+    internal const string s_courier_xml = "couriers.xml";
     internal const string s_order_xml = "order.xml";
     internal const string s_delivery_xml = "delivery.xml";
     //...	

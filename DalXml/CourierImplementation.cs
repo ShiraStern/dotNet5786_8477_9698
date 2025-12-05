@@ -4,6 +4,7 @@ using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Xml.Linq;
 
@@ -43,8 +44,9 @@ internal class CourierImplementation : ICourier
     }
     public void Create(Courier item)
     {
-        int nextId = Config.NextCourierId;
-        item = item with { Id = nextId };        
+        //הitem מגיע כבר ע תעודת זהות
+        //int nextId = Config.NextCourierId;
+        //item = item with { Id = nextId };        
         XElement couriersRootElem = XMLTools.LoadListFromXMLElement(Config.s_courier_xml);        //  טעינת קובץ ה-XML (שורש הנתונים).
         couriersRootElem.Add(createCourierElement(item));        //  הוספת האלמנט החדש שנוצר מהאובייקט (באמצעות createCourierElement).
         XMLTools.SaveListToXMLElement(couriersRootElem, Config.s_courier_xml);        // שמירת ה-XElement המעודכן בחזרה לקובץ XML.
@@ -82,7 +84,10 @@ internal class CourierImplementation : ICourier
 
     public IEnumerable<Courier> ReadAll(Func<Courier, bool>? filter = null)
     {
-        throw new NotImplementedException();
+        List<Courier> Courier = XMLTools.LoadListFromXMLSerializer<Courier>(Config.s_courier_xml);
+        return filter == null
+            ? Courier
+            : Courier.Where(filter);
     }
 
     public void Update(Courier item)
