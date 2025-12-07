@@ -58,7 +58,6 @@ internal class Program
 
         Console.Write("Employment start date (YYYY-MM-DD): ");
         DateTime employmentStartDate = DateTime.Parse(Console.ReadLine() ?? DateTime.Now.ToString("yyyy-MM-dd"));
-        Console.WriteLine(" ;-) אני לא אמור לכתוב תאריך בעצמי");
 
         Courier courier = new Courier()
         {
@@ -219,11 +218,8 @@ internal class Program
                     addCourier();
                     break;
                 case CourierMenu.ViewCourier:
-                    {
                       viewCourier();
                         break;
-                    }
-                    
                 case CourierMenu.ViewAllCouriers:
                     viewAllCouriers();
                     break;
@@ -440,10 +436,12 @@ internal class Program
     {
         try
         {
+
             //List<DO.Courier> courier=s_dalCourier!.ReadAll(); 
             //List<DO.Order> orders = s_dalOrder!.ReadAll();
             //List<DO.Delivery> deliveries = s_dalDelivery!.ReadAll();
             // gets user choice and call the suitable function
+            
             int choice=mainMenu();
             while(choice!=0)
             {
