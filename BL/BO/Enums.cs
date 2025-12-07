@@ -8,6 +8,12 @@ public enum DeliveryType
     Car
 }
 
+public enum OrderType
+{
+    Regular,
+    Fast,
+    Emergency
+}
 public enum OrderStatus
 {
     DeliveredSeccessfully,
@@ -30,7 +36,7 @@ public enum ScheduleStatus
 
 }
 
-public enum OrderType
+public enum OrderProperties
 {
     Large,
     Medium,
