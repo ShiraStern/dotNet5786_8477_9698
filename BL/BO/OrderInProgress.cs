@@ -13,7 +13,6 @@ public class OrderInProgress
     double? MaxDeliveryDistance { init; get; }
     enum DeliveryType { init; get; }  
     DateTime EmploymentStartDate { init; get; }
-  int 
     int NumberOfOrdersInProgress { init; get; }
 
 
