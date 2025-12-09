@@ -1,4 +1,6 @@
 ﻿
+using DO;
+
 namespace BO;
 /// <summary>
 /// Represents an order within a delivery list, including its associated details such as delivery type, status, and

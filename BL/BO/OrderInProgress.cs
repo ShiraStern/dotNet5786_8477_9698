@@ -12,16 +12,16 @@ namespace BO;
 /// order and its schedule.</remarks>
 public class OrderInProgress
 {
-    int Id { init; get; }   
-    string CustomerFullName { init; get; }
-    string Phone { init; get; } 
-    string email { init; get; }
-    string password { init; get; }  
-    bool IsActive { init; get; }
-    double? MaxDeliveryDistance { init; get; }
-    enum DeliveryType { init; get; }  
-    DateTime EmploymentStartDate { init; get; }
-    int NumberOfOrdersInProgress { init; get; }
+    public int Id { init; get; }   
+    public string CustomerFullName { init; get; }
+    public string Phone { init; get; } 
+    public string email { init; get; }
+    public string password { init; get; }  
+    public bool IsActive { init; get; }
+    public double? MaxDeliveryDistance { init; get; }
+    public DeliveryType deliveryType { init; get; }  
+    public DateTime EmploymentStartDate { init; get; }
+    public int NumberOfOrdersInProgress { init; get; }
 
 
 

@@ -6,7 +6,6 @@
 public enum DeliveryType
 {
     None,
-    Drone,
     Motorcycle,
     Car
 }

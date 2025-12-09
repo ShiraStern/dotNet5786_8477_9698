@@ -9,6 +9,8 @@ namespace Dal;
 /// configuration. It provides unique identifiers for orders and deliveries, as well as settings  for time, location,
 /// and operational parameters such as speed and delivery thresholds.  Use the <see cref="Reset"/> method to restore
 /// default values for mutable properties.</remarks>
+
+
 /// //C:\Users\User\source\repos\dotNet5786_8477_9698\DalList\Config.cs
 internal static class Config
 {
