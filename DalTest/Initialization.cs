@@ -273,8 +273,8 @@ public static class Initialization
                 OrderType = (OrderType)s_random.Next(0, 3),
                 OrderNote = " ",
                 CustomerAddress = customerAddresses[i],
-                Latitude = s_random.NextDouble() * 90,
-                Longitude = s_random.NextDouble() * 180,
+                Latitude = 29 + s_random.NextDouble() * 4,   // Latitude בין 29 ל-33
+                Longitude = 34 + s_random.NextDouble() * 2,  // Longitude בין 34 ל-36
                 CustomerFullName = customerFullNames[i],
                 CustomerPhone = "05" + Random.Shared.Next(0, 10) + Random.Shared.Next(1000000, 9999999),
                 OrderDate = DateTime.Now.AddDays(-s_random.Next(0, 600)),
@@ -287,10 +287,14 @@ public static class Initialization
     {
         //List<Order> orders = s_dal!.Order.ReadAll()   ;
         //List<Courier> couriers = s_dal!.Courier.ReadAll();
+        var orders = s_dal!.Order.ReadAll().ToList();
+        var couriers = s_dal!.Courier.ReadAll().ToList();
+
         for (int i = 0; i < 30; i++)
         {
-            Order order = s_dal!.Order.ReadAll().ElementAt(s_random.Next(s_dal!.Order.ReadAll().Count()));
-            Courier courier = s_dal!.Courier.ReadAll().ElementAt(s_random.Next(s_dal!.Courier.ReadAll().Count()));
+            Order order = orders[s_random.Next(orders.Count)];
+            Courier courier = couriers[s_random.Next(couriers.Count)];
+
             Delivery delivery = new()
             {
                 Id = 0,
@@ -302,8 +306,11 @@ public static class Initialization
                 DeliveryTermintionType = (DeliveryTermintionType)s_random.Next(0, 5),
                 DeliveryEndTime = null
             };
-            s_dal!.Delivery.Create(delivery);    
+
+            s_dal!.Delivery.Create(delivery);
         }
+
+
     }
     //public static void Do(IDal? dal) 
     public static void Do() // stage 4

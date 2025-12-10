@@ -27,7 +27,8 @@ internal class CourierImplementation : ICourier
             EmploymentStartDate: (DateTime)s.ToDateTimeNullable("EmploymentStartDate")
             );
     }
-
+    // יוצרת XElement מתוך אובייקט Courier לשם כתיבה ל־XML
+    // Creates an XElement from a Courier object for saving into XML
     private XElement createCourierElement(DO.Courier item)
     {
         return new XElement("Courier",
@@ -42,6 +43,8 @@ internal class CourierImplementation : ICourier
             new XElement("EmploymentStartDate", item.EmploymentStartDate)
         );
     }
+    //מוסיפה שליח חדש לקובץ הXML
+    // Adds a new Courier to the XML file
     public void Create(Courier item)
     {
         //הitem מגיע כבר ע תעודת זהות
@@ -51,7 +54,8 @@ internal class CourierImplementation : ICourier
         couriersRootElem.Add(createCourierElement(item));        //  הוספת האלמנט החדש שנוצר מהאובייקט (באמצעות createCourierElement).
         XMLTools.SaveListToXMLElement(couriersRootElem, Config.s_courier_xml);        // שמירת ה-XElement המעודכן בחזרה לקובץ XML.
     }
-
+    // מוחקת שליח לפי קוד מזהה
+    // Deletes a Courier by ID
     public void Delete(int id)
     {
         XElement couriersRootElem = XMLTools.LoadListFromXMLElement(Config.s_courier_xml);        // טעינת קובץ ה-XML
@@ -62,34 +66,42 @@ internal class CourierImplementation : ICourier
         courierElem.Remove();        // מחיקת האלמנט
         XMLTools.SaveListToXMLElement(couriersRootElem, Config.s_courier_xml);        // שמירת ה-XElement המעודכן
     }
-
+    // מוחקת את כל השליחים מהקובץ
+    // Deletes all couriers from the XML file
     public void DeleteAll()
     {
         XElement couriersRootElem = XMLTools.LoadListFromXMLElement(Config.s_courier_xml);
         couriersRootElem.RemoveAll(); // מחיקת כל הצאצאים של אלמנט השורש
         XMLTools.SaveListToXMLElement(couriersRootElem, Config.s_courier_xml);
     }
-
+    // קוראת שליח לפי מזהה ומחזירה אובייקט או null
+    // Reads a courier by ID and returns a Courier or null
     public Courier? Read(int id)
     {
         XElement? Courier =
-        XMLTools.LoadListFromXMLElement(Config.s_courier_xml).Elements().FirstOrDefault(st => (int?)st.Element("Id") == id);
+        XMLTools.LoadListFromXMLElement(Config.s_courier_xml).Elements("Courier").FirstOrDefault(st => (int?)st.Element("Id") == id);
         return Courier is null ? null : getCourier(Courier);
     }
-
+    // קוראת שליח לפי תנאי (פונקציית פילטר)
+    // Reads a courier that matches a given filter function
     public Courier? Read(Func<Courier, bool> filter)
     {
         return XMLTools.LoadListFromXMLElement(Config.s_courier_xml).Elements().Select(s => getCourier(s)).FirstOrDefault(filter);
     }
 
+    // קוראת את כל השליחים, עם או בלי פילטר
+    // Reads all couriers, optionally using a filter function
     public IEnumerable<Courier> ReadAll(Func<Courier, bool>? filter = null)
     {
-        List<Courier> Courier = XMLTools.LoadListFromXMLSerializer<Courier>(Config.s_courier_xml);
-        return filter == null
-            ? Courier
-            : Courier.Where(filter);
+        var list = XMLTools.LoadListFromXMLElement(Config.s_courier_xml)
+                           .Elements("Courier")
+                           .Select(getCourier);
+
+        return filter == null ? list : list.Where(filter);
     }
 
+    // מעדכנת שליח קיים בקובץ הXML
+    // Updates an existing courier in the XML file
     public void Update(Courier item)
     {
         XElement couriersRootElem = XMLTools.LoadListFromXMLElement(Config.s_courier_xml);        // טעינת קובץ ה-XML
