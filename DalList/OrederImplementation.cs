@@ -35,7 +35,8 @@ internal class OrederImplementation : IOrder
 
     public void Update(Order item)
     {
-        throw new NotImplementedException();
+        Delete(item.Id);
+        DataSource.Orders.Add(item);
     }
 
     Order? ICrud<Order>.Read(Func<Order, bool> filter)
