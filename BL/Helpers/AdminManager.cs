@@ -1,6 +1,5 @@
 ﻿//using BO;
 using System.Runtime.CompilerServices;
-
 namespace Helpers;
 
 /// <summary>
@@ -10,7 +9,6 @@ internal static class AdminManager //stage 4
 {
     #region Stage 4-7
     private static readonly DalApi.IDal s_dal = DalApi.Factory.Get; //stage 4
-    
     /// <summary>
     /// Property for providing current application's clock value for any BL class that may need it
     /// </summary>
@@ -37,7 +35,7 @@ internal static class AdminManager //stage 4
         // - (students become not active after 5 years etc.)
 
         //TO_DO: //stage 4
-        StudentManager.PeriodicStudentsUpdates(oldClock, newClock); //stage 4. to be removed in stage 7 and replaced as below
+        CourierManager.PeriodicCourierUpdates(oldClock, newClock); //stage 4. to be removed in stage 7 and replaced as below
         //...
 
         //TO_DO: //stage 7
@@ -52,11 +50,14 @@ internal static class AdminManager //stage 4
     /// <summary>
     /// Method for providing current configuration variables values for any BL class that may need it
     /// </summary>
-    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
+   [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     internal static BO.Config GetConfig() //stage 4
     => new BO.Config()
     {
-        MaxRange = s_dal.Config.MaxRange
+        MaxRange = s_dal.Config.MaxRange,
+        //Clock = s_dal.Config.Clock,
+        //CompanyAddress = s_dal.Config.CompanyAddress,
+        //Latitude = s_dal.Config.Latitude,
         //TO_DO: //stage 4
         //add an assignment for each configuration property
         //...
@@ -96,12 +97,12 @@ internal static class AdminManager //stage 4
 
     internal static void InitializeDB() //stage 4-7
     {
-        lock (BlMutex) //stage 7
-        {
-            DalTest.Initialization.Do(); //stage 4
-            AdminManager.UpdateClock(AdminManager.Now);  //stage 5 - needed since we want the label on Pl to be updated           
-            AdminManager.SetConfig(AdminManager.GetConfig()); //stage 5 - needed for update the PL
-        }
+        //lock (BlMutex) //stage 7
+        //{
+        //    DalTest.Initialization.Do(); //stage 4
+        //    AdminManager.UpdateClock(AdminManager.Now);  //stage 5 - needed since we want the label on Pl to be updated           
+        //    AdminManager.SetConfig(AdminManager.GetConfig()); //stage 5 - needed for update the PL
+        //}
     }
 
     #endregion Stage 4-7
@@ -129,8 +130,8 @@ internal static class AdminManager //stage 4
     [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                 
     public static void ThrowOnSimulatorIsRunning()
     {
-        if (s_thread is not null)
-            throw new BO.BLTemporaryNotAvailableException("Cannot perform the operation since Simulator is running");
+        //if (s_thread is not null)
+        //    throw new BO.BLTemporaryNotAvailableException("Cannot perform the operation since Simulator is running");
     }
 
     [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                 
@@ -169,7 +170,7 @@ internal static class AdminManager //stage 4
             //Add calls here to any logic simulation that was required in stage 7
             //for example: course registration simulation
             if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
-                _simulateTask = Task.Run(() => StudentManager.SimulateCourseRegistrationAndGrade());
+                _simulateTask = Task.Run(() => CourierManager.SimulateCourseRegistrationAndGrade());
 
             //etc...
 
