@@ -257,16 +257,6 @@ public static class Initialization
         
         for (int i = 0; i < 50; i++)
         {
-            //int id = 0;
-            //OrderType orderType = (OrderType)s_random.Next(0, 3);
-            //string customerAddress = customerAddresses[i];
-            //double l1=s_random.NextDouble() * 90;
-            //double l2 = s_random.NextDouble() * 180;
-            //string customerFullName = customerFullNames[i];
-            //string customerPhone=  "05" + Random.Shared.Next(0, 10) + Random.Shared.Next(1000000, 9999999);
-            //DateTime orderDate= DateTime.Now.AddDays(-s_random.Next(0, 600));
-
-
             Order order = new()
             {
                 Id = 0,
@@ -281,6 +271,8 @@ public static class Initialization
                 OrderProperties = ""
             };
             s_dal!.Order.Create(order);
+            Console.WriteLine(i + "  ");
+
         }
     }
     private static void createDelivery()
