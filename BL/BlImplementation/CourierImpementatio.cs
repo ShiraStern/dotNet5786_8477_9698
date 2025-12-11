@@ -1,38 +1,176 @@
 ﻿
 namespace BlImplementation;
 using BlApi;
-using BO;
+//using BO;
+//using BO;
+using Helpers;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 
-internal class CourierImpementatio : ICourier
+internal class CourierImpementation : ICourier
 {
-    public void AddCourier(int applicantId, Courier boCourier)
+    public void AddCourier(int applicantId, BO.Courier boCourier)
     {
-        throw new NotImplementedException();
+        // authorization
+        if (!CourierManager.IsValidManagerId(applicantId))
+            throw new UnauthorizedAccessException("Only admin can add a courier.");
+
+        // basic null check
+        if (boCourier is null)
+            throw new ArgumentNullException(nameof(boCourier));
+
+        try
+        {
+            // create DTO/DO and persist via DAL
+            var doCourier = CourierManager.ConvertToCourier(boCourier);
+            CourierManager.GetDal().Courier.Create(doCourier);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
+            throw new ApplicationException("Failed to add courier.", ex);
+        }
     }
 
     public void Delete(int applicantId, int id)
     {
-        throw new NotImplementedException();
+        if (!CourierManager.IsValidManagerId(applicantId))
+            throw new UnauthorizedAccessException("Only admin can delete a courier.");
+        try
+        {
+            //// delete courier via DAL   
+            CourierManager.GetDal().Courier.Delete(id);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
+            throw new ApplicationException("Failed to delete courier.", ex);
+        }
+
     }
 
-    public IEnumerable<CourierInList> GetCourierList(int id, bool isActive, sortCouriersByProperty? sortCouriersBy)
+    public IEnumerable<BO.CourierInList> GetCourierList(int applicantId, bool isActive, BO.sortCouriersByProperty? sortCouriersBy)
     {
-        throw new NotImplementedException();
+
+        if (!CourierManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
+            throw new UnauthorizedAccessException("Only admin can view the couriers list.\r\n");
+        try
+        {
+            // get all couriers from DAL
+            var dalCouriers = CourierManager.GetDal().Courier.ReadAll().Where(c => c.Active == isActive);   
+            // convert to BO list
+            var boCouriers = from dalCourier in dalCouriers
+                             select new BO.CourierInList()
+                             {
+                                 ID = dalCourier.Id,
+                                 FullName = dalCourier.FullName,
+                                 Active = dalCourier.Active,
+                                 DeliveryType = (BO.DeliveryType)dalCourier.DeliveryType,
+                                 EmploymentStartDate = dalCourier.EmploymentStartDate,
+                                 NumOfDeliveriesOnTime= CourierManager.GetNumOfDeliveriesOnTime(dalCourier.Id),
+                                 NumOfDeliveriesNotOnTime= CourierManager.GetNumOfDeliveriesNotOnTime(dalCourier.Id),
+                                 NumberOfDeliveriesInProcess = CourierManager.GetNumberOfDeliveriesInProcess(dalCourier.Id)
+                             };
+            // apply sorting if requested
+            if (sortCouriersBy.HasValue)
+            {
+                boCouriers = sortCouriersBy.Value switch
+                {
+                    // להחליט לפי מה למיין את השליחים
+                    //sortCouriersByProperty.IsActive => boCouriers.OrderBy(c => c.ID),
+                    //sortCouriersByProperty.NumberOfDeliveries => boCouriers.OrderBy(c => c.FullName)
+                    // => boCouriers
+                };
+            }
+            return boCouriers;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
+            throw new ApplicationException("Failed to read all couriers.", ex);
+        }
     }
 
-    public Courier GetDetails(int applicantId, int courierId)
+   
+
+    public BO.Courier GetDetails(int applicantId, int courierId)
     {
-        throw new NotImplementedException();
+        if (!CourierManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
+            throw new UnauthorizedAccessException("Only admin and courier can view courier's details.\r\n");
+        try
+        {
+            DO.Courier courier
+                = CourierManager.GetDal().Courier.ReadAll().FirstOrDefault(C => C.Id == courierId) ?? throw new Exception($"coulden't find courier with ID:{courierId}");
+            return CourierManager.ConvertToCourier(courier);    
+        }
+
+        catch(Exception ex)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public string Login(string userName, string password)
     {
-        throw new NotImplementedException();
+       try
+        {
+            DO.Courier? courier = CourierManager.GetDal().Courier.ReadAll().FirstOrDefault(c => c.FullName == userName) ?? null;
+            if (courier is  null )
+                throw new Exception($"couldent find any courier with the name:{userName}");
+
+                && courier.Password== password)
+                return "Courier";
+            if(AdminManager.GetConfig().ManagerID == userName )
+            if (courier.Password == password)
+
+                throw new NotImplementedException();
+        }
+       catch(Exception ex)
+       {
+            // complete
+       }
+        
     }
 
-    public void UpdateDetails(int applicantId, Courier boCourier)
+    public void UpdateDetails(int applicantId, BO.Courier boCourier)
     {
+
         throw new NotImplementedException();
+
+        // authorization
+        if (!CourierManager.IsValidManagerId(applicantId))
+            throw new UnauthorizedAccessException("Only admin can add a courier.");
+
+        // basic null check
+        if (boCourier is null)
+            throw new ArgumentNullException(nameof(boCourier));
+
+        try
+        {
+            // create DTO/DO and persist via DAL
+            var doCourier = CourierManager.ConvertToCourier(boCourier);
+            CourierManager.GetDal().Courier.Create(doCourier);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
+            throw new ApplicationException("Failed to add courier.", ex);
+        }
     }
 }

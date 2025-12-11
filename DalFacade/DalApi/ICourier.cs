@@ -11,6 +11,7 @@ using DO;
 /// <remarks>This interface provides methods for CRUD operations on <see cref="Courier"/> entities. 
 /// Implementations of this interface are responsible for interacting with the underlying data access layer
 /// (DAL).</remarks>
+
 public interface ICourier:ICrud<Courier>
 {
 }

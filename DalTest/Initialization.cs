@@ -271,8 +271,6 @@ public static class Initialization
                 OrderProperties = ""
             };
             s_dal!.Order.Create(order);
-            Console.WriteLine(i + "  ");
-
         }
     }
     private static void createDelivery()
@@ -286,23 +284,23 @@ public static class Initialization
         {
             Order order = orders[s_random.Next(orders.Count)];
             Courier courier = couriers[s_random.Next(couriers.Count)];
+           // Order order = orders[i%10];
+            //Courier courier = couriers[i%10];
 
             Delivery delivery = new()
             {
                 Id = 0,
                 OrderId = order.Id,
                 CourierId = courier.Id,
-                DeliveryType = (DeliveryType)s_random.Next(0, 4),
-                DeliveryStartTime = DateTime.Now.AddDays(-s_random.Next(0, 500)),
+                DeliveryType = (DeliveryType)s_random.Next(Enum.GetValues<DeliveryType>().Length),
+                DeliveryStartTime = DateTime.Now.AddDays(s_random.Next(0, 500)),
                 ActualDistance = null,
-                DeliveryTermintionType = (DeliveryTermintionType)s_random.Next(0, 5),
+                DeliveryTermintionType = (DeliveryTermintionType)s_random.Next(Enum.GetValues<DeliveryTermintionType>().Length),
                 DeliveryEndTime = null
             };
 
             s_dal!.Delivery.Create(delivery);
         }
-
-
     }
     //public static void Do(IDal? dal) 
     public static void Do() // stage 4

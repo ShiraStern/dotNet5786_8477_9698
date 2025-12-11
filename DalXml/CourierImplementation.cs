@@ -27,7 +27,7 @@ internal class CourierImplementation : ICourier
             EmploymentStartDate: (DateTime)s.ToDateTimeNullable("EmploymentStartDate")
             );
     }
-    // יוצרת XElement מתוך אובייקט Courier לשם כתיבה ל־XML
+    
     // Creates an XElement from a Courier object for saving into XML
     private XElement createCourierElement(DO.Courier item)
     {
@@ -43,7 +43,6 @@ internal class CourierImplementation : ICourier
             new XElement("EmploymentStartDate", item.EmploymentStartDate)
         );
     }
-    //מוסיפה שליח חדש לקובץ הXML
     // Adds a new Courier to the XML file
     public void Create(Courier item)
     {
