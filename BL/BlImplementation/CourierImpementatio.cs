@@ -124,34 +124,29 @@ internal class CourierImpementation : ICourier
 
     public string Login(string userName, string password)
     {
-       try
+        try
         {
             DO.Courier? courier = CourierManager.GetDal().Courier.ReadAll().FirstOrDefault(c => c.FullName == userName) ?? null;
-            if (courier is  null )
-                throw new Exception($"couldent find any courier with the name:{userName}");
-
-                && courier.Password== password)
-                return "Courier";
-            if(AdminManager.GetConfig().ManagerID == userName )
+            if (courier is null)
+                throw new Exception($"couldent find courier or manager with the name:{userName}");
+            if (courier.Password != password)
+                throw new Exception($"Incorrect password");
+            if (courier.Id == AdminManager.GetConfig().ManagerID)
+                return "Manager";
             if (courier.Password == password)
-
-                throw new NotImplementedException();
+                return "Courier";
         }
-       catch(Exception ex)
-       {
-            // complete
-       }
-        
+        catch (Exception ex)
+        {
+            throw new ();
+        }
     }
 
     public void UpdateDetails(int applicantId, BO.Courier boCourier)
     {
-
-        throw new NotImplementedException();
-
         // authorization
         if (!CourierManager.IsValidManagerId(applicantId))
-            throw new UnauthorizedAccessException("Only admin can add a courier.");
+            throw new UnauthorizedAccessException("Only admin or coureir can update courier's ditails.");
 
         // basic null check
         if (boCourier is null)
