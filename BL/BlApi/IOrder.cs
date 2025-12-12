@@ -3,7 +3,7 @@
 namespace BlApi;
 public interface IOrder
 {
-    IEnumerable<int> GetOrdersStatusCounts(int applicantId, );
+    IEnumerable<int> GetOrdersStatusCounts(int applicantId);
     IEnumerable<BO.OrderInList> GetOrderList(int applicantId, BO.filterOrdersByProperty? filterOrdersBy=null, object? type=null, BO.sortOrdersByProperty? sortOrdersBy = null);
     BO.Order GetDetails(int applicantId, int orderId);
     void UpdateDetails(int applicantId, BO.Order boOrder);

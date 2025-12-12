@@ -6,7 +6,7 @@ public class OpenOrderInList
     int OrderId { get; init; }
     DeliveryType DeliveryType { get; init; }
     OrderType OrderType { get; init; }
-    string CustomerAddress { get; init; }
+    string? CustomerAddress { get; init; }
     double AirDistance { get; init; }   
     double actualDistance { get; init; }
     TimeSpan? EstimatedDeliveryTime { get; set; }

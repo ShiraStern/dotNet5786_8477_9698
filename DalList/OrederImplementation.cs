@@ -1,15 +1,16 @@
-﻿
-
-using DalApi;
+﻿using DalApi;
 using DO;
 using System.Reflection.Metadata.Ecma335;
-//C: \Users\User\source\repos\dotNet5786_8477_9698\DalList\OrederImplementation.cs
+
 namespace Dal;
 internal class OrederImplementation : IOrder
-{ public void Create(Order item)
+{
+    public void Create(Order item)
     {
-        DataSource.Orders.Add(item with { Id = Config.NextOrderId });
+        int newId = Config.NextOrderId;
+        DataSource.Orders.Add(item with { Id = newId });
     }
+
     public void Delete(int id)
     {
         Order? order = DataSource.Orders.FirstOrDefault(o => o.Id == id);
@@ -22,19 +23,21 @@ internal class OrederImplementation : IOrder
     {
         DataSource.Orders.Clear();
     }
+
     public Order? Read(int id) =>
         DataSource.Orders.Find(c => c.Id == id);
 
     //public List<Order> ReadAll()
     //    return new List<Order>(DataSource.Orders)
+
     public IEnumerable<Order> ReadAll(Func<Order, bool>? filter = null) //stage 2
         => filter == null
             ? DataSource.Orders.Select(item => item)
             : DataSource.Orders.Where(filter);
 
-
     public void Update(Order item)
     {
+        // יש לממש כאן את לוגיקת העדכון
         throw new NotImplementedException();
     }
 

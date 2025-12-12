@@ -1,6 +1,4 @@
-﻿
-
-using DalApi;
+﻿using DalApi;
 using DO;
 
 namespace Dal;
@@ -8,8 +6,11 @@ internal class CourierImplementation : ICourier
 {
     public void Create(Courier item)
     {
-        if(DataSource.Couriers.Any(c => c.Id == item.Id))
+        // בדיקה אם השליח כבר קיים
+        if (DataSource.Couriers.Any(c => c.Id == item.Id))
             throw new InvalidOperationException("Courier with the same Id already exists.");
+
+        // הוספת השליח למאגר
         DataSource.Couriers.Add(item);
     }
 
@@ -21,7 +22,7 @@ internal class CourierImplementation : ICourier
         DataSource.Couriers.Remove(courier);
     }
 
-    public void DeleteAll()=> DataSource.Couriers.Clear();
+    public void DeleteAll() => DataSource.Couriers.Clear();
 
 
     public Courier? Read(int id) =>
@@ -33,8 +34,8 @@ internal class CourierImplementation : ICourier
     }
     public IEnumerable<Courier> ReadAll(Func<Courier, bool>? filter = null) //stage 2
          => filter == null
-             ? DataSource.Couriers.Select(item => item)
-             : DataSource.Couriers.Where(filter);
+              ? DataSource.Couriers.Select(item => item)
+              : DataSource.Couriers.Where(filter);
 
     public void Update(Courier item)
     {
@@ -45,6 +46,8 @@ internal class CourierImplementation : ICourier
     Courier? ICrud<Courier>.Read(Func<Courier, bool> filter)
     {
         return DataSource.Couriers.FirstOrDefault(filter);
+        // הערה: שורה זו (throw) לא ניתנת להשגה לאחר שורת ה-return שלפניה. 
+        // מומלץ להסיר אותה אם ה-return הוא הפונקציה הממומשת.
         throw new NotImplementedException();
     }
 }

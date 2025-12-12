@@ -1,30 +1,35 @@
 ﻿
-using DalApi;
-using DO;
-using System.Net;
-using System.Xml.Linq;
-
 namespace BO
 {
     public class Order
     {
+        public int ID { get; set; }        // הופך ל-set כדי לאפשר שינוי ב-BL/UI
 
-        int ID { get; init; }
-        DeliveryType kinddelivery { get; set; }
-        string? VerbalDescription { get; init; }
-        string FullAddressOfTheOrder { get; init; }
-        double Latitude { get; init; }
-        double Longitude { get; init; }
-        double AirDistance { get; init; }
-        string FullNameOfTheInviter { get; init; }
-        string OrderersPhoneNumber { get; init; }
-        OrderType features { get; init; }
-        DateTime OrderOpeningTime { get; set; }
-        DateTime? EstimatedDeliveryTime { get; set; }
-        DateTime MaximumDeliveryTime { get; set; }
-        OrderStatus OrderStatus { get; set; }
-        ScheduleStatus ScheduleStatus { get; set; }
-        TimeSpan TimeLeftToCompleteOrder { get; set; }
-        List<DeliveryPerOrderInList>? deliveryPerOrderList{ get; set; }
+        public DeliveryType kinddelivery { get; set; }
+
+        public string? VerbalDescription { get; init; }        // נשאר init כיוון שזה נתון שמתקבל מההזמנה ולא אמור להשתנות בקלות
+
+        public string? FullAddressOfTheOrder { get; set; }        // הופך ל-set כדי לאפשר שינוי כתובת בהזמנה
+
+
+        public double Latitude { get; init; }        // נשאר init, כיוון שזו כתובת קבועה
+
+        public double Longitude { get; init; }
+
+        public double AirDistance { get; set; }
+
+        public string? FullNameOfTheInviter { get; set; }        // הופך ל-set כדי לאפשר עדכון פרטי לקוח
+
+        public string? OrderersPhoneNumber { get; set; }
+
+        public OrderType features { get; set; }
+        public DateTime OrderOpeningTime { get; set; }
+        public DateTime? EstimatedDeliveryTime { get; set; }
+        public DateTime MaximumDeliveryTime { get; set; }
+        public OrderStatus OrderStatus { get; set; }
+        public ScheduleStatus ScheduleStatus { get; set; }
+        public TimeSpan TimeLeftToCompleteOrder { get; set; }
+
+        public List<DeliveryPerOrderInList>? deliveryPerOrderList { get; set; }
     }
 }

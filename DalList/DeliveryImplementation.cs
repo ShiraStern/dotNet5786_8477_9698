@@ -1,13 +1,13 @@
-﻿using DalApi;  
+﻿using DalApi;
 using DO;
-
 namespace Dal;
 
 internal class DeliveryImplementation : IDelivery
 {
     public void Create(Delivery item)
     {
-        DataSource.Deliveries.Add(item with { Id = Config.NextDeliveryId });
+        int newId = Config.NextDeliveryId;
+        DataSource.Deliveries.Add(item with { Id = newId });
     }
 
     public void Delete(int id)
@@ -23,7 +23,7 @@ internal class DeliveryImplementation : IDelivery
         DataSource.Deliveries.Clear();
     }
 
-   
+
     public Delivery? Read(int id) =>
         DataSource.Deliveries.Find(c => c.Id == id);
 
@@ -48,7 +48,8 @@ internal class DeliveryImplementation : IDelivery
 
     Delivery? ICrud<Delivery>.Read(Func<Delivery, bool> filter)
     {
-        return DataSource.Deliveries.FirstOrDefault(filter);    
+        return DataSource.Deliveries.FirstOrDefault(filter);
+        // הערה: שורה זו לא ניתנת להשגה לאחר שורת ה-return שלפניה. יש להסיר אותה או את ה-return.
         throw new NotImplementedException();
     }
 }

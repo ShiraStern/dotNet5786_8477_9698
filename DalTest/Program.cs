@@ -91,52 +91,374 @@ internal class Program
             Console.WriteLine(item.ToString());
         }
     }
-    private static void updateCourier() 
+    private static void updateCourier()
     {
-        Courier courier = new Courier();
-        Console.WriteLine("תקלטו את הפרטים שצריך לעדכן ");
-        // לקלוט מהמשתמש את כל השדות  לעדכון
-        s_dal.Courier!.Update(courier); 
+        Console.Write("Enter ID to update: ");
+        int id = int.Parse(Console.ReadLine() ?? "0");
+
+        Courier? existing = s_dal.Courier.Read(id);
+        if (existing == null)
+        {
+            Console.WriteLine("Courier not found.");
+            return;
+        }
+
+        Console.WriteLine("Enter new values (press Enter to keep current)");
+
+        // קריאה לקלט ובדיקה. אם הקלט ריק, שומרים את הערך הקיים.
+        // שדות המחרוזת:
+        Console.Write($"Full name ({existing.FullName}): ");
+        string? fullName = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(fullName)) fullName = existing.FullName; // אם ריק, שומרים את הקיים
+
+        Console.Write($"Phone ({existing.Phone}): ");
+        string? phone = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(phone)) phone = existing.Phone; // אם ריק, שומרים את הקיים
+
+        Console.Write($"Email ({existing.Email}): ");
+        string? email = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(email)) email = existing.Email; // אם ריק, שומרים את הקיים
+
+        Console.Write($"Password ({existing.Password}): ");
+        string? password = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(password)) password = existing.Password; // אם ריק, שומרים את הקיים
+
+        // שדות בוליאניים:
+        Console.Write($"Is active ({existing.Active}): ");
+        string? activeInput = Console.ReadLine();
+        bool active = string.IsNullOrWhiteSpace(activeInput) ? existing.Active : bool.Parse(activeInput);
+
+        // שדות דאבל אופציונליים:
+        Console.Write($"Max distance ({existing.MaxDistance}): ");
+        string? mdInput = Console.ReadLine();
+        double? maxDistance = string.IsNullOrWhiteSpace(mdInput) ? existing.MaxDistance : double.Parse(mdInput);
+
+        // שדות Enum:
+        Console.Write("Delivery type (0-Car,1-Motorcycle,2-Drone,3-Walking). Current " +
+                      $"({(int)existing.DeliveryType}): ");
+        string? dtInput = Console.ReadLine();
+        DeliveryType deliveryType =
+            string.IsNullOrWhiteSpace(dtInput) ? existing.DeliveryType : (DeliveryType)int.Parse(dtInput);
+
+        // שדות תאריך:
+        Console.Write($"Employment start date ({existing.EmploymentStartDate:yyyy-MM-dd}): ");
+        string? dateInput = Console.ReadLine();
+        DateTime employmentDate =
+            string.IsNullOrWhiteSpace(dateInput) ? existing.EmploymentStartDate : DateTime.Parse(dateInput);
+
+        // שלב 2: יצירת אובייקט חדש באמצעות 'with' עם הערכים המוכנים (התיקון העיקרי).
+        Courier updated = existing with
+        {
+            // שימוש במשתנים המקומיים המכילים את הערכים הנכונים (החדשים או הישנים),
+            // במקום קריאה חוזרת ל-Console.ReadLine().
+            FullName = fullName,
+            Phone = phone,
+            Email = email,
+            Password = password,
+
+            Active = active,
+            MaxDistance = maxDistance,
+            DeliveryType = deliveryType,
+            EmploymentStartDate = employmentDate
+        };
+
+        s_dal.Courier.Update(updated);
+
+        Console.WriteLine("Courier updated successfully!");
     }
+
     private static void deleteCourier()
     {
-        Console.WriteLine("Please enter delivery ID number of coureir you wish to delete.");
-        int? id = int.Parse(Console.ReadLine());
+        Console.WriteLine("Please enter ID number of courier you wish to delete."); 
+        int? id = int.Parse(Console.ReadLine());//לבדוק למה הוא מסמן כאן ירוק
         if (id == null)
-            throw new Exception(@"invalid delivery ID");
-        if(s_dal.Delivery!.ReadAll(d => d.CourierId == id).Any())
+            throw new Exception(@"invalid courier ID");
+        if (s_dal.Delivery!.ReadAll(d => d.CourierId == id).Any())
             throw new DalDoesNotExistException($"Cannot delete courier with ID {id} because there are deliveries associated with it.");
-        s_dal.Delivery.Delete((int)id);
+        s_dal.Courier.Delete((int)id); 
+        Console.WriteLine($"Courier with ID {id} deleted successfully.");
     }
-    private static void deleteAllCouriers() { s_dal.Courier.DeleteAll(); }
+    private static void deleteAllCouriers() 
+    { 
+        s_dal.Courier.DeleteAll();
+        Console.WriteLine("All couriers have been successfully deleted!");
+    }
 
-    //---------------------------------------------------------------------------------------------------------------------------------------
     // order mnue functions
+
     private static void addOrder()
     {
-        Console.WriteLine(" ;-) אין מימוש לפונקציה");
-    }
-    private static void viewOrder() 
-    {
-        Console.WriteLine("Please enter order ID number you wish to display.");
-        int? id = int.Parse(Console.ReadLine());
-        if (id == null)
-            throw new Exception(@"invalid order ID");
-        Console.WriteLine(s_dal.Order.Read((int)id));
-    }
-    private static void viewAllOrders() 
-    {
-        foreach (var item in s_dal.Order!.ReadAll())
+        Console.WriteLine(" Adding New Order ");
+
+        // משתנים לשמירת הקלט הבטוח
+        int id;
+        string? input;
+
+        // קליטת ID (0 לבחירה אוטומטית) - שימוש ב-TryParse
+        do
         {
-            Console.WriteLine(item.ToString());
+            Console.Write("ID number (0 for auto-generate, or specific ID): ");
+            input = Console.ReadLine();
+            if (int.TryParse(input, out id) && id >= 0)
+            {
+                break; // יציאה מהלולאה אם הקלט הוא מספר שלם אי-שלילי
+            }
+            Console.WriteLine(" Error: ID must be a valid non-negative number (0 or positive). Please try again.");
+        } while (true);
+
+        // בדיקת ID קיים (אם הוכנס ID ספציפי)
+        if (id != 0)
+        {
+            try
+            {
+                s_dal.Order!.Read(id);
+                throw new DalAlreadyExistsException($"Order with ID {id} already exists.");
+            }
+            catch (DalDoesNotExistException)
+            {
+                // ID לא קיים, אפשר להמשיך
+            }
+        }
+
+        // קליטת פרטי לקוח וסוג הזמנה
+        Console.Write("Customer full name: ");
+        string customerFullName = Console.ReadLine() ?? "";
+
+        Console.Write("Customer phone number: ");
+        string customerPhone = Console.ReadLine() ?? "";
+
+        Console.Write("Customer address: ");
+        string customerAddress = Console.ReadLine() ?? "";
+
+        //  קליטת Order Type - שימוש ב-TryParse ובדיקת Enum
+        OrderType orderType;
+        do
+        {
+            Console.Write("Order type (enter number: 0-Small, 1-Medium, 2-Large): ");
+            string? typeInput = Console.ReadLine();
+
+            if (int.TryParse(typeInput, out int typeValue) && Enum.IsDefined(typeof(OrderType), typeValue))
+            {
+                orderType = (OrderType)typeValue;
+                break; // יציאה מהלולאה אם הקלט חוקי
+            }
+            Console.WriteLine(" Error: Invalid order type. Please enter 0, 1, or 2.");
+        } while (true);
+
+        Console.Write("Order note (verbal description): ");
+        string orderNote = Console.ReadLine() ?? "";
+
+        Console.Write("Order additional properties (optional, Enter to skip): ");
+        string? orderProperties = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(orderProperties)) orderProperties = null;
+
+
+        //  קליטת מיקום (Latitude ו-Longitude) - שימוש ב-TryParse
+        double latitude;
+        double longitude;
+
+        Console.WriteLine("Enter Delivery Destination Location:");
+
+        do
+        {
+            Console.Write("Latitude (double): ");
+            if (double.TryParse(Console.ReadLine(), out latitude)) break;
+            Console.WriteLine(" Error: Invalid latitude format. Please enter a number.");
+        } while (true);
+
+        do
+        {
+            Console.Write("Longitude (double): ");
+            if (double.TryParse(Console.ReadLine(), out longitude)) break;
+            Console.WriteLine(" Error: Invalid longitude format. Please enter a number.");
+        } while (true);
+
+
+        //  קליטת תאריך ההזמנה - שימוש ב-TryParse
+        DateTime orderDate;
+        Console.Write($"Order date (YYYY-MM-DD, or Enter for today: {DateTime.Now:yyyy-MM-dd}): ");
+        string? dateInput = Console.ReadLine();
+
+        // בדיקה האם הקלט ריק או שהפורמט אינו חוקי
+        if (string.IsNullOrWhiteSpace(dateInput) || !DateTime.TryParse(dateInput, out orderDate))
+        {
+            orderDate = DateTime.Now;
+            if (!string.IsNullOrWhiteSpace(dateInput))
+            {
+                Console.WriteLine("Warning: Invalid date format provided. Setting order date to today.");
+            }
+        }
+
+        // יצירת אובייקט Order חדש 
+        DO.Order newOrder = new DO.Order
+        (
+            Id: id,
+            OrderType: orderType,
+            OrderNote: orderNote,
+            CustomerAddress: customerAddress,
+            Latitude: latitude,
+            Longitude: longitude,
+            CustomerFullName: customerFullName,
+            CustomerPhone: customerPhone,
+            OrderDate: orderDate,
+            OrderProperties: orderProperties
+        );
+
+        // 6. קריאה לפונקציית Create 
+        try
+        {
+            s_dal.Order!.Create(newOrder);
+            Console.WriteLine(" Order added successfully!");
+        }
+        catch (Exception ex)
+        {
+            // יש לטפל בשגיאות שעלולות לקרות ב-DAL, כמו חריגה בגלל ערכים לא חוקיים
+            Console.WriteLine($"An error occurred while creating the order: {ex.Message}");
         }
     }
-    private static void updateOrder() 
+    private static void viewOrder()
     {
-        Order order= new Order(
-        // לקלוט מהמשתמש את כל שדות המשלוח לעדכון
-            );
+        Console.WriteLine(" Displaying Order Details");
+
+        int id;
+        string? input;
+
+        // קליטת ID בטוחה (שימוש ב-TryParse)
+        do
+        {
+            Console.Write("Please enter the ID number of the order you wish to display: ");
+            input = Console.ReadLine();
+
+            // בדיקה שהקלט הוא מספר חיובי תקין
+            if (int.TryParse(input, out id) && id > 0)
+            {
+                break; // יציאה מהלולאה אם הקלט תקין
+            }
+            Console.WriteLine(" Error: Order ID must be a positive number. Please try again.");
+        } while (true);
+
+        // 2. קריאה ל-DAL וטיפול בשגיאות
+        try
+        {
+            // קריאת האובייקט מה-DAL (השיטה Read צריכה לקבל int)
+            DO.Order orderToDisplay = s_dal.Order!.Read(id);
+
+            // הדפסת האובייקט (בהנחה של-DO.Order יש הטמעת ToString טובה)
+            Console.WriteLine(orderToDisplay);
+
+            Console.WriteLine(" Order details displayed successfully.");
+        }
+        catch (DalDoesNotExistException ex)
+        {
+            // טיפול במקרה שה-ID לא נמצא במערכת
+            Console.WriteLine($" Error: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            // טיפול בשאר השגיאות
+            Console.WriteLine($" An unexpected error occurred: {ex.Message}");
+        }
+    }
+    private static void viewAllOrders()
+    {
+        Console.WriteLine(" Displaying All Orders");
+
+        try
+        {
+            // קריאה ל-DAL לקבלת כל ההזמנות
+            IEnumerable<DO.Order> allOrders = s_dal.Order!.ReadAll();
+
+            //  בדיקה אם הרשימה ריקה
+            if (!allOrders.Any())
+            {
+                Console.WriteLine(" The system contains no orders to display.");
+                return;
+            }
+
+            //  מעבר על הרשימה והדפסה
+            foreach (DO.Order item in allOrders)
+            {
+                Console.WriteLine(item.ToString());
+                Console.WriteLine("/n "); // הפרדה ויזואלית
+            }
+
+            Console.WriteLine($" Successfully displayed {allOrders.Count()} orders.");
+        }
+        catch (Exception ex)
+        {
+            // טיפול בשגיאות שעלולות לקרות במהלך הקריאה מה-DAL
+            Console.WriteLine($" An unexpected error occurred while reading orders: {ex.Message}");
+        }
+    }
+    private static void updateOrder()
+    {
+        
+        int id;
+        Console.WriteLine("Enter Order ID:");
+
+        // קבלת מזהה (ID) של ההזמנה
+        while (!int.TryParse(Console.ReadLine(), out id))
+        {
+            Console.WriteLine("Invalid ID format. Please enter a valid integer ID:");
+        }
+
+        // קריאת ההזמנה מהשכבת הגישה לנתונים (DAL)
+        DO.Order? order = s_dal.Order.Read(id);
+        if (order == null)
+        {
+            Console.WriteLine("Order not found.");
+            return;
+        }
+
+        Console.WriteLine($"\n--- Updating Order ID: {order.Id} ---");
+
+        // עדכון כתובת לקוח
+        Console.WriteLine($"Current Customer Address: {order.CustomerAddress}. Enter new address (or press Enter to keep current):");
+        string newAddress = Console.ReadLine()!;
+        if (!string.IsNullOrEmpty(newAddress))
+        {
+            order = order with { CustomerAddress = newAddress };
+        }
+
+        // עדכון שם הלקוח (נניח שקיים שדה כזה)
+        Console.WriteLine($"Current Customer Name: {order.CustomerFullName}. Enter new name (or press Enter to keep current):");
+        string newName = Console.ReadLine()!;
+        if (!string.IsNullOrEmpty(newName))
+        {
+            order = order with { CustomerFullName = newName };
+        }
+
+        // עדכון תאריך יצירת ההזמנה (OrderDate)
+        Console.WriteLine($"Current Order Date: {order.OrderDate}. Enter new date (format: yyyy-MM-dd HH:mm:ss or press Enter to keep current):");
+        string newOrderDateInput = Console.ReadLine()!;
+        if (DateTime.TryParse(newOrderDateInput, out DateTime newOrderDate))
+        {
+            order = order with { OrderDate = newOrderDate };
+        }
+
+        // עדכון הערות להזמנה (OrderNote)
+        Console.WriteLine($"Current Note: {order.OrderNote}. Enter new note (or press Enter to keep current):");
+        string newNote = Console.ReadLine()!;
+        if (!string.IsNullOrEmpty(newNote))
+        {
+            order = order with { OrderNote = newNote };
+        }
+
+        // עדכון מאפיינים נוספים (OrderProperties - שדה אופציונלי/nullable)
+        Console.WriteLine($"Current Additional Properties: {order.OrderProperties ?? "(None)"}. Enter new properties (or press Enter to keep current):");
+        string newProperties = Console.ReadLine()!;
+
+        // אם הוזן ערך (אפילו ריק כדי לאפס ל-null), מעדכנים
+        if (newProperties != null)
+        {
+            string? propertiesToSet = string.IsNullOrWhiteSpace(newProperties) ? null : newProperties;
+            order = order with { OrderProperties = propertiesToSet };
+        }
+
+
+        // קריאה לעדכון במערכת
         s_dal.Order.Update(order);
+        Console.WriteLine("Order details updated.");
     }
     private static void deleteOrder()
     {
@@ -148,7 +470,6 @@ internal class Program
     }
     private static void deleteAllOrders() { s_dal!.Order.DeleteAll(); }
 
-    //---------------------------------------------------------------------------------------------------------------------------------------
     // delivery menu functions
     private static void addDelivery() 
     {

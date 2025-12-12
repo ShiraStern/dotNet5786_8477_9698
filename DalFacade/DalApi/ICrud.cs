@@ -1,11 +1,10 @@
-﻿
-using DO;
+﻿using DO;
 
 namespace DalApi;
 
 public interface ICrud<T> where T : class
 {
-    void Create(T item); //Creates new entity object in DAL
+    void Create(T item); //Creates new entity object in DAL 
     T? Read(int id); //Reads entity object by its ID 
     IEnumerable<T> ReadAll(Func<T, bool>? filter = null); // stage 2
     //List<T> ReadAll(); //stage 1 only, Reads all entity objects
