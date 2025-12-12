@@ -145,7 +145,7 @@ internal class CourierImpementation : ICourier
     public void UpdateDetails(int applicantId, BO.Courier boCourier)
     {
         // authorization
-        if (!CourierManager.IsValidManagerId(applicantId))
+        if (!CourierManager.IsValidManagerId(applicantId)  || !CourierManager.IsValidCourierId(applicantId))
             throw new UnauthorizedAccessException("Only admin or coureir can update courier's ditails.");
 
         // basic null check
@@ -155,17 +155,12 @@ internal class CourierImpementation : ICourier
         try
         {
             // create DTO/DO and persist via DAL
-            var doCourier = CourierManager.ConvertToCourier(boCourier);
-            CourierManager.GetDal().Courier.Create(doCourier);
+            DO.Courier doCourier = CourierManager.ConvertToCourier(boCourier);
+            CourierManager.GetDal().Courier.Update(doCourier);
         }
         catch (UnauthorizedAccessException)
         {
             throw;
-        }
-        catch (Exception ex)
-        {
-            // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
-            throw new ApplicationException("Failed to add courier.", ex);
         }
     }
 }
