@@ -1,11 +1,10 @@
-﻿using Dal;
+﻿namespace DalTest;
 using DalApi;
 using DO;
-using System;
-using System.Diagnostics;
-using System.Linq;
+using Dal;
+using System.Threading.Channels;
 
-namespace Dal;
+
 
 
 internal class Program
@@ -55,8 +54,34 @@ internal class Program
         Console.Write("Delivery type (enter number: 0-Car, 1-Motorcycle, 2-Drone, 3-Walking): ");
         DeliveryType deliveryType = (DeliveryType)int.Parse(Console.ReadLine() ?? "0");
 
-        Console.Write("Employment start date (YYYY-MM-DD): ");
-        DateTime employmentStartDate = DateTime.Parse(Console.ReadLine() ?? DateTime.Now.ToString("yyyy-MM-dd"));
+        DateTime employmentStartDate;
+
+        while (true)
+        {
+            Console.Write("Employment start date (YYYY-MM-DD): ");
+            string? input = Console.ReadLine();
+
+            try
+            {
+                employmentStartDate = DateTime.Parse(input!);
+
+                int month = employmentStartDate.Month;
+                int day = employmentStartDate.Day;
+
+                if (month < 1 || month > 12 || day < 1 || day > 31)
+                {
+                    Console.WriteLine("Invalid date values. Please try again.");
+                    continue;
+                }
+
+                break; // ✔ תאריך תקין
+            }
+            catch
+            {
+                Console.WriteLine("Invalid date format. Please enter again.");
+            }
+        }
+
 
         Courier courier = new Courier()
         {
@@ -68,7 +93,7 @@ internal class Program
             Active = true,
             MaxDistance = maxDistance,
             DeliveryType = deliveryType,
-            EmploymentStartDate = s_dal.Config.Clock
+            EmploymentStartDate = employmentStartDate
         };
         s_dal.Courier.Create(courier);
         Console.WriteLine("Courier created successfully!");

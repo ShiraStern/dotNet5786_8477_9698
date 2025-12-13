@@ -220,4 +220,26 @@
     <DeliveryType>Motorcycle</DeliveryType>
     <EmploymentStartDate>2021-12-13T21:28:11.1638939+02:00</EmploymentStartDate>
   </Courier>
+  <Courier>
+    <Id>111</Id>
+    <FullName>ששש</FullName>
+    <Phone>111</Phone>
+    <Email>ששש</Email>
+    <Password>111</Password>
+    <Active>true</Active>
+    <MaxDistance>2</MaxDistance>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <EmploymentStartDate>2025-02-02T00:00:00</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>222</Id>
+    <FullName>דדד</FullName>
+    <Phone>222</Phone>
+    <Email>דדד</Email>
+    <Password>222</Password>
+    <Active>true</Active>
+    <MaxDistance>2</MaxDistance>
+    <DeliveryType>Car</DeliveryType>
+    <EmploymentStartDate>2025-01-01T00:00:00</EmploymentStartDate>
+  </Courier>
 </couriers.xml>
