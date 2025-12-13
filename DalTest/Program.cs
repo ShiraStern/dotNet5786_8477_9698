@@ -27,12 +27,14 @@ internal class Program
 
         Console.Write("ID number: ");
         int id = int.Parse(Console.ReadLine() ?? "0");
-         
-         Courier tempCourier = s_dal.Courier!.Read(id); // to check if the ID already exists
-        if(tempCourier != null)
+
+        Courier? tempCourier = s_dal.Courier.Read(id);
+
+        if (tempCourier != null)
         {
-            throw new DalAlreadyExistsException($"Courier with ID {id} already exists.");
+            throw new DalAlreadyExistsException($"Courier with ID {id} already exists");
         }
+        
 
         Console.Write("Full name: ");
         string fullName = Console.ReadLine() ?? "";
@@ -320,8 +322,7 @@ internal class Program
             string customerName = Console.ReadLine() ?? "";
 
             Console.Write("Enter Customer Phone: ");
-            string customerPhone = Console.ReadLine() ?? "";
-
+            string customerPhoneInput = Console.ReadLine() ?? "";
             Console.Write("Enter Customer Address: ");
             string address = Console.ReadLine() ?? "";
 
@@ -345,18 +346,18 @@ internal class Program
             // 3. Creating the New Order Object
             // The ID is set to 0, assuming the DAL/DataSource will assign the actual unique ID.
             // Latitude and Longitude are set to 0 for simplicity, based on the provided record structure.
-            DO.Order newOrder = new DO.Order(
-                Id: 0,
-                OrderType: type,
-                OrderNote: note,
-                CustomerAddress: address,
-                Latitude: 0,
-                Longitude: 0,
-                CustomerFullName: customerName,
-                CustomerPhone: customerPhone,
-                OrderDate: DateTime.Now, // Set the creation date to the current time
-                OrderProperties: null
-            );
+            DO.Order orderToCreate = new DO.Order(
+     Id: 0,
+     OrderType: type,
+     OrderNote: note,
+     CustomerAddress: address,
+     Latitude: 0,
+     Longitude: 0,
+     CustomerFullName: customerName,
+     CustomerPhone: customerPhone,
+     OrderDate: DateTime.Now,
+     OrderProperties: null
+ );
 
             // 4. Adding the object to the Data Source (e.g., a static list or DAL method)
 
@@ -399,7 +400,14 @@ internal class Program
         try
         {
             // קריאת האובייקט מה-DAL (השיטה Read צריכה לקבל int)
-            DO.Order orderToDisplay = s_dal.Order!.Read(id);
+            DO.Order? orderToDisplay = s_dal.Order.Read(id);
+
+            if (orderToDisplay == null)
+            {
+                throw new DalDoesNotExistException($"Order with ID {id} does not exist");
+            }
+
+            Console.WriteLine(orderToDisplay);
 
             // הדפסת האובייקט (בהנחה של-DO.Order יש הטמעת ToString טובה)
             Console.WriteLine(orderToDisplay);

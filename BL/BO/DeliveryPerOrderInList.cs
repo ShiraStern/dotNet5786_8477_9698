@@ -11,7 +11,7 @@ public class DeliveryPerOrderInList
 {
     int DeliveryId { get; init; }
     int courierId { get; init; }    
-    string CourierName { get; init; }
+    string? CourierName { get; init; }
     DeliveryType DeliveryType { get; init; }
     DateTime DeliveryStart { get; init; }
     DeliveryTerminationType deliveryTerminationType { get; set; }

@@ -20,11 +20,11 @@ internal class CourierImplementation : ICourier
             FullName: (string?)s.Element("FullName") ?? "",
             Phone: (string?)s.Element("Phone") ?? "",
             Email: (string?)s.Element("Email") ?? "",
-            Password: (string?)s.Element("Password"),
+            Password: (string?)s.Element("Password")?? "",
             Active: (bool?)s.Element("Active") ?? false,
             MaxDistance:(double?)s.Element("MaxDistance"),
             DeliveryType: s.ToEnumNullable<DO.DeliveryType>("DeliveryType") ?? DO.DeliveryType.Motorcycle,
-            EmploymentStartDate: (DateTime)s.ToDateTimeNullable("EmploymentStartDate")
+            EmploymentStartDate: s.ToDateTimeNullable("EmploymentStartDate") ?? DateTime.Now
             );
     }
     
