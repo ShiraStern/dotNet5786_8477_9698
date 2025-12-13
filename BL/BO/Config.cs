@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace BO;
 public class Config
 {
-    public int MaxRange { get; set; }
+    public double? MaxRange { get; set; }
+    public int ManagerID { get; }
     DateTime Clock { get; set; } = DateTime.Now;
     string? CompanyAddress { get; set; } = "בית הדפוס 9 ירושלים";
     double? Latitude { get; set; }

@@ -28,10 +28,6 @@ internal class DeliveryImplementation : IDelivery
         DataSource.Deliveries.Find(c => c.Id == id);
 
 
-    //public List<Delivery> ReadAll()
-    //{
-    //    return new List<Delivery>(DataSource.Deliveries);
-    //}
     public IEnumerable<Delivery> ReadAll(Func<Delivery, bool>? filter = null) //stage 2
         => filter == null
             ? DataSource.Deliveries.Select(item => item)
@@ -40,10 +36,9 @@ internal class DeliveryImplementation : IDelivery
 
     public void Update(Delivery item)
     {
-        if (DataSource.Deliveries.FirstOrDefault(d => d.Id == item.Id) is not Delivery)
-            throw new InvalidOperationException("Delivery with the given Id does not exist.");
-        //DataSource.Deliveries.Remove(item.)
-        throw new NotImplementedException();
+
+        Delete(item.Id);
+        DataSource.Deliveries.Add(item);
     }
 
     Delivery? ICrud<Delivery>.Read(Func<Delivery, bool> filter)

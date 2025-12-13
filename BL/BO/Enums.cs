@@ -73,7 +73,6 @@ public enum sortCouriersByProperty
 {
     IsActive,
     NumberOfDeliveries,
-    AverageDeliveryTime
     //* Add more properties as needed
 }
 

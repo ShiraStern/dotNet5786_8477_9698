@@ -3,18 +3,20 @@ namespace BO
 {
     public class Courier
     {
-        int ID { get; init; }
-        string  fullName { get; init; }
-        string  fhoneNember { get; init; }
-        string  email { get; init; }
-        string  password { get; init; }
-        bool active { get; set; }
-        double? maxdistance { get; set; }
-        DeliveryType kinddelivery { get; set; }
-        DateTime timeStartWork { get; set; }
-        int numOfDeliveriesInTime { get; set; }
-        int numOfDeliveriesNotInTime { get; set; }
-        BO.OrderInProgress? orderInProgress { get; set; }
+        public int ID { get; init; }
+        public string  FullName { get; init; }
+        public string  PhoneNember { get; init; }
+        public string  Email { get; init; }
+        public string  Password { get; init; }
+        public bool Active { get; set; }
+        public double? MaxDistance { get; set; }
+        public DeliveryType DeliveryType { get; set; }
+        public DateTime EmploymentStartDate { get; set; }
+        public int NumOfDeliveriesInTime { get; set; }
+        public int NumOfDeliveriesNotInTime { get; set; }
+        public BO.OrderInProgress? OrderInProgress { get; set; }
+
+        
     }
 
 

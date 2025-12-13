@@ -3,15 +3,15 @@ namespace BO
 {
     public class CourierInList
     {
-        int ID { get; init; }
-        string fullName { get; init; }
+        public int ID { get; init; }
+        public string FullName { get; init; }
 
-        bool active { get; set; }
-        DeliveryType kinddelivery { get; set; }
-        DateTime timeStartWork { get; set; }
-        int numOfDeliveriesInTime { get; set; }
-        int numOfDeliveriesNotInTime { get; set; }
-        int? numOfDeliveriesInProcessing { get; set; }
+        public bool Active { get; set; }
+        public DeliveryType DeliveryType { get; set; }
+        public DateTime EmploymentStartDate { get; set; }
+        public int NumOfDeliveriesOnTime { get; set; }
+        public int NumOfDeliveriesNotOnTime { get; set; }
+        public int? NumberOfDeliveriesInProcess { get; set; }
         }
 }
 

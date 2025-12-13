@@ -15,5 +15,6 @@ public class DeliveryPerOrderInList
     DeliveryType DeliveryType { get; init; }
     DateTime DeliveryStart { get; init; }
     DeliveryTerminationType deliveryTerminationType { get; set; }
+    DeliveryTerminationType deliveryTermintionType { get; set; } 
     DateTime? DeliveryEndTime { get; set; }
 }

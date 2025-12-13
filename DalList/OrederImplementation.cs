@@ -37,8 +37,8 @@ internal class OrederImplementation : IOrder
 
     public void Update(Order item)
     {
-        // יש לממש כאן את לוגיקת העדכון
-        throw new NotImplementedException();
+        Delete(item.Id);
+        DataSource.Orders.Add(item);
     }
 
     Order? ICrud<Order>.Read(Func<Order, bool> filter)

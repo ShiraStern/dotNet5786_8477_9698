@@ -46,9 +46,6 @@ internal class Program
         Console.Write("Password: ");
         string password = Console.ReadLine() ?? "";
 
-        Console.Write("Is the employee active? (true/false): ");
-        bool active = bool.Parse(Console.ReadLine() ?? "false");
-
         Console.Write("Maximum delivery distance (optional, press Enter to skip): ");
         string? distanceInput = Console.ReadLine();
         double? maxDistance = string.IsNullOrWhiteSpace(distanceInput) ? null : double.Parse(distanceInput);
@@ -66,10 +63,10 @@ internal class Program
             Phone = phone,
             Email = email,
             Password = password,
-            Active = active,
+            Active = true,
             MaxDistance = maxDistance,
             DeliveryType = deliveryType,
-            EmploymentStartDate = employmentStartDate
+            EmploymentStartDate = s_dal.Config.Clock
         };
         s_dal.Courier.Create(courier);
         Console.WriteLine("Courier created successfully!");
@@ -314,6 +311,67 @@ internal class Program
         {
             // יש לטפל בשגיאות שעלולות לקרות ב-DAL, כמו חריגה בגלל ערכים לא חוקיים
             Console.WriteLine($"An error occurred while creating the order: {ex.Message}");
+        }
+        // Function to add a new Order object to the Data Base.
+        try
+        {
+            // Basic Data Collection from the user
+            Console.Write("Enter Customer Name: ");
+            string customerName = Console.ReadLine() ?? "";
+
+            Console.Write("Enter Customer Phone: ");
+            string customerPhone = Console.ReadLine() ?? "";
+
+            Console.Write("Enter Customer Address: ");
+            string address = Console.ReadLine() ?? "";
+
+            Console.Write("Enter Order Note (optional): ");
+            string note = Console.ReadLine() ?? "";
+
+            // 2. Handling the OrderType Enum (e.g., Large, Medium, Small)
+            Console.WriteLine("Enter Order Type (Large, Medium, Small). Default is Medium if invalid input is provided: ");
+            string typeInput = Console.ReadLine() ?? "Medium";
+            DO.OrderType type;
+
+            // Attempt to parse the user's input string into the DO.OrderType Enum.
+            // The 'true' argument makes the comparison case-insensitive.
+            if (!Enum.TryParse(typeInput, true, out type))
+            {
+                // Fallback to the default value if parsing fails
+                type = DO.OrderType.Medium;
+                Console.WriteLine($"Invalid Order Type entered. Defaulting to: {type}");
+            }
+
+            // 3. Creating the New Order Object
+            // The ID is set to 0, assuming the DAL/DataSource will assign the actual unique ID.
+            // Latitude and Longitude are set to 0 for simplicity, based on the provided record structure.
+            DO.Order newOrder = new DO.Order(
+                Id: 0,
+                OrderType: type,
+                OrderNote: note,
+                CustomerAddress: address,
+                Latitude: 0,
+                Longitude: 0,
+                CustomerFullName: customerName,
+                CustomerPhone: customerPhone,
+                OrderDate: DateTime.Now, // Set the creation date to the current time
+                OrderProperties: null
+            );
+
+            // 4. Adding the object to the Data Source (e.g., a static list or DAL method)
+
+            // Assuming there is a static list named 'Orders' in the scope:
+            // Orders.Add(newOrder); 
+
+            // If integrating with the DAL interface (IBl or IDal):
+            // s_dal.Order.Create(newOrder); 
+
+            Console.WriteLine("Order added successfully!");
+        }
+        catch (Exception ex)
+        {
+            // Display an error message if any part of the process fails (e.g., IO error).
+            Console.WriteLine($"ERROR: Failed to add order. {ex.Message}");
         }
     }
     private static void viewOrder()
