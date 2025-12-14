@@ -2,6 +2,7 @@
 namespace BlImplementation;
 using BlApi;
 using BO;
+using DalApi;
 using Helpers;
 using System;
 
@@ -19,11 +20,8 @@ internal class AdminImplementation : IAdmin
         }
     }
 
-
-    public DateTime GetClock()
-    {
-        throw new NotImplementedException();
-    }
+    public DateTime GetClock() => AdminManager.Now; 
+    internal static DateTime Now { get =>   } //stage 4
 
     public Config GetConfig()
     {
@@ -37,7 +35,7 @@ internal class AdminImplementation : IAdmin
 
     public void ResetDB()
     {
-        throw new NotImplementedException();
+        AdminManager.ResetDB(); 
     }
 
     public void SetConfig(Config config)

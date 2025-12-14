@@ -2,260 +2,260 @@
 <ArrayOfDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Delivery>
     <Id>100</Id>
-    <OrderId>1039</OrderId>
-    <CourierId>375693314</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2026-11-07T21:28:11.2330606+02:00</DeliveryStartTime>
+    <OrderId>1019</OrderId>
+    <CourierId>343767318</CourierId>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <DeliveryStartTime>2026-01-23T06:27:19.1776311+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>101</Id>
-    <OrderId>1047</OrderId>
-    <CourierId>264156273</CourierId>
-    <DeliveryType>Car</DeliveryType>
-    <DeliveryStartTime>2027-03-29T21:28:11.2408988+03:00</DeliveryStartTime>
-    <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
-    <DeliveryEndTime xsi:nil="true" />
-  </Delivery>
-  <Delivery>
-    <Id>102</Id>
-    <OrderId>1003</OrderId>
-    <CourierId>363626198</CourierId>
+    <OrderId>1024</OrderId>
+    <CourierId>313304224</CourierId>
     <DeliveryType>Motorcycle</DeliveryType>
-    <DeliveryStartTime>2026-09-21T21:28:11.2750517+03:00</DeliveryStartTime>
-    <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>Cancelled</DeliveryTermintionType>
-    <DeliveryEndTime xsi:nil="true" />
-  </Delivery>
-  <Delivery>
-    <Id>103</Id>
-    <OrderId>1034</OrderId>
-    <CourierId>358312671</CourierId>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <DeliveryStartTime>2027-02-11T21:28:11.3050551+02:00</DeliveryStartTime>
-    <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>Cancelled</DeliveryTermintionType>
-    <DeliveryEndTime xsi:nil="true" />
-  </Delivery>
-  <Delivery>
-    <Id>104</Id>
-    <OrderId>1002</OrderId>
-    <CourierId>291200680</CourierId>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <DeliveryStartTime>2027-02-28T21:28:11.3346458+02:00</DeliveryStartTime>
+    <DeliveryStartTime>2026-02-20T06:27:19.1914532+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
-    <Id>105</Id>
-    <OrderId>1009</OrderId>
-    <CourierId>310474223</CourierId>
+    <Id>102</Id>
+    <OrderId>1025</OrderId>
+    <CourierId>375277437</CourierId>
     <DeliveryType>Motorcycle</DeliveryType>
-    <DeliveryStartTime>2026-11-19T21:28:11.3594036+02:00</DeliveryStartTime>
+    <DeliveryStartTime>2026-05-06T06:27:19.2272568+03:00</DeliveryStartTime>
+    <ActualDistance xsi:nil="true" />
+    <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
+    <DeliveryEndTime xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>103</Id>
+    <OrderId>1024</OrderId>
+    <CourierId>205570224</CourierId>
+    <DeliveryType>Car</DeliveryType>
+    <DeliveryStartTime>2026-04-19T06:27:19.2608954+03:00</DeliveryStartTime>
+    <ActualDistance xsi:nil="true" />
+    <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
+    <DeliveryEndTime xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>104</Id>
+    <OrderId>1022</OrderId>
+    <CourierId>286851911</CourierId>
+    <DeliveryType>Car</DeliveryType>
+    <DeliveryStartTime>2027-02-10T06:27:19.2887989+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>DeliveredSeccessfully</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
+    <Id>105</Id>
+    <OrderId>1004</OrderId>
+    <CourierId>286851911</CourierId>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <DeliveryStartTime>2026-08-25T06:27:19.3241511+03:00</DeliveryStartTime>
+    <ActualDistance xsi:nil="true" />
+    <DeliveryTermintionType>Cancelled</DeliveryTermintionType>
+    <DeliveryEndTime xsi:nil="true" />
+  </Delivery>
+  <Delivery>
     <Id>106</Id>
-    <OrderId>1007</OrderId>
-    <CourierId>310831932</CourierId>
-    <DeliveryType>Car</DeliveryType>
-    <DeliveryStartTime>2026-02-06T21:28:11.3976913+02:00</DeliveryStartTime>
+    <OrderId>1020</OrderId>
+    <CourierId>244392412</CourierId>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <DeliveryStartTime>2026-08-03T06:27:19.3684318+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>107</Id>
-    <OrderId>1040</OrderId>
-    <CourierId>310474223</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2025-12-29T21:28:11.4350191+02:00</DeliveryStartTime>
+    <OrderId>1008</OrderId>
+    <CourierId>374871408</CourierId>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <DeliveryStartTime>2026-08-18T06:27:19.4167429+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>RefusedToAccept</DeliveryTermintionType>
+    <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>108</Id>
-    <OrderId>1022</OrderId>
-    <CourierId>310474223</CourierId>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <DeliveryStartTime>2026-01-15T21:28:11.4778124+02:00</DeliveryStartTime>
+    <OrderId>1028</OrderId>
+    <CourierId>343767318</CourierId>
+    <DeliveryType>Car</DeliveryType>
+    <DeliveryStartTime>2026-01-04T06:27:19.4596741+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>109</Id>
-    <OrderId>1049</OrderId>
-    <CourierId>391683304</CourierId>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <DeliveryStartTime>2025-12-19T21:28:11.5213303+02:00</DeliveryStartTime>
+    <OrderId>1026</OrderId>
+    <CourierId>238152496</CourierId>
+    <DeliveryType>None</DeliveryType>
+    <DeliveryStartTime>2026-10-22T06:27:19.5103006+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>110</Id>
-    <OrderId>1014</OrderId>
-    <CourierId>264156273</CourierId>
+    <OrderId>1026</OrderId>
+    <CourierId>374871408</CourierId>
     <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2026-10-04T21:28:11.5693203+03:00</DeliveryStartTime>
+    <DeliveryStartTime>2027-01-03T06:27:19.5568607+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
+    <DeliveryTermintionType>RefusedToAccept</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>111</Id>
-    <OrderId>1023</OrderId>
-    <CourierId>254460336</CourierId>
-    <DeliveryType>Car</DeliveryType>
-    <DeliveryStartTime>2026-01-06T21:28:11.6112993+02:00</DeliveryStartTime>
+    <OrderId>1033</OrderId>
+    <CourierId>353694639</CourierId>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <DeliveryStartTime>2026-04-18T06:27:19.5993664+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
+    <DeliveryTermintionType>Cancelled</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>112</Id>
-    <OrderId>1009</OrderId>
-    <CourierId>310831932</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2026-11-15T21:28:11.6558085+02:00</DeliveryStartTime>
+    <OrderId>1048</OrderId>
+    <CourierId>338102940</CourierId>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <DeliveryStartTime>2026-06-29T06:27:19.6392276+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>113</Id>
-    <OrderId>1017</OrderId>
-    <CourierId>310474223</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2026-08-06T21:28:11.6941597+03:00</DeliveryStartTime>
+    <OrderId>1044</OrderId>
+    <CourierId>205570224</CourierId>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <DeliveryStartTime>2027-04-22T06:27:19.678602+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>Cancelled</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>114</Id>
-    <OrderId>1033</OrderId>
-    <CourierId>274567937</CourierId>
-    <DeliveryType>Car</DeliveryType>
-    <DeliveryStartTime>2026-09-22T21:28:11.7289265+03:00</DeliveryStartTime>
+    <OrderId>1003</OrderId>
+    <CourierId>260363319</CourierId>
+    <DeliveryType>None</DeliveryType>
+    <DeliveryStartTime>2026-07-03T06:27:19.6976393+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>115</Id>
-    <OrderId>1005</OrderId>
-    <CourierId>262910470</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2027-04-17T21:28:11.7433171+03:00</DeliveryStartTime>
+    <OrderId>1022</OrderId>
+    <CourierId>353694639</CourierId>
+    <DeliveryType>Car</DeliveryType>
+    <DeliveryStartTime>2026-06-14T06:27:19.7373497+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
+    <DeliveryTermintionType>Cancelled</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>116</Id>
-    <OrderId>1007</OrderId>
-    <CourierId>264156273</CourierId>
-    <DeliveryType>Car</DeliveryType>
-    <DeliveryStartTime>2026-11-24T21:28:11.7567088+02:00</DeliveryStartTime>
+    <OrderId>1036</OrderId>
+    <CourierId>353694639</CourierId>
+    <DeliveryType>None</DeliveryType>
+    <DeliveryStartTime>2026-05-19T06:27:19.7709989+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
+    <DeliveryTermintionType>RefusedToAccept</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>117</Id>
-    <OrderId>1036</OrderId>
-    <CourierId>336015127</CourierId>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <DeliveryStartTime>2026-11-02T21:28:11.7758687+02:00</DeliveryStartTime>
+    <OrderId>1049</OrderId>
+    <CourierId>366568641</CourierId>
+    <DeliveryType>Car</DeliveryType>
+    <DeliveryStartTime>2026-06-24T06:27:19.8021952+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>118</Id>
-    <OrderId>1044</OrderId>
-    <CourierId>291200680</CourierId>
+    <OrderId>1030</OrderId>
+    <CourierId>375277437</CourierId>
     <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2026-11-07T21:28:11.7899911+02:00</DeliveryStartTime>
+    <DeliveryStartTime>2027-04-23T06:27:19.8369797+03:00</DeliveryStartTime>
+    <ActualDistance xsi:nil="true" />
+    <DeliveryTermintionType>DeliveredSeccessfully</DeliveryTermintionType>
+    <DeliveryEndTime xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>119</Id>
+    <OrderId>1011</OrderId>
+    <CourierId>343767318</CourierId>
+    <DeliveryType>None</DeliveryType>
+    <DeliveryStartTime>2026-08-14T06:27:19.8820786+03:00</DeliveryStartTime>
+    <ActualDistance xsi:nil="true" />
+    <DeliveryTermintionType>RefusedToAccept</DeliveryTermintionType>
+    <DeliveryEndTime xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>120</Id>
+    <OrderId>1029</OrderId>
+    <CourierId>238152496</CourierId>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <DeliveryStartTime>2027-02-10T06:27:19.9226206+02:00</DeliveryStartTime>
+    <ActualDistance xsi:nil="true" />
+    <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
+    <DeliveryEndTime xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>121</Id>
+    <OrderId>1007</OrderId>
+    <CourierId>286679111</CourierId>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <DeliveryStartTime>2027-02-26T06:27:19.9612571+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
-    <Id>119</Id>
-    <OrderId>1034</OrderId>
-    <CourierId>375693314</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2026-04-15T21:28:11.8058394+03:00</DeliveryStartTime>
-    <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>DeliveredSeccessfully</DeliveryTermintionType>
-    <DeliveryEndTime xsi:nil="true" />
-  </Delivery>
-  <Delivery>
-    <Id>120</Id>
-    <OrderId>1046</OrderId>
-    <CourierId>254460336</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2027-02-05T21:28:11.820668+02:00</DeliveryStartTime>
-    <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>Cancelled</DeliveryTermintionType>
-    <DeliveryEndTime xsi:nil="true" />
-  </Delivery>
-  <Delivery>
-    <Id>121</Id>
-    <OrderId>1001</OrderId>
-    <CourierId>275120676</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2027-01-15T21:28:11.8354661+02:00</DeliveryStartTime>
-    <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>DeliveredSeccessfully</DeliveryTermintionType>
-    <DeliveryEndTime xsi:nil="true" />
-  </Delivery>
-  <Delivery>
     <Id>122</Id>
-    <OrderId>1029</OrderId>
-    <CourierId>396754116</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2026-10-20T21:28:11.8496599+03:00</DeliveryStartTime>
+    <OrderId>1044</OrderId>
+    <CourierId>313304224</CourierId>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <DeliveryStartTime>2026-08-24T06:27:19.9923991+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>DeliveredSeccessfully</DeliveryTermintionType>
+    <DeliveryTermintionType>RefusedToAccept</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>123</Id>
-    <OrderId>1017</OrderId>
-    <CourierId>311834061</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2026-11-29T21:28:11.8633496+02:00</DeliveryStartTime>
+    <OrderId>1042</OrderId>
+    <CourierId>246084369</CourierId>
+    <DeliveryType>Car</DeliveryType>
+    <DeliveryStartTime>2027-02-08T06:27:20.0316112+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>124</Id>
-    <OrderId>1028</OrderId>
-    <CourierId>363626198</CourierId>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <DeliveryStartTime>2026-10-12T21:28:11.8775013+03:00</DeliveryStartTime>
+    <OrderId>1009</OrderId>
+    <CourierId>353694639</CourierId>
+    <DeliveryType>None</DeliveryType>
+    <DeliveryStartTime>2026-05-31T06:27:20.066062+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
+    <DeliveryTermintionType>Cancelled</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>125</Id>
-    <OrderId>1019</OrderId>
-    <CourierId>274567937</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2026-02-06T21:28:11.891677+02:00</DeliveryStartTime>
+    <OrderId>1001</OrderId>
+    <CourierId>238152496</CourierId>
+    <DeliveryType>Car</DeliveryType>
+    <DeliveryStartTime>2027-04-04T06:27:20.1024075+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>RefusedToAccept</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
@@ -263,41 +263,41 @@
   <Delivery>
     <Id>126</Id>
     <OrderId>1030</OrderId>
-    <CourierId>264156273</CourierId>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <DeliveryStartTime>2026-06-01T21:28:11.906619+03:00</DeliveryStartTime>
+    <CourierId>375277437</CourierId>
+    <DeliveryType>Car</DeliveryType>
+    <DeliveryStartTime>2026-06-20T06:27:20.1454668+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>Cancelled</DeliveryTermintionType>
+    <DeliveryTermintionType>DeliveredSeccessfully</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>127</Id>
-    <OrderId>1007</OrderId>
-    <CourierId>396754116</CourierId>
-    <DeliveryType>None</DeliveryType>
-    <DeliveryStartTime>2027-02-17T21:28:11.9262459+02:00</DeliveryStartTime>
+    <OrderId>1029</OrderId>
+    <CourierId>374871408</CourierId>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <DeliveryStartTime>2027-01-05T06:27:20.1823533+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>Cancelled</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>128</Id>
-    <OrderId>1005</OrderId>
-    <CourierId>334854616</CourierId>
-    <DeliveryType>Car</DeliveryType>
-    <DeliveryStartTime>2026-09-19T21:28:11.9546128+03:00</DeliveryStartTime>
+    <OrderId>1036</OrderId>
+    <CourierId>244392412</CourierId>
+    <DeliveryType>None</DeliveryType>
+    <DeliveryStartTime>2026-02-25T06:27:20.2159372+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
     <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
     <Id>129</Id>
-    <OrderId>1040</OrderId>
-    <CourierId>254460336</CourierId>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <DeliveryStartTime>2026-07-14T21:28:11.9891257+03:00</DeliveryStartTime>
+    <OrderId>1021</OrderId>
+    <CourierId>343767318</CourierId>
+    <DeliveryType>None</DeliveryType>
+    <DeliveryStartTime>2027-03-23T06:27:20.2562594+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>FailedToDeliver</DeliveryTermintionType>
+    <DeliveryTermintionType>DeliveredSeccessfully</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
 </ArrayOfDelivery>
