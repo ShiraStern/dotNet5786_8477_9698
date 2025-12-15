@@ -21,25 +21,17 @@ internal class AdminImplementation : IAdmin
     }
 
     public DateTime GetClock() => AdminManager.Now; 
-    internal static DateTime Now { get =>   } //stage 4
+   // internal static DateTime Now { get => AdminManager.Now; } //stage 4
 
-    public Config GetConfig()
-    {
-        throw new NotImplementedException();
-    }
+    public Config GetConfig()=> AdminManager.GetConfig();   
 
-    public void InitializeDB()
-    {
-        throw new NotImplementedException();
-    }
 
-    public void ResetDB()
-    {
-        AdminManager.ResetDB(); 
-    }
+    public void InitializeDB()=>AdminManager.InitializeDB();
+   
 
-    public void SetConfig(Config config)
-    {
-        throw new NotImplementedException();
-    }
+    public void ResetDB() => AdminManager.ResetDB(); 
+ 
+
+    public void SetConfig(Config config)=> AdminManager.SetConfig(config);
+
 }

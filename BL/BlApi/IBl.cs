@@ -1,9 +1,10 @@
-﻿using DalApi;
+﻿using BlImplementation;
+using DalApi;
 
 namespace BlApi;
 public interface IBl
 {
-    ICourier Student { get; }
-    IOrder Course { get; }
+    ICourier courier { get; }
+    IOrder order { get; }
     IAdmin Admin { get; }
 }

@@ -1,6 +1,7 @@
 ﻿
 namespace BlImplementation;
 using BlApi;
+using BO;
 //using BO;
 //using BO;
 using Helpers;
@@ -13,11 +14,12 @@ internal class CourierImpementation : ICourier
     {
         // authorization
         if (!CourierManager.IsValidManagerId(applicantId))
-            throw new UnauthorizedAccessException("Only admin can add a courier.");
+            throw new BO.BlUnauthorizedAccessException("Only admin can add a courier.");
+
 
         // basic null check
         if (boCourier is null)
-            throw new ArgumentNullException(nameof(boCourier));
+            throw new BO.BlArgumentNullException(nameof(boCourier));
 
         try
         {
