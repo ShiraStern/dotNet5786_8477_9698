@@ -9,7 +9,6 @@ public enum DeliveryType
     Motorcycle,
     Car,
     Bicycle,
-    Van,
     Foot
 }
 
