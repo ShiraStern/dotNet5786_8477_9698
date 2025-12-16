@@ -21,8 +21,10 @@ internal class OrderImplementation : IOrder
         {
             throw new BO.BlUnauthorizedAccessException("Only managers can cancel orders at this stage");
         }
-        //DO.Order order = AdminManager.GetDal().Order.Read(orderId); 
+        DO.Order? order = AdminManager.GetDal().Order.Read(orderId);
+        DO.Delivery? delivery = DeliveryManager.GetDoDeliveryByOrderId(orderId);
         BO.Order order = OrderManager.
+
 
     }
 

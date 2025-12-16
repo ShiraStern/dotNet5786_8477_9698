@@ -1,5 +1,6 @@
-﻿using DalApi;
-using BO;
+﻿using BO;
+using DalApi;
+using DO;
 
 namespace Helpers
 {
@@ -15,14 +16,15 @@ namespace Helpers
 
             DO.Order doOrder = new DO.Order(
                 Id: 0,
-                OrderType: (DO.OrderType)boOrder.features,
+                OrderType: (DO.OrderType)boOrder.OrderType,
                 OrderNote: boOrder.VerbalDescription ?? "",
                 CustomerAddress: boOrder.FullAddressOfTheOrder ?? "",
                 Latitude: boOrder.Latitude,
                 Longitude: boOrder.Longitude,
                 CustomerFullName: boOrder.FullNameOfTheInviter ?? "",
                 CustomerPhone: boOrder.OrderersPhoneNumber ?? "",
-                OrderDate: boOrder.OrderOpeningTime
+                OrderDate: boOrder.OrderOpeningTime,
+                OrderProperties: OrderProperties.None
             );
 
             s_dal.Order.Create(doOrder);
@@ -41,7 +43,7 @@ namespace Helpers
 
             DO.Order updatedOrder = oldOrder with
             {
-                OrderType = (DO.OrderType)boOrder.features,
+                OrderType = (DO.OrderType)boOrder.OrderType,
                 OrderNote = boOrder.VerbalDescription ?? oldOrder.OrderNote,
                 CustomerAddress = boOrder.FullAddressOfTheOrder ?? oldOrder.CustomerAddress,
                 CustomerFullName = boOrder.FullNameOfTheInviter ?? oldOrder.CustomerFullName,
@@ -59,7 +61,7 @@ namespace Helpers
             return new BO.Order
             {
                 ID = doOrder.Id,
-                features = (BO.OrderType)doOrder.OrderType,
+                OrderType = (BO.OrderType)doOrder.OrderType,
                 VerbalDescription = doOrder.OrderNote,
                 FullAddressOfTheOrder = doOrder.CustomerAddress,
                 Latitude = doOrder.Latitude,
@@ -82,7 +84,7 @@ namespace Helpers
                 .Select(o => new OrderInList
                 {
                     OrderId = o.Id,
-                    DeliveryType = DeliveryType.Foot,
+                    DeliveryType = BO.DeliveryType.Foot,
                     AirDistance = 0,
                     OrderStatus = OrderStatus.Open,
                     ScheduleStatus = ScheduleStatus.OnTime,
@@ -104,12 +106,19 @@ namespace Helpers
             DO.Order newOrder = s_dal.Order.Read(order.ID);
             return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.ID} does not exist.");
         }
-        internal static BO.Order ConvertToOrder(DO.Order order)
+        internal static BO.Order ConvertToOrder(DO.Order order, DO.Delivery? delivery) QQ//לקחת את כל הנתונים מהדליברי והאורדר ולחשב אותם לפי המסמך הכללי זה בעצם הפונקציה שממירה את האורדר לדליבריי 
         {
+            //    BO.DeliveryType deliveryType;
+            //    switch(deliveryType)
+            //    {
+            //       cas
+            //    }
+
+
             BO.Order newOrder = new BO.Order
             {
                 ID = order.Id,
-                DeliveryType = (BO.DeliveryType)order.,
+                DeliveryType = (BO.DeliveryType)deliveryType,
                 OrderType = (BO.OrderType)order.OrderType,
                 VerbalDescription = order.OrderNote,
                 FullAddressOfTheOrder = order.CustomerAddress,
