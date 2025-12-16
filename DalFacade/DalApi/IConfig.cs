@@ -11,7 +11,7 @@ public interface IConfig
     double? MaxRange { get; set; }
     double AvgCarSpeed { get; set; }
     double AvgMotorcycleSpeed { get; set; }
-    double AvgDroneSpeed { get; set; }
+    double AvgBicycleSpeed { get; set; }
     double AvgWalkingSpeed { get; set; }
     TimeSpan MaxDeliveryDuration { get; set; }
     TimeSpan DelayRiskTime { get; set; }

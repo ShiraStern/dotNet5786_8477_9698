@@ -17,7 +17,14 @@ internal static class AdminManager //stage 4
     /// <summary>
     /// Property for providing current application's clock value for any BL class that may need it
     /// </summary>
+    ///  None, // walking
+    
     internal static DateTime Now { get => s_dal.Config.Clock; } //stage 4
+    internal static double AvgCarSpeed { get => s_dal.Config.AvgCarSpeed; } //stage 4
+    internal static double AvgMotorcycleSpeed { get => s_dal.Config.AvgMotorcycleSpeed; } //stage 4
+    internal static double AvgWalkingSpeed { get => s_dal.Config.AvgWalkingSpeed; } //stage 4
+    internal static double AvgBicycleSpeed { get => s_dal.Config.AvgBicycleSpeed; } //stage 4
+    internal static TimeSpan MaxDeliveryDuration { get => s_dal.Config.MaxDeliveryDuration; } //stage 4
 
     internal static event Action? ConfigUpdatedObservers; //stage 5 - for config update observers
     internal static event Action? ClockUpdatedObservers; //stage 5 - for clock update observers
@@ -63,9 +70,6 @@ internal static class AdminManager //stage 4
         //Clock = s_dal.Config.Clock,
         //CompanyAddress = s_dal.Config.CompanyAddress,
         //Latitude = s_dal.Config.Latitude,
-        //TO_DO: //stage 4
-        //add an assignment for each configuration property
-        //...
     };
 
     /// <summary>

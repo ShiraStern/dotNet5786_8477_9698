@@ -6,10 +6,10 @@ namespace BO;
 /// </summary>
 public enum DeliveryType
 {
-    Motorcycle,
-    Car,
+    None, // walking
     Bicycle,
-    Foot
+    Motorcycle,
+    Car
 }
 
 /// <summary>

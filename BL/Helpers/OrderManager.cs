@@ -1,6 +1,7 @@
 ﻿using BO;
 using DalApi;
 using DO;
+using System.Xml;
 
 namespace Helpers
 {
@@ -106,31 +107,85 @@ namespace Helpers
             DO.Order newOrder = s_dal.Order.Read(order.ID);
             return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.ID} does not exist.");
         }
-        internal static BO.Order ConvertToOrder(DO.Order order, DO.Delivery? delivery) QQ//לקחת את כל הנתונים מהדליברי והאורדר ולחשב אותם לפי המסמך הכללי זה בעצם הפונקציה שממירה את האורדר לדליבריי 
+        internal static BO.Order ConvertToOrder(DO.Order order, DO.Delivery? delivery) //לקחת את כל הנתונים מהדליברי והאורדר ולחשב אותם לפי המסמך הכללי זה בעצם הפונקציה שממירה את האורדר לדליבריי 
         {
-            //    BO.DeliveryType deliveryType;
-            //    switch(deliveryType)
-            //    {
-            //       cas
-            //    }
+            double size=1
+                ;
 
-
-            BO.Order newOrder = new BO.Order
+            if (delivery == null)
             {
-                ID = order.Id,
-                DeliveryType = (BO.DeliveryType)deliveryType,
-                OrderType = (BO.OrderType)order.OrderType,
-                VerbalDescription = order.OrderNote,
-                FullAddressOfTheOrder = order.CustomerAddress,
-                Latitude = order.Latitude,
-                Longitude = order.Longitude,
-                FullNameOfTheInviter = order.CustomerFullName,
-                OrderersPhoneNumber = order.CustomerPhone,
-                OrderOpeningTime = order.OrderDate
-            };
+                throw new BO.BlArgumentNullException($"Delivery is null.");
+            }
+            else
+            {
+                switch ((BO.DeliveryType)delivery.DeliveryType)
+                { 
+                    case BO.DeliveryType.None: size=6; break;
+                    case BO.DeliveryType.Bicycle: size = 20; break;
+                    case BO.DeliveryType.Motorcycle: size = 60; break;
+                    case BO.DeliveryType.Car: size = 50; break;
+                }
 
-            return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.ID} does not exist.");
+                BO.Order newOrder = new BO.Order
+                {
+                    ID = order.Id,
+                    DeliveryType = (BO.DeliveryType)delivery.DeliveryType,
+                    VerbalDescription = order.OrderNote, 
+                    FullAddressOfTheOrder = order.CustomerAddress,
+                    Latitude = order.Latitude,
+                    Longitude = order.Longitude,
+                    AirDistance =(double) delivery.ActualDistance!,                    /*    public double AirDistance { get; set; } */
+                    FullNameOfTheInviter = order.CustomerFullName,
+                    OrderersPhoneNumber = order.CustomerPhone,
+                    OrderType = (BO.OrderType)order.OrderType,
+                    OrderOpeningTime = order.OrderDate,
+                    EstimatedDeliveryTime= delivery.DeliveryStartTime.AddHours((double)delivery.ActualDistance/size),
+                    MaximumDeliveryTime= delivery.DeliveryStartTime.Add(AdminManager.MaxDeliveryDuration),//                public DateTime MaximumDeliveryTime { get; set; }
+                    OrderStatus=order.OrderStatus,//                public OrderStatus OrderStatus { get; set; }
+                    ScheduleStatus=order.ScheduleStatus,//                public ScheduleStatus ScheduleStatus { get; set; }
+                    TimeLeftToCompleteOrder=order.TimeLeftToCompleteOrder,//                public TimeSpan TimeLeftToCompleteOrder { get; set; }
+                    deliveryPerOrderLis=order.deliveryPerOrderList,//                public List<DeliveryPerOrderInList>? deliveryPerOrderList { get; set; }*/
+
+
+                    /*
+            order         * 
+         int Id,
+    OrderType OrderType,
+    string OrderNote,
+    string CustomerAddress,
+    double Latitude ,
+    double Longitude,
+    string CustomerFullName,
+    string CustomerPhone,
+    OrderProperties OrderProperties,
+    DateTime OrderDate 
+
+
+delivery
+                    
+    int Id,//כשנעשה את היישות תצורה להוסיף מספר רץ
+    int OrderId,
+    int CourierId,
+    DeliveryType DeliveryType,
+    DateTime DeliveryStartTime,
+    double? ActualDistance = null,
+    DeliveryTermintionType? DeliveryTermintionType = null,
+    DateTime? DeliveryEndTime = nul
+*/
+                };
+
+                return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.Id} does not exist.");
+
+            }
+
+
+
         }
- 
+        internal static BO.Order GetBoOrder(DO.Order order)
+        {
+            List <DO.Delivery>? delivery = DeliveryManager.GetDoDeliveriesByOrderId(order.Id);
+
+            return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.Id} does not exist.");
+        }
     }
 }

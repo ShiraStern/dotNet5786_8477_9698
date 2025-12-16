@@ -15,7 +15,7 @@ public class Config
     double? Longitude { get; set; }
     double AvgCarSpeed { get; set; } = 50;// in KM/H
     double AvgMotorcycleSpeed { get; set; } = 60;// in KM/H
-    double AvgDroneSpeed { get; set; } = 20;// in KM/H
+    double AvgBicycleSpeed { get; set; } = 20;// in KM/H
     double AvgWalkingSpeed { get; set; } = 6;// in KM/H
     TimeSpan MaxDeliveryDuration { get; set; } = TimeSpan.FromDays(30);
     TimeSpan DelayRiskTime { get; set; } = TimeSpan.FromDays(25);
