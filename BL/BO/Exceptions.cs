@@ -30,3 +30,9 @@ public class BlArgumentNullException : Exception
     public BlArgumentNullException(string message, Exception innerException)
              : base(message, innerException) { }
 }
+public class BlInvalidPasswordException : Exception
+{ 
+     public BlInvalidPasswordException(string? message) : base(message) { }
+
+}
+

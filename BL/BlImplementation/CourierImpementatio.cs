@@ -44,7 +44,7 @@ internal class CourierImpementation : ICourier
             throw new UnauthorizedAccessException("Only admin can delete a courier.");
         try
         {
-            //// delete courier via DAL   
+            // delete courier via DAL   
             CourierManager.GetDal().Courier.Delete(id);
         }
         catch (UnauthorizedAccessException)
@@ -63,7 +63,7 @@ internal class CourierImpementation : ICourier
     {
 
         if (!AdminManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
-            throw new UnauthorizedAccessException("Only admin can view the couriers list.\r\n");
+            throw new UnauthorizedAccessException("Only admin can view the courier's list.");
         try
         {
             // get all couriers from DAL
@@ -109,40 +109,27 @@ internal class CourierImpementation : ICourier
 
     public BO.Courier GetDetails(int applicantId, int courierId)
     {
-        if (!CourierManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
+        if (!AdminManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
             throw new UnauthorizedAccessException("Only admin and courier can view courier's details.\r\n");
-        try
-        {
+       
+        
             DO.Courier courier
                 = CourierManager.GetDal().Courier.ReadAll().FirstOrDefault(C => C.Id == courierId) ?? throw new Exception($"coulden't find courier with ID:{courierId}");
-            return CourierManager.ConvertToCourier(courier);    
-        }
-
-        catch(Exception ex)
-        {
-            throw new NotImplementedException();
-        }
+            return CourierManager.ConvertToCourier(courier);  
     }
 
     
     public string Login(string userName, string password)
     {
-        try
-        {
             DO.Courier? courier = CourierManager.GetDal().Courier.ReadAll().FirstOrDefault(c => c.FullName == userName) ?? null;
             if (courier is null)
-                throw new Exception($"couldent find courier or manager with the name:{userName}");
+                throw new BlDoesNotExistException($"couldent find courier or manager with the name:{userName}");
             if (courier.Password != password)
-                throw new Exception($"Incorrect password");
+                throw new BlInvalidPasswordException($"Incorrect password");
             if (courier.Id == AdminManager.GetConfig().ManagerID)
                 return "Manager";
-            if (courier.Password == password)
-                return "Courier";
-        }
-        catch (Exception ex)
-        {
-            throw new ();
-        }
+            return "Courier";
+        
     }
 
     public void UpdateDetails(int applicantId, BO.Courier boCourier)
@@ -155,15 +142,10 @@ internal class CourierImpementation : ICourier
         if (boCourier is null)
             throw new ArgumentNullException(nameof(boCourier));
 
-        try
-        {
+       
             // create DTO/DO and persist via DAL
             DO.Courier doCourier = CourierManager.ConvertToCourier(boCourier);
             CourierManager.GetDal().Courier.Update(doCourier);
-        }
-        catch (UnauthorizedAccessException)
-        {
-            throw;
-        }
+       
     }
 }
