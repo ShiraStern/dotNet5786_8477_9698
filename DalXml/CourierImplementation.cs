@@ -46,15 +46,14 @@ internal class CourierImplementation : ICourier
     // Adds a new Courier to the XML file
     public void Create(Courier item)
     {
-        //הitem מגיע כבר ע תעודת זהות
-        //int nextId = Config.NextCourierId;
-        //item = item with { Id = nextId };        
-        XElement couriersRootElem = XMLTools.LoadListFromXMLElement(Config.s_courier_xml);        //  טעינת קובץ ה-XML (שורש הנתונים).
-        couriersRootElem.Add(createCourierElement(item));        //  הוספת האלמנט החדש שנוצר מהאובייקט (באמצעות createCourierElement).
-        XMLTools.SaveListToXMLElement(couriersRootElem, Config.s_courier_xml);        // שמירת ה-XElement המעודכן בחזרה לקובץ XML.
+      
+            XElement couriersRootElem = XMLTools.LoadListFromXMLElement(Config.s_courier_xml);        //  טעינת קובץ ה-XML (שורש הנתונים).
+            couriersRootElem.Add(createCourierElement(item));        //  הוספת האלמנט החדש שנוצר מהאובייקט (באמצעות createCourierElement).
+            XMLTools.SaveListToXMLElement(couriersRootElem, Config.s_courier_xml);        // שמירת ה-XElement המעודכן בחזרה לקובץ XML.
+        
     }
-    // מוחקת שליח לפי קוד מזהה
-    // Deletes a Courier by ID
+
+    // Delete a Courier by ID
     public void Delete(int id)
     {
         XElement couriersRootElem = XMLTools.LoadListFromXMLElement(Config.s_courier_xml);        // טעינת קובץ ה-XML
@@ -99,7 +98,7 @@ internal class CourierImplementation : ICourier
         return filter == null ? list : list.Where(filter);
     }
 
-    // מעדכנת שליח קיים בקובץ הXML
+
     // Updates an existing courier in the XML file
     public void Update(Courier item)
     {

@@ -8,7 +8,7 @@ internal class CourierImplementation : ICourier
     {
         // בדיקה אם השליח כבר קיים
         if (DataSource.Couriers.Any(c => c.Id == item.Id))
-            throw new InvalidOperationException("Courier with the same Id already exists.");
+            throw new DalAlreadyExistsException($"Courier with the Id:{item.Id} already exists.");
 
         // הוספת השליח למאגר
         DataSource.Couriers.Add(item);
@@ -18,7 +18,7 @@ internal class CourierImplementation : ICourier
     {
         Courier? courier = DataSource.Couriers.FirstOrDefault(c => c.Id == id);
         if (courier is null)
-            throw new InvalidOperationException("Courier with the given Id does not exist.");
+            throw new DalDoesNotExistException($"Courier with the Id:{id} does not exist.");
         DataSource.Couriers.Remove(courier);
     }
 

@@ -1,24 +1,29 @@
-﻿using BO;
-using DalApi;
-using DO;
+﻿using BlApi;
 using System.Xml;
 
 namespace Helpers
 {
     internal static class OrderManager
     {
-        private static IDal s_dal = Factory.Get;
+        private static DalApi.IDal s_dal = Factory.Get;
 
         // Creates a new order in the data layer based on a business order object
+        // Plan / Pseudocode:
+        // 1. Validate input (throw BlArgumentNullException if boOrder is null).
+        // 2. Map BO.Order fields to DO.Order, providing safe defaults for nullable strings.
+        // 3. Try to create the DO.Order via s_dal.Order.Create.
+        // 4. Catch specific DAL exceptions and rethrow BL-layer exceptions with clear, informative messages
+        //    including context (customer name, address, order id when available) and the original exception as inner.
+        // 5. Preserve original exception as innerException for debugging and logging.
         internal static void AddOrder(int applicantId, BO.Order boOrder)
         {
             if (boOrder == null)
-                throw new ArgumentNullException(nameof(boOrder));
+                throw new BlArgumentNullException(nameof(boOrder));
 
             DO.Order doOrder = new DO.Order(
                 Id: 0,
                 OrderType: (DO.OrderType)boOrder.OrderType,
-                OrderNote: boOrder.VerbalDescription ?? "",
+                OrderNote: boOrder.VerbalDescription ?? string.Empty,
                 CustomerAddress: boOrder.FullAddressOfTheOrder ?? "",
                 Latitude: boOrder.Latitude,
                 Longitude: boOrder.Longitude,
@@ -30,11 +35,37 @@ namespace Helpers
 
             s_dal.Order.Create(doOrder);
         }
+            catch (DalXMLFileLoadCreateException ex)
+            {
+                // Provide clear description that creation failed due to XML/file issues in DAL
+                throw new BlDataAccessException("Failed to create new order: data layer XML/file load or create error.", ex);
+            }
+            catch (DalAlreadyExistsException ex)
+            {
+                // Provide context about the conflicting order to help debugging
+                string context = $"Order already exists '{doOrder.Id}'.";
+                throw new BlAlreadyExistsException(context, ex);
+            }
+        }
 
         // Deletes an existing order from the data layer
         internal static void DeleteOrder(int applicantId, int orderId)
         {
+            try
+            {
             s_dal.Order.Delete(orderId);
+        }
+            catch (DalXMLFileLoadCreateException ex)
+            {
+                // Provide clear description that creation failed due to XML/file issues in DAL
+                throw new BlDataAccessException("Failed to delete order: data layer XML/file load or create error.", ex);
+            }
+            catch (DalDoesNotExistException ex)
+            {
+                // Provide context about the conflicting order to help debugging
+                string context = $"Order does not exist '{orderId}'.";
+                throw new BlDoesNotExistException(context, ex);
+            }
         }
 
         // Updates editable details of an existing order
@@ -144,34 +175,7 @@ namespace Helpers
                     OrderStatus=order.OrderStatus,//                public OrderStatus OrderStatus { get; set; }
                     ScheduleStatus=order.ScheduleStatus,//                public ScheduleStatus ScheduleStatus { get; set; }
                     TimeLeftToCompleteOrder=order.TimeLeftToCompleteOrder,//                public TimeSpan TimeLeftToCompleteOrder { get; set; }
-                    deliveryPerOrderLis=order.deliveryPerOrderList,//                public List<DeliveryPerOrderInList>? deliveryPerOrderList { get; set; }*/
-
-
-                    /*
-            order         * 
-         int Id,
-    OrderType OrderType,
-    string OrderNote,
-    string CustomerAddress,
-    double Latitude ,
-    double Longitude,
-    string CustomerFullName,
-    string CustomerPhone,
-    OrderProperties OrderProperties,
-    DateTime OrderDate 
-
-
-delivery
-                    
-    int Id,//כשנעשה את היישות תצורה להוסיף מספר רץ
-    int OrderId,
-    int CourierId,
-    DeliveryType DeliveryType,
-    DateTime DeliveryStartTime,
-    double? ActualDistance = null,
-    DeliveryTermintionType? DeliveryTermintionType = null,
-    DateTime? DeliveryEndTime = nul
-*/
+                    deliveryPerOrderLis=order.deliveryPerOrderList,//              
                 };
 
                 return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.Id} does not exist.");
@@ -183,8 +187,9 @@ delivery
         }
         internal static BO.Order GetBoOrder(DO.Order order)
         {
-            List <DO.Delivery>? delivery = DeliveryManager.GetDoDeliveriesByOrderId(order.Id);
-
+            List <DO.Delivery>? deliveries = DeliveryManager.GetDoDeliveriesByOrderId(order.Id)  ;
+            if(deliveries is null)
+                // הסטטוס של ההזמנה הזו יהיה פתוח 
             return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.Id} does not exist.");
         }
     }
