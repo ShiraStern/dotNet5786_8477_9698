@@ -5,7 +5,7 @@ namespace BO
     {
         public int ID { get; set; }        // הופך ל-set כדי לאפשר שינוי ב-BL/UI
 
-        public DeliveryType kinddelivery { get; set; }
+        public DeliveryType DeliveryType { get; set; }
 
         public string? VerbalDescription { get; init; }        // נשאר init כיוון שזה נתון שמתקבל מההזמנה ולא אמור להשתנות בקלות
 
@@ -22,7 +22,7 @@ namespace BO
 
         public string? OrderersPhoneNumber { get; set; }
 
-        public OrderType features { get; set; }
+        public OrderType OrderType { get; set; }
         public DateTime OrderOpeningTime { get; set; }
         public DateTime? EstimatedDeliveryTime { get; set; }
         public DateTime MaximumDeliveryTime { get; set; }

@@ -15,3 +15,7 @@ public class DalXMLFileLoadCreateException : Exception
 {
     public DalXMLFileLoadCreateException(string? message) : base(message) { }
 }
+public class DalNullException : Exception
+{
+    public DalNullException(string? message) : base(message) { }
+}

@@ -16,8 +16,7 @@ internal static class CourierManager
         throw new NotImplementedException();
     }
 
-    internal static bool IsValidManagerId(int applicantId)
-    { return (applicantId == AdminManager.GetConfig().ManagerID); }
+    
     
 
     internal static bool IsValidCourierId(int applicantId)

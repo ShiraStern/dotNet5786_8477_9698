@@ -8,6 +8,7 @@ using System.Collections.Generic;
 internal class OrderImplementation : IOrder
 {
     // Adds a new order to the system
+
     public void AddOrder(int applicantId, Order boOrder)
     {
         OrderManager.AddOrder(applicantId, boOrder);
@@ -16,7 +17,13 @@ internal class OrderImplementation : IOrder
     // Cancels an existing order (not implemented at this stage)
     public void cancelOrder(int applicantId, int orderId)
     {
-        throw new NotImplementedException("Cancel order logic is not implemented yet");
+        if(!AdminManager.IsValidManagerId(applicantId))
+        {
+            throw new BO.BlUnauthorizedAccessException("Only managers can cancel orders at this stage");
+        }
+        //DO.Order order = AdminManager.GetDal().Order.Read(orderId); 
+        BO.Order order = OrderManager.
+
     }
 
     // Deletes an order from the system

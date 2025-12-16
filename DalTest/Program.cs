@@ -272,9 +272,9 @@ internal class Program
         Console.Write("Order note (verbal description): ");
         string orderNote = Console.ReadLine() ?? "";
 
-        Console.Write("Order additional properties (optional, Enter to skip): ");
-        string? orderProperties = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(orderProperties)) orderProperties = null;
+        Console.Write("Order additional properties: press 0-3");
+        OrderProperties? orderProperties = (OrderProperties)int.Parse(Console.ReadLine());
+        if (orderProperties is null) orderProperties=OrderProperties.None;  
 
 
         //  קליטת מיקום (Latitude ו-Longitude) - שימוש ב-TryParse
@@ -325,7 +325,7 @@ internal class Program
             CustomerFullName: customerFullName,
             CustomerPhone: customerPhone,
             OrderDate: orderDate,
-            OrderProperties: orderProperties
+            OrderProperties: (OrderProperties)orderProperties
         );
 
         // 6. קריאה לפונקציית Create 
@@ -381,7 +381,7 @@ internal class Program
      CustomerFullName: customerName,
      CustomerPhone: customerPhone,
      OrderDate: DateTime.Now,
-     OrderProperties: null
+     OrderProperties: OrderProperties.None
  );
 
             // 4. Adding the object to the Data Source (e.g., a static list or DAL method)
@@ -536,14 +536,13 @@ internal class Program
         }
 
         // עדכון מאפיינים נוספים (OrderProperties - שדה אופציונלי/nullable)
-        Console.WriteLine($"Current Additional Properties: {order.OrderProperties ?? "(None)"}. Enter new properties (or press Enter to keep current):");
-        string newProperties = Console.ReadLine()!;
+        Console.WriteLine($"Current Additional Properties: {order.OrderProperties}. Enter new properties (or press Enter to keep current):");
+        OrderProperties newProperties = (OrderProperties)(int.Parse( Console.ReadLine()));
 
         // אם הוזן ערך (אפילו ריק כדי לאפס ל-null), מעדכנים
         if (newProperties != null)
         {
-            string? propertiesToSet = string.IsNullOrWhiteSpace(newProperties) ? null : newProperties;
-            order = order with { OrderProperties = propertiesToSet };
+            order = order with { OrderProperties = newProperties };
         }
 
 

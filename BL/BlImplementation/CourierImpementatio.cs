@@ -13,7 +13,7 @@ internal class CourierImpementation : ICourier
     public void AddCourier(int applicantId, BO.Courier boCourier)
     {
         // authorization
-        if (!CourierManager.IsValidManagerId(applicantId))
+        if (!AdminManager.IsValidManagerId(applicantId))
             throw new BO.BlUnauthorizedAccessException("Only admin can add a courier.");
 
 
@@ -40,7 +40,7 @@ internal class CourierImpementation : ICourier
 
     public void Delete(int applicantId, int id)
     {
-        if (!CourierManager.IsValidManagerId(applicantId))
+        if (!AdminManager.IsValidManagerId(applicantId))
             throw new UnauthorizedAccessException("Only admin can delete a courier.");
         try
         {
@@ -62,7 +62,7 @@ internal class CourierImpementation : ICourier
     public IEnumerable<BO.CourierInList> GetCourierList(int applicantId, bool isActive, BO.sortCouriersByProperty? sortCouriersBy)
     {
 
-        if (!CourierManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
+        if (!AdminManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
             throw new UnauthorizedAccessException("Only admin can view the couriers list.\r\n");
         try
         {
@@ -124,6 +124,7 @@ internal class CourierImpementation : ICourier
         }
     }
 
+    
     public string Login(string userName, string password)
     {
         try
@@ -147,7 +148,7 @@ internal class CourierImpementation : ICourier
     public void UpdateDetails(int applicantId, BO.Courier boCourier)
     {
         // authorization
-        if (!CourierManager.IsValidManagerId(applicantId)  || !CourierManager.IsValidCourierId(applicantId))
+        if (!AdminManager.IsValidManagerId(applicantId)  || !CourierManager.IsValidCourierId(applicantId))
             throw new UnauthorizedAccessException("Only admin or coureir can update courier's ditails.");
 
         // basic null check

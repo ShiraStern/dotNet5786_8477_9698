@@ -99,5 +99,29 @@ namespace Helpers
             // the count is currently calculated logically
             return new List<int> { s_dal.Order.ReadAll().Count() };
         }
+        internal static DO.Order ConvertToOrder(BO.Order order)
+        {
+            DO.Order newOrder = s_dal.Order.Read(order.ID);
+            return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.ID} does not exist.");
+        }
+        internal static BO.Order ConvertToOrder(DO.Order order)
+        {
+            BO.Order newOrder = new BO.Order
+            {
+                ID = order.Id,
+                DeliveryType = (BO.DeliveryType)order.,
+                OrderType = (BO.OrderType)order.OrderType,
+                VerbalDescription = order.OrderNote,
+                FullAddressOfTheOrder = order.CustomerAddress,
+                Latitude = order.Latitude,
+                Longitude = order.Longitude,
+                FullNameOfTheInviter = order.CustomerFullName,
+                OrderersPhoneNumber = order.CustomerPhone,
+                OrderOpeningTime = order.OrderDate
+            };
+
+            return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.ID} does not exist.");
+        }
+ 
     }
 }

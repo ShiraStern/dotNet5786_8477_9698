@@ -5,19 +5,31 @@
 /// </summary>
 public enum DeliveryType
 {
-    None,
+    None, // walking
+    Bicycle,
     Motorcycle,
     Car
 }
 
 // <summary>
-/// Enum representing different types of delivery types.
+/// Enum representing different types of order types.
 /// </summary>
 public enum OrderType
 {
     Large,
     Medium,
     Small
+}
+/// <summary>
+/// 
+/// </summary>
+public enum OrderProperties
+{
+    None,
+    Fragile, //שביר
+    Weighty,// כבד משקל
+    FragileAndWeighty //כבד ושביר
+    
 }
 
 /// <summary>

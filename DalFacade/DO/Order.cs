@@ -27,14 +27,14 @@ public record Order
     double Longitude,
     string CustomerFullName,
     string CustomerPhone,
-    DateTime OrderDate ,
-    string? OrderProperties= null
+    OrderProperties OrderProperties,
+    DateTime OrderDate 
 
  )
 {
     /// <summary>
     /// Default constructor for stage 1.3
     /// </summary>
-    public Order() : this(0,OrderType.Medium,"","",0,0,"","", DateTime.Now ) { }
+    public Order() : this(0,OrderType.Medium,"","",0,0,"","",OrderProperties.None,DateTime.Now ) { }
 }
 

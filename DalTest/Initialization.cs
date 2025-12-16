@@ -260,15 +260,15 @@ public static class Initialization
             Order order = new()
             {
                 Id = 0,
-                OrderType = (OrderType)s_random.Next(0, 3),
+                OrderType = (OrderType)s_random.Next(Enum.GetValues<OrderType>().Length),
                 OrderNote = " ",
                 CustomerAddress = customerAddresses[i],
-                Latitude = 29 + s_random.NextDouble() * 4,   // Latitude בין 29 ל-33
-                Longitude = 34 + s_random.NextDouble() * 2,  // Longitude בין 34 ל-36
+                Latitude = double.Parse( Latitudes[i]),
+                Longitude = double.Parse(Longitudes[i]),  
                 CustomerFullName = customerFullNames[i],
                 CustomerPhone = "05" + Random.Shared.Next(0, 10) + Random.Shared.Next(1000000, 9999999),
                 OrderDate = DateTime.Now.AddDays(-s_random.Next(0, 600)),
-                OrderProperties = ""
+                OrderProperties = (OrderProperties)s_random.Next(Enum.GetValues<OrderProperties>().Length)
             };
             s_dal!.Order.Create(order);
         }
