@@ -1,7 +1,5 @@
 ﻿namespace BO;
 [Serializable]
-
-// 
 public class BlDoesNotExistException : Exception
 {
     public BlDoesNotExistException(string? message) : base(message) { }
@@ -28,6 +26,12 @@ public class BlArgumentNullException : Exception
 {
     public BlArgumentNullException(string? message) : base(message) { }
     public BlArgumentNullException(string message, Exception innerException)
+             : base(message, innerException) { }
+}
+public class BlDataAccessException : Exception
+{
+    public BlDataAccessException(string? message) : base(message) { }
+    public BlDataAccessException(string message, Exception innerException)
              : base(message, innerException) { }
 }
 public class BlInvalidPasswordException : Exception

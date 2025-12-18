@@ -91,11 +91,18 @@ internal class CourierImplementation : ICourier
     // Reads all couriers, optionally using a filter function
     public IEnumerable<Courier> ReadAll(Func<Courier, bool>? filter = null)
     {
-        var list = XMLTools.LoadListFromXMLElement(Config.s_courier_xml)
-                           .Elements("Courier")
-                           .Select(getCourier);
+        try
+        {
+            var list = XMLTools.LoadListFromXMLElement(Config.s_courier_xml)
+                          .Elements("Courier")
+                          .Select(getCourier);
 
-        return filter == null ? list : list.Where(filter);
+            return filter == null ? list : list.Where(filter);
+        }
+        catch (DalXMLFileLoadCreateException ex)
+        {
+            throw;
+        }
     }
 
 

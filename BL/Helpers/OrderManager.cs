@@ -1,11 +1,13 @@
 ﻿using BlApi;
+using BO;
+using DO;
 using System.Xml;
 
 namespace Helpers
 {
     internal static class OrderManager
     {
-        private static DalApi.IDal s_dal = Factory.Get;
+        private static DalApi.IDal s_dal = DalApi.Factory.Get;
 
         // Creates a new order in the data layer based on a business order object
         // Plan / Pseudocode:
@@ -30,12 +32,13 @@ namespace Helpers
                 CustomerFullName: boOrder.FullNameOfTheInviter ?? "",
                 CustomerPhone: boOrder.OrderersPhoneNumber ?? "",
                 OrderDate: boOrder.OrderOpeningTime,
-                OrderProperties: OrderProperties.None
+                OrderProperties: DO.OrderProperties.None
             );
-
-            s_dal.Order.Create(doOrder);
-        }
-            catch (DalXMLFileLoadCreateException ex)
+            try
+            {
+                s_dal.Order.Create(doOrder);
+            }
+            catch (DO.DalXMLFileLoadCreateException ex)
             {
                 // Provide clear description that creation failed due to XML/file issues in DAL
                 throw new BlDataAccessException("Failed to create new order: data layer XML/file load or create error.", ex);
@@ -71,18 +74,11 @@ namespace Helpers
         // Updates editable details of an existing order
         internal static void UpdateOrder(int applicantId, BO.Order boOrder)
         {
-            DO.Order oldOrder = s_dal.Order.Read(boOrder.ID);
+            
 
-            DO.Order updatedOrder = oldOrder with
-            {
-                OrderType = (DO.OrderType)boOrder.OrderType,
-                OrderNote = boOrder.VerbalDescription ?? oldOrder.OrderNote,
-                CustomerAddress = boOrder.FullAddressOfTheOrder ?? oldOrder.CustomerAddress,
-                CustomerFullName = boOrder.FullNameOfTheInviter ?? oldOrder.CustomerFullName,
-                CustomerPhone = boOrder.OrderersPhoneNumber ?? oldOrder.CustomerPhone
-            };
+            
 
-            s_dal.Order.Update(updatedOrder);
+          
         }
 
         // Retrieves full order details and converts them to a business object

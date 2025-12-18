@@ -2,10 +2,12 @@
 namespace BlImplementation;
 using BlApi;
 using BO;
+using DO;
 //using BO;
 //using BO;
 using Helpers;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 
 internal class CourierImpementation : ICourier
@@ -23,47 +25,43 @@ internal class CourierImpementation : ICourier
 
         try
         {
-            // create DTO/DO and persist via DAL
+            // create DO and persist via DAL
             var doCourier = CourierManager.ConvertToCourier(boCourier);
             CourierManager.GetDal().Courier.Create(doCourier);
         }
-        catch (UnauthorizedAccessException)
-        {
-            throw;
-        }
-        catch (Exception ex)
+        catch (DalAlreadyExistsException ex)
         {
             // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
-            throw new ApplicationException("Failed to add courier.", ex);
+            throw new BlAlreadyExistsException("Failed to add courier.", ex);
         }
+        
     }
 
     public void Delete(int applicantId, int id)
     {
         if (!AdminManager.IsValidManagerId(applicantId))
-            throw new UnauthorizedAccessException("Only admin can delete a courier.");
+            throw new BlUnauthorizedAccessException("Only admin can delete a courier.");
         try
         {
             // delete courier via DAL   
             CourierManager.GetDal().Courier.Delete(id);
         }
-        catch (UnauthorizedAccessException)
-        {
-            throw;
-        }
-        catch (Exception ex)
+        catch (DalDoesNotExistException ex)
         {
             // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
-            throw new ApplicationException("Failed to delete courier.", ex);
+            throw new BlDoesNotExistException("Failed to delete courier.", ex);
         }
 
     }
 
-    public IEnumerable<BO.CourierInList> GetCourierList(int applicantId, bool isActive, BO.sortCouriersByProperty? sortCouriersBy)
+    public IEnumerable<BO.CourierInList> GetCourierList(
+        int applicantId, 
+        bool isActive, 
+        BO.sortCouriersByProperty? sortCouriersBy)
     {
 
         if (!AdminManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
-            throw new UnauthorizedAccessException("Only admin can view the courier's list.");
+            throw new BlUnauthorizedAccessException("Only admin and courier can view the courier's list.");
         try
         {
             // get all couriers from DAL
@@ -94,14 +92,10 @@ internal class CourierImpementation : ICourier
             }
             return boCouriers;
         }
-        catch (UnauthorizedAccessException)
-        {
-            throw;
-        }
-        catch (Exception ex)
+        catch (DalXMLFileLoadCreateException ex)
         {
             // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
-            throw new ApplicationException("Failed to read all couriers.", ex);
+            throw new BlDataAccessException("Failed to read courier's data.", ex);
         }
     }
 
@@ -110,17 +104,26 @@ internal class CourierImpementation : ICourier
     public BO.Courier GetDetails(int applicantId, int courierId)
     {
         if (!AdminManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
-            throw new UnauthorizedAccessException("Only admin and courier can view courier's details.\r\n");
-       
-        
+            throw new BlUnauthorizedAccessException("Only admin and courier can view courier's details.");
+        try
+        {
             DO.Courier courier
-                = CourierManager.GetDal().Courier.ReadAll().FirstOrDefault(C => C.Id == courierId) ?? throw new Exception($"coulden't find courier with ID:{courierId}");
-            return CourierManager.ConvertToCourier(courier);  
+                = CourierManager.GetDal().Courier.ReadAll().FirstOrDefault(C => C.Id == courierId) 
+                ?? throw new BlDoesNotExistException($"coulden't find courier with ID:{courierId}");
+            return CourierManager.ConvertToCourier(courier);    
+        }
+        catch (DalXMLFileLoadCreateException ex)
+        {
+            // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
+            throw new BlDataAccessException("Failed to read courier's data.", ex);
+        }
     }
 
     
     public string Login(string userName, string password)
     {
+        try
+        {
             DO.Courier? courier = CourierManager.GetDal().Courier.ReadAll().FirstOrDefault(c => c.FullName == userName) ?? null;
             if (courier is null)
                 throw new BlDoesNotExistException($"couldent find courier or manager with the name:{userName}");
@@ -129,7 +132,12 @@ internal class CourierImpementation : ICourier
             if (courier.Id == AdminManager.GetConfig().ManagerID)
                 return "Manager";
             return "Courier";
-        
+        }
+        catch (DalXMLFileLoadCreateException ex)
+        {
+            // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
+            throw new BlDataAccessException("Failed to read courier's data.", ex);
+        }
     }
 
     public void UpdateDetails(int applicantId, BO.Courier boCourier)
@@ -142,10 +150,15 @@ internal class CourierImpementation : ICourier
         if (boCourier is null)
             throw new ArgumentNullException(nameof(boCourier));
 
-       
+        try
+        {
             // create DTO/DO and persist via DAL
             DO.Courier doCourier = CourierManager.ConvertToCourier(boCourier);
             CourierManager.GetDal().Courier.Update(doCourier);
-       
+        }
+        catch (DalDoesNotExistException ex)
+        {
+            throw new BlDoesNotExistException($"couldent find courier or manager with the name:{boCourier.FullName}", ex);
+        }
     }
 }
