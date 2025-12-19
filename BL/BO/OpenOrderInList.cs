@@ -2,16 +2,16 @@
 
 public class OpenOrderInList
 {
-    int courierId { get; init; }    
-    int OrderId { get; init; }
-    DeliveryType DeliveryType { get; init; }
-    OrderType OrderType { get; init; }
-    string? CustomerAddress { get; init; }
-    double AirDistance { get; init; }   
-    double actualDistance { get; init; }
-    TimeSpan? EstimatedDeliveryTime { get; set; }
-    ScheduleStatus ScheduleStatus { get; set; }
-    TimeSpan? deliveryTimeLeft { get; set; }    
-    DateTime MaximumDeliveryTime { get; init; } 
+    public int courierId { get; init; }
+    public int OrderId { get; init; }
+    public DeliveryType DeliveryType { get; init; }
+    public OrderType OrderType { get; init; }
+    public string? CustomerAddress { get; init; }
+    public double AirDistance { get; init; }
+    public double actualDistance { get; init; }
+    public TimeSpan? EstimatedDeliveryTime { get; set; }
+    public ScheduleStatus ScheduleStatus { get; set; }
+    public TimeSpan? deliveryTimeLeft { get; set; }    
+    public DateTime MaximumDeliveryTime { get; init; } 
 
 }

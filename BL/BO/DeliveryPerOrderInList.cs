@@ -9,12 +9,11 @@ namespace BO;
 /// termination status of the delivery.</remarks>
 public class DeliveryPerOrderInList
 {
-    int DeliveryId { get; init; }
-    int courierId { get; init; }    
-    string? CourierName { get; init; }
-    DeliveryType DeliveryType { get; init; }
-    DateTime DeliveryStart { get; init; }
-    DeliveryTerminationType deliveryTerminationType { get; set; }
-    DeliveryTerminationType deliveryTermintionType { get; set; } 
-    DateTime? DeliveryEndTime { get; set; }
+    public int DeliveryId { get; init; }
+    public int courierId { get; init; }
+    public string? CourierName { get; init; }
+    public DeliveryType DeliveryType { get; init; }
+    public DateTime DeliveryStart { get; init; }
+    public DeliveryTerminationType DeliveryTerminationType { get; set; }
+    public DateTime? DeliveryEndTime { get; set; }
 }

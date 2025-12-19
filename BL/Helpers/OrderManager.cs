@@ -134,59 +134,294 @@ namespace Helpers
             DO.Order newOrder = s_dal.Order.Read(order.ID);
             return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.ID} does not exist.");
         }
-        internal static BO.Order ConvertToOrder(DO.Order order, DO.Delivery? delivery) //לקחת את כל הנתונים מהדליברי והאורדר ולחשב אותם לפי המסמך הכללי זה בעצם הפונקציה שממירה את האורדר לדליבריי 
+        internal static BO.Order ConvertToOrder(DO.Order order, DO.Delivery? delivery)// מטודת עזר גם ל cancelOrder
         {
-            double size=1
-                ;
+            BO.Order boOrder = new BO.Order
+            {
+                ID = order.Id,
+                OrderType = (BO.OrderType)order.OrderType,
+                VerbalDescription = order.OrderNote,
+                FullAddressOfTheOrder = order.CustomerAddress,
+                Latitude = order.Latitude,
+                Longitude = order.Longitude,
+                FullNameOfTheInviter = order.CustomerFullName,
+                OrderersPhoneNumber = order.CustomerPhone,
+                OrderOpeningTime = order.OrderDate,
+                deliveryPerOrderList = new List<DeliveryPerOrderInList>()
+            };
 
+            // אין משלוח → הזמנה פתוחה
             if (delivery == null)
             {
-                throw new BO.BlArgumentNullException($"Delivery is null.");
+                boOrder.OrderStatus = OrderStatus.Open;
+                boOrder.ScheduleStatus = ScheduleStatus.OnTime;
+                boOrder.TimeLeftToCompleteOrder = AdminManager.MaxDeliveryDuration;
+                return boOrder;
+            }
+
+            // יש משלוח
+            boOrder.AirDistance = delivery.ActualDistance ?? 0;
+
+            // משלוח פעיל
+            if (delivery.DeliveryEndTime == null)
+            {
+                boOrder.OrderStatus = OrderStatus.InTreatment;
+                boOrder.ScheduleStatus = ScheduleStatus.OnTime;
+                boOrder.MaximumDeliveryTime =
+                    delivery.DeliveryStartTime.Add(AdminManager.MaxDeliveryDuration);
+
+                boOrder.TimeLeftToCompleteOrder =
+                    boOrder.MaximumDeliveryTime - DateTime.Now;
+
+                return boOrder;
+            }
+
+            // משלוח הסתיים
+            boOrder.TimeLeftToCompleteOrder = TimeSpan.Zero;
+
+            if (delivery.DeliveryTermintionType == DO.DeliveryTermintionType.Cancelled)
+            {
+                boOrder.OrderStatus = OrderStatus.Cancelled;
             }
             else
             {
-                switch ((BO.DeliveryType)delivery.DeliveryType)
-                { 
-                    case BO.DeliveryType.None: size=6; break;
-                    case BO.DeliveryType.Bicycle: size = 20; break;
-                    case BO.DeliveryType.Motorcycle: size = 60; break;
-                    case BO.DeliveryType.Car: size = 50; break;
-                }
+                boOrder.OrderStatus = OrderStatus.Delivered;
+            }
 
-                BO.Order newOrder = new BO.Order
+
+            boOrder.ScheduleStatus = ScheduleStatus.OnTime;
+
+            return boOrder;
+        }
+        internal static void CancelOrder(int orderId)//מטודת עזר ל cancelOrder
+        {
+            // 1. קריאת ההזמנה
+            DO.Order doOrder = s_dal.Order.Read(orderId);
+
+            // 2. המרה ל-BO כדי לדעת סטטוס לוגי
+            BO.Order boOrder = GetBoOrder(doOrder);
+
+            // 3. בדיקת חוקיות
+            if (boOrder.OrderStatus != OrderStatus.Open &&
+                boOrder.OrderStatus != OrderStatus.InTreatment)
+            {
+                throw new BO.BlInvalidStatusException(
+                    $"Order {orderId} cannot be cancelled in status {boOrder.OrderStatus}");
+            }
+
+            DateTime now = DateTime.Now;
+
+            // 4. אם ההזמנה פתוחה – יצירת משלוח מדומה
+            if (boOrder.OrderStatus == OrderStatus.Open)
+            {
+                DO.Delivery fakeDelivery = new DO.Delivery
                 {
-                    ID = order.Id,
-                    DeliveryType = (BO.DeliveryType)delivery.DeliveryType,
-                    VerbalDescription = order.OrderNote, 
-                    FullAddressOfTheOrder = order.CustomerAddress,
-                    Latitude = order.Latitude,
-                    Longitude = order.Longitude,
-                    AirDistance =(double) delivery.ActualDistance!,                    /*    public double AirDistance { get; set; } */
-                    FullNameOfTheInviter = order.CustomerFullName,
-                    OrderersPhoneNumber = order.CustomerPhone,
-                    OrderType = (BO.OrderType)order.OrderType,
-                    OrderOpeningTime = order.OrderDate,
-                    EstimatedDeliveryTime= delivery.DeliveryStartTime.AddHours((double)delivery.ActualDistance/size),
-                    MaximumDeliveryTime= delivery.DeliveryStartTime.Add(AdminManager.MaxDeliveryDuration),//                public DateTime MaximumDeliveryTime { get; set; }
-                    OrderStatus=order.OrderStatus,//                public OrderStatus OrderStatus { get; set; }
-                    ScheduleStatus=order.ScheduleStatus,//                public ScheduleStatus ScheduleStatus { get; set; }
-                    TimeLeftToCompleteOrder=order.TimeLeftToCompleteOrder,//                public TimeSpan TimeLeftToCompleteOrder { get; set; }
-                    deliveryPerOrderLis=order.deliveryPerOrderList,//              
+                    Id = 0,
+                    OrderId = orderId,
+                    CourierId = 0,
+                    DeliveryStartTime = now,
+                    DeliveryEndTime = now,
+                    DeliveryTermintionType = DO.DeliveryTermintionType.Cancelled,
+                    ActualDistance = 0
                 };
 
-                return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.Id} does not exist.");
+                s_dal.Delivery.Create(fakeDelivery);
+
+            }
+
+            // 5. אם ההזמנה בטיפול – עדכון משלוח קיים
+            if (boOrder.OrderStatus == OrderStatus.InTreatment)
+            {
+                // מציאת המשלוח הפעיל
+                DO.Delivery delivery = s_dal.Delivery.ReadAll()
+                    .First(d => d.OrderId == orderId &&
+                                d.DeliveryEndTime == null);
+                DO.Delivery updatedDelivery = delivery with
+                {
+                    DeliveryEndTime = now,
+                    DeliveryTermintionType = DO.DeliveryTermintionType.Cancelled
+                };
+
+                s_dal.Delivery.Update(updatedDelivery);
+
+            }
+        }
+
+        internal static BO.Order GetBoOrder(DO.Order order)
+        {
+            List<DO.Delivery>? deliveries =
+                DeliveryManager.GetDoDeliveriesByOrderId(order.Id);
+
+            //  אין משלוחים – הזמנה פתוחה
+            if (deliveries is null || deliveries.Count == 0)
+            {
+                return new BO.Order
+                {
+                    ID = order.Id,
+                    OrderStatus = OrderStatus.Open,
+                    ScheduleStatus = ScheduleStatus.OnTime,
+                    OrderOpeningTime = order.OrderDate,
+                    // שדות נוספים לפי הצורך
+                };
+            }
+
+            //  יש משלוחים – מחשבים לפי delivery האחרון
+            DO.Delivery lastDelivery = deliveries.Last();
+            BO.Order newOrder = ConvertToOrder(order, lastDelivery);
+            return newOrder;
+        }
+
+        internal static IEnumerable<int> GetOrdersStatusCountsInternal(int applicantId)//פונקצית עזר לפונקציה GetOrdersStatusCounts 
+        {
+            int[] result = new int[9];
+
+            IEnumerable<DO.Order> doOrders = s_dal.Order.ReadAll();
+
+            IEnumerable<BO.Order> ordersOfApplicant = doOrders
+                .Select(o => GetBoOrder(o))
+                .Where(o => o.ID == applicantId);
+
+            var groupedByStatus = ordersOfApplicant
+                .GroupBy(o => GetStatusIndex(o));
+
+            foreach (var group in groupedByStatus)
+            {
+                result[group.Key] = group.Count();
+            }
+
+            return result;
+        }
+
+        private static int GetStatusIndex(BO.Order order)//פונקצית עזר לפונקציה GetOrdersStatusCounts היא מחזירה את האינדקס שבו צריך להיות ההזמנה על פי הסטטוס הזמנה והסטטוס זמן
+        {
+            // סטטוסים פעילים – תלויי זמן
+            if (order.OrderStatus == OrderStatus.Open)
+            {
+                if (order.ScheduleStatus == ScheduleStatus.OnTime) return 0;
+                if (order.ScheduleStatus == ScheduleStatus.InRisk) return 1;
+                if (order.ScheduleStatus == ScheduleStatus.Late) return 2;
+            }
+
+            if (order.OrderStatus == OrderStatus.InTreatment)
+            {
+                if (order.ScheduleStatus == ScheduleStatus.OnTime) return 3;
+                if (order.ScheduleStatus == ScheduleStatus.InRisk) return 4;
+                if (order.ScheduleStatus == ScheduleStatus.Late) return 5;
+            }
+
+            // סטטוסים סופיים – לא תלויי זמן
+            if (order.OrderStatus == OrderStatus.Delivered) return 6;
+            if (order.OrderStatus == OrderStatus.Refused) return 7;
+            if (order.OrderStatus == OrderStatus.Cancelled) return 8;
+
+            throw new BO.BlInvalidStatusException(   //זריקת חריגה במידה ויש סטטוס לא מזוהה וערך לא תקין
+                $"Invalid status combination: OrderStatus={order.OrderStatus}, ScheduleStatus={order.ScheduleStatus}");
+
+        }
+        internal static IEnumerable<OrderInList> GetOrderListInternal( //מטודת עזר ל פונקצית GetOrderList
+    int applicantId,
+    filterOrdersByProperty? filterBy,
+    object? type,
+    sortOrdersByProperty? sortBy)
+        {
+            //  שליפת כל ההזמנות מה-DAL
+            IEnumerable<DO.Order> doOrders = s_dal.Order.ReadAll();
+            //  המרה ל-BO.Order (כולל חישוב סטטוסים ומשלוח אחרון)
+            IEnumerable<BO.Order> boOrders = doOrders
+                .Select(o => GetBoOrder(o));
+            // סינון (רק אם נדרש)
+            if (filterBy != null && type != null)
+            {
+                switch (filterBy)
+                {
+                    case filterOrdersByProperty.OrderStatus:
+                        boOrders = boOrders.Where(o => o.OrderStatus == (BO.OrderStatus)type);
+                        break;
+
+                    case filterOrdersByProperty.OrderType:
+                        boOrders = boOrders.Where(o => o.OrderType == (BO.OrderType)type);
+                        break;
+
+                    default:
+                        // לא מסננים
+                        break;
+                }
 
             }
 
 
 
+            //  מיון – ברירת מחדל: לפי סטטוס הזמנה
+            boOrders = sortBy switch
+            {
+                // ברירת מחדל – מיון לפי סטטוס הזמנה
+                null =>
+                    boOrders.OrderBy(o => o.OrderStatus),
+
+                sortOrdersByProperty.OrderDate =>
+                    boOrders.OrderBy(o => o.OrderOpeningTime),
+
+                sortOrdersByProperty.DeliveryDate =>
+                    boOrders.OrderBy(o => o.EstimatedDeliveryTime),
+
+                sortOrdersByProperty.CustomerName =>
+                    boOrders.OrderBy(o => o.FullNameOfTheInviter),
+
+                sortOrdersByProperty.OrderStatus =>
+                    boOrders.OrderBy(o => o.OrderStatus),
+
+                _ => boOrders
+            };
+
+
+            //  המרה ל-OrderInList (ישות לוגית למסך)
+            return boOrders.Select(o => new OrderInList
+            {
+                OrderId = o.ID,
+
+                // משלוח אחרון (אם קיים)
+                DeliveryId = o.deliveryPerOrderList?.LastOrDefault()?.DeliveryId ?? 0,
+
+                DeliveryType = o.deliveryPerOrderList?.LastOrDefault()?.DeliveryType
+                   ?? BO.DeliveryType.None,
+
+                AirDistance = o.AirDistance,
+
+                OrderStatus = o.OrderStatus,
+                ScheduleStatus = o.ScheduleStatus,
+
+                DeliveryTimeLeft = o.TimeLeftToCompleteOrder,
+
+                TotalHandlingTime = null,   // ← תיקון כאן
+
+                TotalDeliveries = o.deliveryPerOrderList?.Count ?? 0
+            });
         }
-        internal static BO.Order GetBoOrder(DO.Order order)
+        internal static BO.Order GetOrderDetails(int orderId) //פונקציית עזר לפונקציה GetDetails
         {
-            List <DO.Delivery>? deliveries = DeliveryManager.GetDoDeliveriesByOrderId(order.Id)  ;
-            if(deliveries is null)
-                // הסטטוס של ההזמנה הזו יהיה פתוח 
-            return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.Id} does not exist.");
+            DO.Order? doOrder = s_dal.Order.Read(orderId);
+            return GetBoOrder(doOrder);
         }
+
+        internal static void UpdateOrderDetails(BO.Order boOrder)// פונקציית עזר לפונקצייה UpdateDetails
+        {
+            DO.Order? oldOrder = s_dal.Order.Read(boOrder.ID);
+
+            DO.Order? updatedOrder = oldOrder with
+            {
+                OrderType = (DO.OrderType)boOrder.OrderType,
+                OrderNote = boOrder.VerbalDescription ?? oldOrder.OrderNote,
+                Latitude = boOrder.Latitude,
+                Longitude = boOrder.Longitude,
+                CustomerAddress = boOrder.FullAddressOfTheOrder ?? oldOrder.CustomerAddress,
+                CustomerFullName = boOrder.FullNameOfTheInviter ?? oldOrder.CustomerFullName,
+                CustomerPhone = boOrder.OrderersPhoneNumber ?? oldOrder.CustomerPhone,
+                OrderProperties = (DO.OrderProperties)boOrder.OrderProperties,
+                OrderDate = boOrder.OrderOpeningTime
+            };
+
+            s_dal.Order.Update(updatedOrder);
+        }
+
     }
 }

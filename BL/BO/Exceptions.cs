@@ -40,3 +40,7 @@ public class BlInvalidPasswordException : Exception
 
 }
 
+public class BlInvalidStatusException : Exception//חריגה של אם ישנומצב שאינו תקין לדוגמא סטטוס הזמנה שלא קיים 
+{
+    public BlInvalidStatusException(string? message) : base(message) { }
+}
