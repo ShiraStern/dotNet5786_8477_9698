@@ -69,17 +69,7 @@ namespace Helpers
                 string context = $"Order does not exist '{orderId}'.";
                 throw new BlDoesNotExistException(context, ex);
             }
-        }
-
-        // Updates editable details of an existing order
-        internal static void UpdateOrder(int applicantId, BO.Order boOrder)
-        {
-            
-
-            
-
-          
-        }
+        }        
 
         // Retrieves full order details and converts them to a business object
         internal static BO.Order GetOrderDetails(int applicantId, int orderId)
@@ -318,86 +308,86 @@ namespace Helpers
                 $"Invalid status combination: OrderStatus={order.OrderStatus}, ScheduleStatus={order.ScheduleStatus}");
 
         }
-        internal static IEnumerable<OrderInList> GetOrderListInternal( //מטודת עזר ל פונקצית GetOrderList
-    int applicantId,
-    filterOrdersByProperty? filterBy,
-    object? type,
-    sortOrdersByProperty? sortBy)
-        {
-            //  שליפת כל ההזמנות מה-DAL
-            IEnumerable<DO.Order> doOrders = s_dal.Order.ReadAll();
-            //  המרה ל-BO.Order (כולל חישוב סטטוסים ומשלוח אחרון)
-            IEnumerable<BO.Order> boOrders = doOrders
-                .Select(o => GetBoOrder(o));
-            // סינון (רק אם נדרש)
-            if (filterBy != null && type != null)
+        internal static IEnumerable<OrderInList> GetOrderListInternal( //מטודת עזר ל -  פונקצית GetOrderList
+        int applicantId,
+        filterOrdersByProperty? filterBy,
+        object? type,
+        sortOrdersByProperty? sortBy)
             {
-                switch (filterBy)
+                //  שליפת כל ההזמנות מה-DAL
+                IEnumerable<DO.Order> doOrders = s_dal.Order.ReadAll();
+                //  המרה ל-BO.Order (כולל חישוב סטטוסים ומשלוח אחרון)
+                IEnumerable<BO.Order> boOrders = doOrders
+                    .Select(o => GetBoOrder(o));
+                // סינון (רק אם נדרש)
+                if (filterBy != null && type != null)
                 {
-                    case filterOrdersByProperty.OrderStatus:
-                        boOrders = boOrders.Where(o => o.OrderStatus == (BO.OrderStatus)type);
-                        break;
+                    switch (filterBy)
+                    {
+                        case filterOrdersByProperty.OrderStatus:
+                            boOrders = boOrders.Where(o => o.OrderStatus == (BO.OrderStatus)type);
+                            break;
 
-                    case filterOrdersByProperty.OrderType:
-                        boOrders = boOrders.Where(o => o.OrderType == (BO.OrderType)type);
-                        break;
+                        case filterOrdersByProperty.OrderType:
+                            boOrders = boOrders.Where(o => o.OrderType == (BO.OrderType)type);
+                            break;
 
-                    default:
-                        // לא מסננים
-                        break;
+                        default:
+                            // לא מסננים
+                            break;
+                    }
+
                 }
 
+
+
+                //  מיון – ברירת מחדל: לפי סטטוס הזמנה
+                boOrders = sortBy switch
+                {
+                    // ברירת מחדל – מיון לפי סטטוס הזמנה
+                    null =>
+                        boOrders.OrderBy(o => o.OrderStatus),
+
+                    sortOrdersByProperty.OrderDate =>
+                        boOrders.OrderBy(o => o.OrderOpeningTime),
+
+                    sortOrdersByProperty.DeliveryDate =>
+                        boOrders.OrderBy(o => o.EstimatedDeliveryTime),
+
+                    sortOrdersByProperty.CustomerName =>
+                        boOrders.OrderBy(o => o.FullNameOfTheInviter),
+
+                    sortOrdersByProperty.OrderStatus =>
+                        boOrders.OrderBy(o => o.OrderStatus),
+
+                    _ => boOrders
+                };
+
+
+                //  המרה ל-OrderInList (ישות לוגית למסך)
+                return boOrders.Select(o => new OrderInList
+                {
+                    OrderId = o.ID,
+
+                    // משלוח אחרון (אם קיים)
+                    DeliveryId = o.deliveryPerOrderList?.LastOrDefault()?.DeliveryId ?? 0,
+
+                    DeliveryType = o.deliveryPerOrderList?.LastOrDefault()?.DeliveryType
+                       ?? BO.DeliveryType.None,
+
+                    AirDistance = o.AirDistance,
+
+                    OrderStatus = o.OrderStatus,
+                    ScheduleStatus = o.ScheduleStatus,
+
+                    DeliveryTimeLeft = o.TimeLeftToCompleteOrder,
+
+                    TotalHandlingTime = null,   // ← תיקון כאן
+
+                    TotalDeliveries = o.deliveryPerOrderList?.Count ?? 0
+                });
             }
-
-
-
-            //  מיון – ברירת מחדל: לפי סטטוס הזמנה
-            boOrders = sortBy switch
-            {
-                // ברירת מחדל – מיון לפי סטטוס הזמנה
-                null =>
-                    boOrders.OrderBy(o => o.OrderStatus),
-
-                sortOrdersByProperty.OrderDate =>
-                    boOrders.OrderBy(o => o.OrderOpeningTime),
-
-                sortOrdersByProperty.DeliveryDate =>
-                    boOrders.OrderBy(o => o.EstimatedDeliveryTime),
-
-                sortOrdersByProperty.CustomerName =>
-                    boOrders.OrderBy(o => o.FullNameOfTheInviter),
-
-                sortOrdersByProperty.OrderStatus =>
-                    boOrders.OrderBy(o => o.OrderStatus),
-
-                _ => boOrders
-            };
-
-
-            //  המרה ל-OrderInList (ישות לוגית למסך)
-            return boOrders.Select(o => new OrderInList
-            {
-                OrderId = o.ID,
-
-                // משלוח אחרון (אם קיים)
-                DeliveryId = o.deliveryPerOrderList?.LastOrDefault()?.DeliveryId ?? 0,
-
-                DeliveryType = o.deliveryPerOrderList?.LastOrDefault()?.DeliveryType
-                   ?? BO.DeliveryType.None,
-
-                AirDistance = o.AirDistance,
-
-                OrderStatus = o.OrderStatus,
-                ScheduleStatus = o.ScheduleStatus,
-
-                DeliveryTimeLeft = o.TimeLeftToCompleteOrder,
-
-                TotalHandlingTime = null,   // ← תיקון כאן
-
-                TotalDeliveries = o.deliveryPerOrderList?.Count ?? 0
-            });
-        }
-        internal static BO.Order GetOrderDetails(int orderId) //פונקציית עזר לפונקציה GetDetails
+        internal static BO.Order GetOrderDetails(int orderId) //פונקציית עזר - לפונקציה GetDetails
         {
             DO.Order? doOrder = s_dal.Order.Read(orderId);
             return GetBoOrder(doOrder);
