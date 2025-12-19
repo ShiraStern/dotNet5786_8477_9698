@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 internal class OrderImplementation : BlApi.IOrder
 {
-    // Adds a new order to the system - done
+    // Adds a new order to the system -done
     public void AddOrder(int applicantId, BO.Order boOrder) //done
     {
         // הרשאה – מסך ניהולי
