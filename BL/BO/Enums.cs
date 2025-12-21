@@ -61,7 +61,7 @@ public enum DeliveryTerminationType
 /// </summary>
 public enum TimeUnit
 {
-    Minute,
+    Minute=1,
     Hour,
     Day,
     Month,
@@ -98,49 +98,27 @@ public enum filterOrdersByProperty
     DeliveryTerminationType,
     ScheduleStatus
 }
+ public enum AdminMenuOptions
+{
+    Exit,
+    GetClock,
+    ForwardClock,
+    ResetDataBase,
+    InitializeDataBase,
+    GetConfig,
+    SetConfig
+}
 
-//old version
-//
-//namespace BO;
-//public enum DeliveryType
-//{
-//    None,
-//    Drone,
-//    Motorcycle,
-//    Car
-//}
+public enum CoureirMenuOptions
+{
+    Exit,
+    GetDetails,
+    UpdateDetails,
+    GetCourierList,
+    DeleteCourier,
+    Login,
+    AddCourier
+}
 
-//public enum OrderType
-//{
-//    Regular,
-//    Fast,
-//    Emergency
-//}
-//public enum OrderStatus
-//{
-//    DeliveredSeccessfully,
-//    RefusedToAccept,
-//    Cancelled,
-//    CustomerNotHome,
-//    FailedToDeliver
-//}
 
-//public enum DeliveryTermintionType
-//{
-//    DeliveredSeccessfully,
-//    RefusedToAccept,
-//    Cancelled,
-//    CustomerNotHome,
-//    FailedToDeliver
-//}
-//public enum ScheduleStatus
-//{
 
-//}
-
-//public enum OrderProperties
-//{
-//    Large,
-//    Medium,
-//    Small
-//}
