@@ -93,7 +93,10 @@ public enum filterOrdersByProperty
 }
  public enum sortClosedDeliveriesByProperty
 {
-
+    OrderType,
+    DeliveryEndTime,
+    DeliveryTerminationType,
+    ScheduleStatus
 }
 
 //old version
