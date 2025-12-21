@@ -63,6 +63,8 @@ internal class ConfigImplementation : IConfig
         get => Config.InactivityThreshold;
         set => Config.InactivityThreshold = value;
     }
+    public double AvgBicycleSpeed { get => Config.; set => throw new NotImplementedException(); }
+
     public void Reset()
     {
         Config.Reset();
