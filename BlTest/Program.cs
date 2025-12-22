@@ -82,7 +82,7 @@ internal class Program
         int orderID = int.Parse(Console.ReadLine()!);
         s_bl.order.Delete(applicantID, orderID);
     }//
-
+    
     private static void CancelOrder()
     {
         Console.WriteLine("Please enter the ID of applicant and order ID");
