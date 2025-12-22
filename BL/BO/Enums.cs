@@ -120,5 +120,14 @@ public enum CoureirMenuOptions
     AddCourier
 }
 
-
-
+public enum MainMenuOptions
+{
+    Exit,
+    CourierMenu,
+    OrderMenu,
+    GetCourierDetails,
+    UpdateCourierDetails,
+    ForwardClock,
+    SetConfig,
+    AdminMenu,
+}

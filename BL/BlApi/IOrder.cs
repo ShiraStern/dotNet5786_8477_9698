@@ -15,6 +15,6 @@ public interface IOrder
     void HandleOrder(int applicantId, int courierId, int orderId);
     IEnumerable<BO.ClosedDeliveryInList> GetClosedDeliveriesPerCourier(int applicantId, int courierId, BO.OrderType? filterOrderByType = null, sortClosedDeliveriesByProperty? byProperty = null);
     IEnumerable<BO.OpenOrderInList> GetDeliveriesPerCourier(int applicantId, int courierId, BO.OrderType? filterOrderByType = null, sortClosedDeliveriesByProperty? byProperty = null);
-
+    //BO.OrderInProgress GetOrderInProgress (int applicantId);
 
 }

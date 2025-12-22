@@ -1,12 +1,62 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using BO;
 using DO;
+using Helpers;
 
 
 internal class Program
 {
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+    private static void UpdateCourierDetails()
+    {
+    //    Console.WriteLine("Please enter the ID of applicant and ID of specipic courier");
+    //    int applicantID = int.Parse(Console.ReadLine()!);
+    //    int courierID = int.Parse(Console.ReadLine()!);
+    //    Console.WriteLine("Please enter the new details for the courier");
+    //    Console.WriteLine("Enter the new name:");
+    //    string? name = Console.ReadLine();
+    //    Console.WriteLine("Enter the new phone number:");
+    //    string? phone = Console.ReadLine();
+    //    Console.WriteLine("Enter the new Email:");
+    //    string? Email = Console.ReadLine();
+    //    Console.WriteLine("Enter the new Password:");
+    //    string? Password = Console.ReadLine();
+    //    Console.WriteLine("Enter new value, Is coureir active?:");
+    //    bool active = bool.Parse(Console.ReadLine()!);
+    //    Console.WriteLine("Enter new value for maximum distance:");
+    //    double? maxDistance = double.Parse(Console.ReadLine()!);
+    //    Console.WriteLine(@"Please enter a new value for delivery type
+    //1- walking
+    //2- Bicycle,
+    //3- Motorcycle,
+    //4- Car");
+    //    BO.DeliveryType DeliveryType = (BO.DeliveryType)int.Parse(Console.ReadLine()!);
+    //    Console.WriteLine(@"Please enter a new date for start employment:");
+    //    DateTime? employmentStartDate = DateTime.Parse(Console.ReadLine()!);
+    //    BO.OrderInProgress? orderInProgress = s_bl.
+    //    BO.Courier courier = new BO.Courier();
+    //    {
+    //        ID = courierID ,
+    //        FullName = name,
+    //        PhoneNember = phone,
+    //        Email = Email,
+    //        Password = Password,
+    //        Active = active,
+    //        MaxDistance = maxDistance
 
+    //    }
+    //    ;
+    //    s_bl.courier.UpdateDetails(applicantID, courier);
+    //    Console.WriteLine("Courier details updated successfully in test.");
+    }
+    private static void GetCourierDetails()
+    {
+        Console.WriteLine("Please enter the ID of applicant and ID of specipic courier");
+        int applicantID = int.Parse(Console.ReadLine()!);
+        int courierID = int.Parse(Console.ReadLine()!);
+        BO.Courier? courier = s_bl.courier.GetDetails(applicantID, courierID);
+        Console.WriteLine(courier);
+    }//
     private static void ForwardClock()
     {
        
@@ -40,7 +90,7 @@ internal class Program
         }
         Console.WriteLine("Clock forwarded successfully.");)
 
-    }
+    }//
     private static void SetConfig()
     {
         Console.WriteLine("Enter the new delivery max range:");
@@ -86,10 +136,8 @@ internal class Program
         s_bl.Admin.SetConfig(config);
         Console.WriteLine("Configuration updated successfully.");
 
-    }
-
-
-    private static void AdminMenu(
+    }//
+    private static void AdminMenu()
     {
         bool continueLoop = true;
         do
@@ -139,7 +187,7 @@ internal class Program
 
             }
         } while (continueLoop);
-    }
+    }//
     private static void CourierMenu()
     {
         bool continueLoop = true;
@@ -162,18 +210,19 @@ internal class Program
             {
                 case CoureirMenuOptions.Exit:
                     //endProgram
+                    continueLoop = false;
                     break;
                 case CoureirMenuOptions.GetDetails:
-                    s_bl.courier.GetDetails();
+                    GetCourierDetails();
                     break;
                 case CoureirMenuOptions.UpdateDetails:
-                    viewDelivery();
+                    UpdateCourierDetails();
                     break;
                 case CoureirMenuOptions.GetCourierList:
-                    viewAllDeliveries();
+                    s_bl.courier.viewAllDeliveries();
                     break;
                 case CoureirMenuOptions.DeleteCourier:
-                    updateDelivery();
+                    s_bl.courier.updateDelivery();
                     break;
                 case CoureirMenuOptions.Login:
                     deleteDelivery();
@@ -186,7 +235,7 @@ internal class Program
                     break;
             }
         } while (continueLoop);
-    }
+    }//
     private static void OrderMenu()
     {
         bool continueLoop = true;
@@ -233,10 +282,79 @@ internal class Program
                     break;
             }
         } while (continueLoop);
-    }
-
-    static void Main(string[] args)
+    }//
+    private static int mainMenuOptions()
     {
 
+        int? choice = null;
+        do
+        {
+            Console.WriteLine(@"Please enter a number to choose an action:
+0-Exit
+1-CourierMenu
+2-OrderMenu
+3-GetCourierDetails
+4-UpdateCourierDetails
+5-ForwardClock
+6-SetConfig
+7-AdminMenu");
+   
+            choice = int.Parse(Console.ReadLine()!);
+        } while (choice is null);
+        return (int)choice;
+
     }
+    
+    static void Main(string[] args)
+    {
+        try
+        {
+
+            //List<DO.Courier> courier=s_dalCourier!.ReadAll(); 
+            //List<DO.Order> orders = s_dalOrder!.ReadAll();
+            //List<DO.Delivery> deliveries = s_dalDelivery!.ReadAll();
+            // gets user choice and call the suitable function
+
+            int choice = mainMenuOptions();
+            while (choice != 0)
+            {
+                switch ((MainMenuOptions)choice)
+                {
+                    case MainMenuOptions.CourierMenu:
+                        CourierMenu();
+                        break;
+                    case MainMenuOptions.OrderMenu:
+                        OrderMenu();
+                        break;
+                    case MainMenuOptions.GetCourierDetails:
+                        GetCourierDetails();
+                        break;
+                    case MainMenuOptions.UpdateCourierDetails:
+                        UpdateCourierDetails();
+                        break;
+                    case MainMenuOptions.ForwardClock:
+                        ForwardClock();
+                        break;
+                    case MainMenuOptions.SetConfig:
+                        SetConfig();
+                        break;
+                    case MainMenuOptions.AdminMenu:
+                        AdminMenu();
+                        break;
+                    default:
+                        Console.WriteLine();
+                        break;
+                }
+                choice = mainMenuOptions();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred during data initialization: {ex.Message}");
+        }
+
+    }
+
+}
 }
