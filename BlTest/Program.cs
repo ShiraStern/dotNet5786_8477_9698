@@ -286,7 +286,7 @@ internal class Program
     {
         Console.WriteLine("Please enter the ID of applicant");
         int applicantID = int.Parse(Console.ReadLine()!);
-        foreach (var courier in s_bl.courier.GetCourierList(applicantID, true, NumberOfDeliveries))
+        foreach (var courier in s_bl.courier.GetCourierList(applicantID, true, BO.sortCouriersByProperty.NumberOfDeliveries))
         {
             Console.WriteLine(courier);
         }
