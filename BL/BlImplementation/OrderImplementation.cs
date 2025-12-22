@@ -36,7 +36,7 @@ internal class OrderImplementation : BlApi.IOrder
         }
     }
 
-    public void Delete(int applicantId, int orderId) //done
+    public void Delete(int applicantId, int orderId) //done //לפי המסמך רק צריך לזרוק חריגה כי הואלא רשאי למחוק
     {
         throw new BO.BlUnauthorizedAccessException(
             "Orders cannot be deleted from the system.");
