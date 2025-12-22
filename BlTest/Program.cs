@@ -310,28 +310,45 @@ internal class Program
     }
     private static void AddCourier()//
     {
-        Console.WriteLine("Please enter applicant ID:");
+        Console.WriteLine("Please enter the ID of applicant and ID of specipic courier");
         int applicantID = int.Parse(Console.ReadLine()!);
-
-        Console.WriteLine("Please enter courier ID:");
         int courierID = int.Parse(Console.ReadLine()!);
+        Console.WriteLine("Please enter the new details for the courier");
+        Console.WriteLine("Enter the new name:");
+        string? name = Console.ReadLine();
+        Console.WriteLine("Enter the new phone number:");
+        string? phone = Console.ReadLine();
+        Console.WriteLine("Enter the new Email:");
+        string? Email = Console.ReadLine();
+        Console.WriteLine("Enter the new Password:");
+        string? Password = Console.ReadLine();
+        Console.WriteLine("Enter new value, Is coureir active?:");
+        bool active = bool.Parse(Console.ReadLine()!);
+        Console.WriteLine("Enter new value for maximum distance:");
+        double? maxDistance = double.Parse(Console.ReadLine()!);
+        Console.WriteLine(@"Please enter a new value for delivery type
+        1- walking
+        2- Bicycle,
+        3- Motorcycle,
+        4- Car");
+        BO.DeliveryType DeliveryType = (BO.DeliveryType)int.Parse(Console.ReadLine()!);
+        Console.WriteLine(@"Please enter a new date for start employment:");
+        DateTime employmentStartDate = DateTime.Parse(Console.ReadLine()!);
 
-        Console.WriteLine("Please enter courier name:");
-        string name = Console.ReadLine()!;
-
-        Console.WriteLine("Please enter phone number:");
-        string phone = Console.ReadLine()!;
-
-        BO.Courier courier = new BO.Courier
+        BO.Courier courier = new BO.Courier()
         {
             ID = courierID,
             FullName = name,
             PhoneNember = phone,
-            Active = true
+            Email = Email,
+            Password = Password,
+            Active = active,
+            MaxDistance = maxDistance,
+            DeliveryType = DeliveryType,
+            EmploymentStartDate = employmentStartDate
         };
-
+   
         s_bl.courier.AddCourier(applicantID, courier);
-
         Console.WriteLine("Courier added successfully");
     }
 

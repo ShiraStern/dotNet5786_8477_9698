@@ -102,7 +102,7 @@ namespace Helpers
                 .Select(o => new OrderInList
                 {
                     OrderId = o.Id,
-                    DeliveryType = BO.DeliveryType.Foot,
+                    DeliveryType = BO.DeliveryType.None,
                     AirDistance = 0,
                     OrderStatus = OrderStatus.Open,
                     ScheduleStatus = ScheduleStatus.OnTime,
