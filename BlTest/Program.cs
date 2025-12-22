@@ -547,6 +547,9 @@ internal class Program
             {
                 switch ((MainMenuOptions)choice)
                 {
+                    case MainMenuOptions.Exit:
+                        choice = 0;
+                        break;
                     case MainMenuOptions.CourierMenu:
                         CourierMenu();
                         break;
@@ -555,9 +558,6 @@ internal class Program
                         break;
                     case MainMenuOptions.AdminMenu:
                         AdminMenu();
-                        break;
-                    default:
-                        Console.WriteLine();
                         break;
                 }
                 choice = mainMenuOptions();

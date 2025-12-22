@@ -109,7 +109,7 @@ public enum filterOrdersByProperty
 }
  public enum AdminMenuOptions
 {
-    Exit ,
+    Exit=1 ,
     GetClock,
     ForwardClock,
     ResetDataBase,
@@ -120,7 +120,7 @@ public enum filterOrdersByProperty
 
 public enum CoureirMenuOptions
 {
-    Exit,
+    Exit=1,
     GetDetails,
     UpdateDetails,
     GetCourierList,
