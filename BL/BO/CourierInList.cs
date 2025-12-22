@@ -11,6 +11,7 @@ namespace BO
         public int NumOfDeliveriesOnTime { get; set; }
         public int NumOfDeliveriesNotOnTime { get; set; }
         public int? NumberOfDeliveriesInProcess { get; set; }
+
         }
 }
 
