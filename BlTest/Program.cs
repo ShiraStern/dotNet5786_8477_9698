@@ -233,7 +233,7 @@ internal class Program
                 Console.WriteLine("Invalid choice.");
                 break;
         }
-        Console.WriteLine("Clock forwarded successfully.");)
+        Console.WriteLine("Clock forwarded successfully.");
 
     }//
     private static void SetConfig()

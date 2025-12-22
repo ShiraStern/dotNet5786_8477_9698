@@ -42,7 +42,7 @@ internal class OrderImplementation : BlApi.IOrder
             "Orders cannot be deleted from the system.");
     }
 
-    public void cancelOrder(int applicantId, int orderId) //done
+    public void CancelOrder(int applicantId, int orderId) //done
     {
         if (!AdminManager.IsValidManagerId(applicantId))
             throw new BO.BlUnauthorizedAccessException("Only admin can cancel orders.");

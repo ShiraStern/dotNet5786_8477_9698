@@ -66,7 +66,7 @@ internal class Config
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "AvgMotorcycleSpeed");
         set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgMotorcycleSpeed", value = 60);
     } // in KM/H
-    internal static double AvgDroneSpeed
+    internal static double AvgBicycleSpeed
     {
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "AvgDroneSpeed");
         set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgDroneSpeed", value = 20);
@@ -93,7 +93,7 @@ internal class Config
         Longitude = null;
         MaxRange = null;
         AvgCarSpeed = 50;
-        AvgDroneSpeed = 60;
+        AvgBicycleSpeed = 60;
         AvgMotorcycleSpeed = 20;
         AvgWalkingSpeed = 6;
         MaxDeliveryDuration = TimeSpan.FromDays(30);
