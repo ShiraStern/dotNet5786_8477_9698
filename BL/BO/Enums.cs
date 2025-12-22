@@ -12,6 +12,15 @@ public enum DeliveryType
     Car
 }
 
+public enum OrderProperties
+{
+    None,
+    Fragile, //שביר
+    Weighty,// כבד משקל
+    FragileAndWeighty //כבד ושביר
+}
+
+
 /// <summary>
 /// Enum representing order types/sizes.
 /// </summary>
@@ -100,7 +109,7 @@ public enum filterOrdersByProperty
 }
  public enum AdminMenuOptions
 {
-    Exit,
+    Exit ,
     GetClock,
     ForwardClock,
     ResetDataBase,
@@ -126,4 +135,20 @@ public enum MainMenuOptions
     CourierMenu,
     OrderMenu,
     AdminMenu
+}
+
+public enum OrderMenuOptions
+{
+    Exit=1,
+    GetOrdersStatusCounts,
+    GetOrderList,
+    GetDetails,
+    UpdateDetails,
+    CancelOrder,
+    Delete,
+    AddOrder,
+    EndOrderHandle,
+    HandleOrder,
+    GetClosedDeliveriesPerCourier,
+    GetDeliveriesPerCourier
 }

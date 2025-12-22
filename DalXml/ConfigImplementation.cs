@@ -40,8 +40,8 @@ internal class ConfigImplementation : IConfig
     }
     public double AvgDroneSpeed
     {
-        get => Config.AvgDroneSpeed;
-        set => Config.AvgDroneSpeed = value;
+        get => Config.AvgBicycleSpeed;
+        set => Config.AvgBicycleSpeed = value;
     }
     public double AvgWalkingSpeed
     {
@@ -63,7 +63,7 @@ internal class ConfigImplementation : IConfig
         get => Config.InactivityThreshold;
         set => Config.InactivityThreshold = value;
     }
-    public double AvgBicycleSpeed { get => Config.; set => throw new NotImplementedException(); }
+    public double AvgBicycleSpeed { get => Config.AvgBicycleSpeed; set => throw new NotImplementedException(); }
 
     public void Reset()
     {
