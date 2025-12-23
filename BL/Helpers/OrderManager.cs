@@ -42,6 +42,7 @@ namespace Helpers
                 string context = $"Order already exists '{doOrder.Id}'.";
                 throw new BlAlreadyExistsException(context, ex);
             }
+            Observers.NotifyListUpdated();//STAGE 5
         }
 
         // Deletes an existing order from the data layer
