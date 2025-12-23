@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 internal class OrderImplementation : BlApi.IOrder
 {
+
     // Adds a new order to the system -done
     public void AddOrder(int applicantId, BO.Order boOrder) //done
     {
@@ -34,6 +35,7 @@ internal class OrderImplementation : BlApi.IOrder
             throw new BlDataAccessException(
                 "Failed to access data layer while adding order.", ex);
         }
+        
     }
 
     public void Delete(int applicantId, int orderId) //done //לפי המסמך רק צריך לזרוק חריגה כי הואלא רשאי למחוק
@@ -385,5 +387,14 @@ internal class OrderImplementation : BlApi.IOrder
                 "Failed to access data layer while updating order.", ex);
         }
     }
+
+    public void AddObserver(Action listObserver) =>
+OrderManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+OrderManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+OrderManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+CourierManager.Observers.RemoveObserver(id, observer); //stage 5
 
 }
