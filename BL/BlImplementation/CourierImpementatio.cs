@@ -159,4 +159,13 @@ internal class CourierImpementation : ICourier
             throw new BlDoesNotExistException($"couldent find courier or manager with the name:{boCourier.FullName}", ex);
         }
     }
+    public void AddObserver(Action listObserver) =>
+CourierManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+CourierManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+CourierManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+CourierManager.Observers.RemoveObserver(id, observer); //stage 5
+
 }
