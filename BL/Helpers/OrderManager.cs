@@ -1,22 +1,15 @@
 ﻿using BlApi;
 using BO;
 using DO;
-using System.Xml;
-
+using DalApi;
+using System;
 namespace Helpers
 {
     internal static class OrderManager
     {
         private static DalApi.IDal s_dal = DalApi.Factory.Get;
 
-        // Creates a new order in the data layer based on a business order object
-        // Plan / Pseudocode:
-        // 1. Validate input (throw BlArgumentNullException if boOrder is null).
-        // 2. Map BO.Order fields to DO.Order, providing safe defaults for nullable strings.
-        // 3. Try to create the DO.Order via s_dal.Order.Create.
-        // 4. Catch specific DAL exceptions and rethrow BL-layer exceptions with clear, informative messages
-        //    including context (customer name, address, order id when available) and the original exception as inner.
-        // 5. Preserve original exception as innerException for debugging and logging.
+        internal static ObserverManager Observers = new(); //stage 5
         internal static void AddOrder(int applicantId, BO.Order boOrder)
         {
             if (boOrder == null)

@@ -3,7 +3,7 @@ using BO;
 
 namespace BlApi;
 
-public interface ICourier
+public interface ICourier : IObservable //stage 5 ממשק הרחבת
 {
     string Login(string userName, string password);
     IEnumerable<BO.CourierInList> GetCourierList(int applicantId, bool isActive, sortCouriersByProperty? sortCouriersBy);

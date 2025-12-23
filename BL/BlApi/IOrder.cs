@@ -1,7 +1,7 @@
 ﻿using BO;
 
 namespace BlApi;
-public interface IOrder
+public interface IOrder : IObservable //stage 5 ממשק הרחבת
 {
     IEnumerable<int> GetOrdersStatusCounts(int applicantId);
     IEnumerable<BO.OrderInList> GetOrderList(int applicantId,

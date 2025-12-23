@@ -11,6 +11,7 @@ internal static class CourierManager
 {
     private static IDal s_dal = Factory.Get; //stage 4
 
+    internal static ObserverManager Observers = new(); //stage 5
     internal static void PeriodicCourierUpdates(DateTime oldClock, DateTime newClock)
     {
         throw new NotImplementedException();
