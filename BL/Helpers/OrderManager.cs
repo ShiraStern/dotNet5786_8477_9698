@@ -46,25 +46,14 @@ namespace Helpers
 
         }
 
-        // Deletes an existing order from the data layer
+        /// This method is not permitted to delete orders and always throws a logical exception according to system requirements.
+
+
         internal static void DeleteOrder(int applicantId, int orderId)
         {
-            try
-            {
-            s_dal.Order.Delete(orderId);
-        }
-            catch (DalXMLFileLoadCreateException ex)
-            {
-                // Provide clear description that creation failed due to XML/file issues in DAL
-                throw new BlDataAccessException("Failed to delete order: data layer XML/file load or create error.", ex);
-            }
-            catch (DalDoesNotExistException ex)
-            {
-                // Provide context about the conflicting order to help debugging
-                string context = $"Order does not exist '{orderId}'.";
-                throw new BlDoesNotExistException(context, ex);
-            }
-        }        
+            throw new BlUnauthorizedAccessException(
+                "Orders cannot be deleted in the system.");
+        }       
 
         // Retrieves full order details and converts them to a business object
         internal static BO.Order GetOrderDetails(int applicantId, int orderId)
@@ -180,13 +169,13 @@ namespace Helpers
         }
         internal static void CancelOrder(int orderId)//מטודת עזר ל cancelOrder
         {
-            // 1. קריאת ההזמנה
+            //  קריאת ההזמנה
             DO.Order doOrder = s_dal.Order.Read(orderId);
 
-            // 2. המרה ל-BO כדי לדעת סטטוס לוגי
+            //  המרה ל-BO כדי לדעת סטטוס לוגי
             BO.Order boOrder = GetBoOrder(doOrder);
 
-            // 3. בדיקת חוקיות
+            //  בדיקת חוקיות
             if (boOrder.OrderStatus != OrderStatus.Open &&
                 boOrder.OrderStatus != OrderStatus.InTreatment)
             {
@@ -196,7 +185,7 @@ namespace Helpers
 
             DateTime now = DateTime.Now;
 
-            // 4. אם ההזמנה פתוחה – יצירת משלוח מדומה
+            //  אם ההזמנה פתוחה – יצירת משלוח מדומה
             if (boOrder.OrderStatus == OrderStatus.Open)
             {
                 DO.Delivery fakeDelivery = new DO.Delivery
@@ -214,7 +203,7 @@ namespace Helpers
 
             }
 
-            // 5. אם ההזמנה בטיפול – עדכון משלוח קיים
+            //  אם ההזמנה בטיפול – עדכון משלוח קיים
             if (boOrder.OrderStatus == OrderStatus.InTreatment)
             {
                 // מציאת המשלוח הפעיל
@@ -230,6 +219,9 @@ namespace Helpers
                 s_dal.Delivery.Update(updatedDelivery);
 
             }
+            Observers.NotifyItemUpdated(orderId);//stage 5
+            Observers.NotifyListUpdated();//stage 5
+
         }
 
         internal static BO.Order GetBoOrder(DO.Order order)
@@ -406,7 +398,11 @@ namespace Helpers
             };
 
             s_dal.Order.Update(updatedOrder);
+            Observers.NotifyItemUpdated(boOrder.ID);//stage 5
+            Observers.NotifyListUpdated();//stage 5
+
         }
+
 
     }
 }
