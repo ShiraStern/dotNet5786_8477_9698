@@ -80,13 +80,13 @@ public enum TimeUnit
 public enum sortCouriersByProperty
 {
     IsActive,
-    NumberOfDeliveries,
+    EmploymentStartDate,
     //* Add more properties as needed
 }
 
 public enum sortOrdersByProperty
 {
-       OrderDate,
+    OrderDate,
     DeliveryDate,
     CustomerName,
     OrderStatus

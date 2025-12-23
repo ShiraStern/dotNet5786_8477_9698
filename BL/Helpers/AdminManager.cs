@@ -67,9 +67,9 @@ internal static class AdminManager //stage 4
     => new BO.Config()
     {
         MaxRange = s_dal.Config.MaxRange,
-        //Clock = s_dal.Config.Clock,
-        //CompanyAddress = s_dal.Config.CompanyAddress,
-        //Latitude = s_dal.Config.Latitude,
+        Clock = s_dal.Config.Clock,
+        CompanyAddress = s_dal.Config.CompanyAddress,
+        Latitude = s_dal.Config.Latitude,
     };
 
     /// <summary>
