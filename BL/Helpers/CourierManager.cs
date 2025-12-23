@@ -17,24 +17,19 @@ internal static class CourierManager
         throw new NotImplementedException();
     }
 
-    
-    
-
     internal static bool IsValidCourierId(int applicantId)
     { return s_dal.Courier.ReadAll().Any(c => c.Id == applicantId); }
-       
 
 
-    internal static void SimulateCourseRegistrationAndGrade()
+    //internal static IDal GetDal()
+    //{
+    //    return s_dal;
+    //}
+
+    internal static IEnumerable<DO.Courier> ReadAll()
     {
-        throw new NotImplementedException();
+       return s_dal.Courier.ReadAll();
     }
-
-    internal static IDal GetDal()
-    {
-        return s_dal;
-    }
-
 
     internal static DO.Courier ConvertToCourier(BO.Courier courier)
     {
@@ -71,6 +66,26 @@ internal static class CourierManager
         };
         return dalCourier;
     }
+
+    internal static void Create(DO.Courier doCourier)
+    {
+        s_dal.Courier.Create(doCourier);
+        Observers.NotifyListUpdated();
+    }
+    internal static void Delete(int courierId)
+    {
+        s_dal.Courier.Delete(courierId);
+        Observers.NotifyItemUpdated(courierId);
+        Observers.NotifyListUpdated();
+    }
+    internal static void Update(DO.Courier doCourier)
+    {
+        s_dal.Courier.Update(doCourier);
+        Observers.NotifyItemUpdated(doCourier.Id);
+        Observers.NotifyListUpdated();
+    }
+
+
     internal static int? GetNumberOfDeliveriesInProcess(int id)
     {
         throw new NotImplementedException();
@@ -82,6 +97,11 @@ internal static class CourierManager
     }
 
     internal static int GetNumOfDeliveriesOnTime(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static void SimulateCourseRegistrationAndGrade()
     {
         throw new NotImplementedException();
     }

@@ -21,7 +21,7 @@ internal class AdminImplementation : IAdmin
     }
 
     public DateTime GetClock() => AdminManager.Now; 
-   // internal static DateTime Now { get => AdminManager.Now; } //stage 4
+    internal static DateTime Now { get => AdminManager.Now; } //stage 4
 
     public Config GetConfig()=> AdminManager.GetConfig();   
 
@@ -33,6 +33,17 @@ internal class AdminImplementation : IAdmin
  
 
     public void SetConfig(Config config)=> AdminManager.SetConfig(config);
-     
-   
+
+    #region Stage 5
+    public void AddClockObserver(Action clockObserver) =>
+    AdminManager.ClockUpdatedObservers += clockObserver;
+    public void RemoveClockObserver(Action clockObserver) =>
+    AdminManager.ClockUpdatedObservers -= clockObserver;
+    public void AddConfigObserver(Action configObserver) =>
+   AdminManager.ConfigUpdatedObservers += configObserver;
+    public void RemoveConfigObserver(Action configObserver) =>
+    AdminManager.ConfigUpdatedObservers -= configObserver;
+    #endregion Stage 5
+
+
 }

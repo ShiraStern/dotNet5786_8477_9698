@@ -25,7 +25,8 @@ internal class CourierImpementation : ICourier
         {
             // create DO and persist via DAL
             var doCourier = CourierManager.ConvertToCourier(boCourier);
-            CourierManager.GetDal().Courier.Create(doCourier);
+            CourierManager.Create(doCourier);
+
         }
         catch (DalAlreadyExistsException ex)
         {
@@ -42,7 +43,7 @@ internal class CourierImpementation : ICourier
         try
         {
             // delete courier via DAL   
-            CourierManager.GetDal().Courier.Delete(id);
+            CourierManager.Delete(id);
         }
         catch (DalDoesNotExistException ex)
         {
@@ -62,8 +63,11 @@ internal class CourierImpementation : ICourier
             throw new BlUnauthorizedAccessException("Only admin and courier can view the courier's list.");
         try
         {
+            
+            
             // get all couriers from DAL
-            var dalCouriers = CourierManager.GetDal().Courier.ReadAll().Where(c => c.Active == isActive);   
+            var dalCouriers = CourierManager.ReadAll();
+            
             // convert to BO list
             var boCouriers = from dalCourier in dalCouriers
                              select new BO.CourierInList()
@@ -82,10 +86,9 @@ internal class CourierImpementation : ICourier
             {
                 boCouriers = sortCouriersBy.Value switch
                 {
-                    // להחליט לפי מה למיין את השליחים
-                    //sortCouriersByProperty.IsActive => boCouriers.OrderBy(c => c.ID),
-                    //sortCouriersByProperty.NumberOfDeliveries => boCouriers.OrderBy(c => c.FullName)
-                    // => boCouriers
+                    sortCouriersByProperty.IsActive => boCouriers.OrderBy(c => c.Active),
+                    sortCouriersByProperty.EmploymentStartDate => boCouriers.OrderBy(c => c.EmploymentStartDate)
+
                 };
             }
             return boCouriers;
@@ -106,7 +109,7 @@ internal class CourierImpementation : ICourier
         try
         {
             DO.Courier courier
-                = CourierManager.GetDal().Courier.ReadAll().FirstOrDefault(C => C.Id == courierId) 
+                = CourierManager.ReadAll().FirstOrDefault(C => C.Id == courierId) 
                 ?? throw new BlDoesNotExistException($"coulden't find courier with ID:{courierId}");
             return CourierManager.ConvertToCourier(courier);    
         }
@@ -122,7 +125,7 @@ internal class CourierImpementation : ICourier
     {
         try
         {
-            DO.Courier? courier = CourierManager.GetDal().Courier.ReadAll().FirstOrDefault(c => c.FullName == userName) ?? null;
+            DO.Courier? courier = CourierManager.ReadAll().FirstOrDefault(c => c.FullName == userName) ?? null;
             if (courier is null)
                 throw new BlDoesNotExistException($"couldent find courier or manager with the name:{userName}");
             if (courier.Password != password)
@@ -152,7 +155,7 @@ internal class CourierImpementation : ICourier
         {
             // create DTO/DO and persist via DAL
             DO.Courier doCourier = CourierManager.ConvertToCourier(boCourier);
-            CourierManager.GetDal().Courier.Update(doCourier);
+            CourierManager.Update(doCourier);
         }
         catch (DalDoesNotExistException ex)
         {
