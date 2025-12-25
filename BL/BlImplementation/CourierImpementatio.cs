@@ -87,7 +87,7 @@ internal class CourierImpementation : ICourier
                 boCouriers = sortCouriersBy.Value switch
                 {
                     sortCouriersByProperty.IsActive => boCouriers.OrderBy(c => c.Active),
-                    sortCouriersByProperty.EmploymentStartDate => boCouriers.OrderBy(c => c.EmploymentStartDate)
+                    sortCouriersByProperty.IsNotActive => boCouriers.OrderBy(c => c.EmploymentStartDate)
 
                 };
             }

@@ -19,9 +19,33 @@ namespace PL.Courier
     /// </summary>
     public partial class CourierListWindow : Window
     {
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        public BO.FilterCouriersByProperty FilterCouriers { get; set; } = BO.FilterCouriersByProperty.All;
+
+
+        public IEnumerable<BO.CourierInList> CourierInList
+        {
+            get { return (IEnumerable<BO.CourierInList> )GetValue(CourierInListProperty); }
+            set { SetValue(CourierInListProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CourierInList.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CourierInListProperty =
+            DependencyProperty.Register("CourierInList", typeof(IEnumerable<BO.CourierInList> ), 
+                typeof(CourierListWindow), new PropertyMetadata(null));
+
+
+
         public CourierListWindow()
         {
             InitializeComponent();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CourierInList = (FilterCouriers == BO.FilterCouriersByProperty.All) ?
+                s_bl?.courier!.GetCourierList(s_bl.Admin.) : s_bl?.courier!.GetCourierList(null, BO.FilterCouriersByProperty., Semester)!;
+
         }
     }
 }

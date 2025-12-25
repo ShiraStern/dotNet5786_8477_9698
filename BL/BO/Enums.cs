@@ -80,8 +80,14 @@ public enum TimeUnit
 public enum sortCouriersByProperty
 {
     IsActive,
-    EmploymentStartDate,
-    //* Add more properties as needed
+    IsNotActive
+    
+}
+public enum FilterCouriersByProperty
+{
+    IsActive,
+    IsNotActive,
+    All
 }
 
 public enum sortOrdersByProperty
