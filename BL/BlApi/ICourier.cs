@@ -6,7 +6,7 @@ namespace BlApi;
 public interface ICourier : IObservable //stage 5 ממשק הרחבת
 {
     string Login(string userName, string password);
-    IEnumerable<BO.CourierInList> GetCourierList(int applicantId, bool isActive, sortCouriersByProperty? sortCouriersBy);
+    IEnumerable<BO.CourierInList> GetCourierList(int applicantId, bool? isActive, FilterCouriersByProperty? FilterCouriersBy);
     BO.Courier GetDetails(int applicantId, int courierId);
     void UpdateDetails(int applicantId, BO.Courier boCourier);
     void Delete(int applicantId, int id);

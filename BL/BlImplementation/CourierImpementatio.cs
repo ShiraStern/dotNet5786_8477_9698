@@ -55,8 +55,8 @@ internal class CourierImpementation : ICourier
 
     public IEnumerable<BO.CourierInList> GetCourierList(
         int applicantId, 
-        bool isActive, 
-        BO.sortCouriersByProperty? sortCouriersBy)
+        bool? isActive, 
+        BO.FilterCouriersByProperty? filterCouriersBy)
     {
 
         if (!AdminManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
@@ -82,12 +82,12 @@ internal class CourierImpementation : ICourier
                                  NumberOfDeliveriesInProcess = CourierManager.GetNumberOfDeliveriesInProcess(dalCourier.Id)
                              };
             // apply sorting if requested
-            if (sortCouriersBy.HasValue)
+            if (filterCouriersBy.HasValue)
             {
-                boCouriers = sortCouriersBy.Value switch
+                boCouriers = filterCouriersBy.Value switch
                 {
-                    sortCouriersByProperty.IsActive => boCouriers.OrderBy(c => c.Active),
-                    sortCouriersByProperty.IsNotActive => boCouriers.OrderBy(c => c.EmploymentStartDate)
+                    FilterCouriersByProperty.IsActive => boCouriers.OrderBy(c => c.Active),
+                    FilterCouriersByProperty.IsNotActive => boCouriers.OrderBy(c => c.Active)
 
                 };
             }

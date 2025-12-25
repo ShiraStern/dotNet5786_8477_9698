@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BlApi;
+using BO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,8 +45,13 @@ namespace PL.Courier
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            int managetID = s_bl.Admin.GetConfig().ManagerID;
             CourierInList = (FilterCouriers == BO.FilterCouriersByProperty.All) ?
-                s_bl?.courier!.GetCourierList(s_bl.Admin.) : s_bl?.courier!.GetCourierList(null, BO.FilterCouriersByProperty., Semester)!;
+                s_bl?.courier!.GetCourierList(managetID, null, FilterCouriersByProperty.All)!
+                : FilterCouriers == BO.FilterCouriersByProperty.IsActive ?
+                s_bl?.courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsActive)! :
+                s_bl?.courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsNotActive)!;
+                
 
         }
     }

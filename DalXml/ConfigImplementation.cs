@@ -33,6 +33,11 @@ internal class ConfigImplementation : IConfig
         get => Config.AvgCarSpeed;
         set => Config.AvgCarSpeed = value;
     }
+    public int ManagerID
+    {
+        get => Config.ManagerID;
+        set => Config.ManagerID = value;
+    }
     public double AvgMotorcycleSpeed
     {
         get => Config.AvgMotorcycleSpeed;

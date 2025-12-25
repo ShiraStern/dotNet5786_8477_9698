@@ -2,7 +2,7 @@
 
 namespace Dal;
 
-
+//C:\Users\User\source\repos\dotNet5786_8477_9698\DalList\ConfigImplementation.cs
 internal class ConfigImplementation : IConfig
 {
     public DateTime Clock
@@ -14,6 +14,11 @@ internal class ConfigImplementation : IConfig
     {
         get => Config.CompanyAddress;
         set => Config.CompanyAddress = value;
+    }
+    public int ManagerID
+    {
+        get => Config.ManagerID;
+        set => Config.ManagerID = value;
     }
     public double? Latitude
     {

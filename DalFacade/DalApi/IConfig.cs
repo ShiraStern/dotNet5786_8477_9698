@@ -16,6 +16,8 @@ public interface IConfig
     TimeSpan MaxDeliveryDuration { get; set; }
     TimeSpan DelayRiskTime { get; set; }
     TimeSpan InactivityThreshold { get; set; }
+    public int ManagerID { get; set; }
+
     void Reset();
 }
 
