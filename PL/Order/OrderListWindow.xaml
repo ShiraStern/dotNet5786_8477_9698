@@ -21,6 +21,9 @@
             </Grid.ColumnDefinitions>
             <Label Content="Label" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <ComboBox Grid.Column="1" SelectedValue="{Binding Path=FilterCouriers, Mode=TwoWay}"
+            ItemsSource="{Binding Source={StaticResource CourierActivityCollectionKey}}" SelectionChanged="ComboBox_SelectionChanged"/>
+
         </Grid>
         <DataGrid Margin="5" Grid.Row="1" ItemsSource="{Binding OrderInList}"/>
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
