@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using PL.Courier;
+using PL.Order;
+using System.Reflection.Metadata;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -74,21 +77,16 @@ namespace PL
             s_bl.Admin.ForwardClock(BO.TimeUnit.Month);
         }
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private void btnHandleOrders(object sender, RoutedEventArgs e)
         {
+            new OrderListWindow().Show();
 
         }
 
-        private void Button_Click_6(object sender, RoutedEventArgs e)
+        private void btnHandleCourier(object sender, RoutedEventArgs e)
         {
+            new CourierListWindow().Show();
 
         }
-
-        private void Button_Click_7(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        
     }
 }
