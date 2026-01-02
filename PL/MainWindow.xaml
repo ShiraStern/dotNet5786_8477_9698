@@ -6,41 +6,46 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+         Loaded="Window_Loaded"
+        Closed="Window_Closed">
 
     <!--Internal, Upper Grid-->
     <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch"
           Width="auto" RenderTransformOrigin="0.416,0.48">
         <Grid.ColumnDefinitions>
+            <!--Configuration variables area-->
             <ColumnDefinition Width="*"/>
+            <!--Management buttons area-->
+            <ColumnDefinition Width="*"/>
+            <!--System clock zone-->
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="{Binding CurrentTime}" FontWeight="Bold" FontSize="20"/>
 
         <!--קישור משתנה התצורה-->
         <StackPanel Orientation="Horizontal"
-            Margin="20,50,0,0"
+            Margin="10,184,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top">
             <Label Content="Max Range:" Width="100"/>
             <TextBox Text="{Binding Configuration.MaxRange, UpdateSourceTrigger=PropertyChanged}" Height="NaN"
-           Width="50" HorizontalAlignment="Left" Canvas.Left="107" VerticalAlignment="Top"/>
+           Width="50" RenderTransformOrigin="-0.092,0.826"/>
             <Button Content="Save Configuration"
-        HorizontalAlignment="Left"
-        Margin="20,100,0,0"
-        VerticalAlignment="Top"
         Click="btnSaveConfig_Click"/>
 
         </StackPanel>
-        <!--<Button Content="Add One Minute " HorizontalAlignment="Center" Margin="0,145,0,0" VerticalAlignment="Top" Grid.Column="1" Click="btnAddOneMinute_Click" Width="120"/>
-        <Button Content="Add One Day" HorizontalAlignment="Center" Margin="0,175,0,0" VerticalAlignment="Top" Grid.Column="1" Click="btnAddOneDay_Click" Width="120"/>
-        <Button Content="Add One Hour" HorizontalAlignment="Center" Margin="0,205,0,0" VerticalAlignment="Top" Grid.Column="1" Click="btnAddOneHour_Click" Width="120"/>
-        <Button Content="Add One Year" HorizontalAlignment="Center" Margin="0,263,0,0" VerticalAlignment="Top" Grid.Column="1" Click="btnAddOneYear_Click" Width="120"/>
-        <Button Content="Add One  Month" HorizontalAlignment="Center" Margin="0,234,0,0" VerticalAlignment="Top" Grid.Column="1" Click="btnAddOneMonth_Click" Width="120"/>
-        <Button Content="Initialize" HorizontalAlignment="Left" Margin="131,130,0,0" VerticalAlignment="Top" Click="Button_Click" Width="54"/>
-        <Button Content="ResetDB" HorizontalAlignment="Left" Margin="130,163,0,0" VerticalAlignment="Top" Click="Button_Click_1" Width="56"/>-->
-        <Button Content="Handle Courier" HorizontalAlignment="Left" Margin="132,249,0,0" VerticalAlignment="Top" Click="btnHandleCourier"/>
-        <Button Content="Handle Orders" HorizontalAlignment="Left" Margin="133,215,0,0" VerticalAlignment="Top"  Click="btnHandleOrders"  RenderTransformOrigin="0.5,0.5"/>
-        <!--<Button Content="The list view" HorizontalAlignment="Left" Margin="350,175,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.654,0.493" Grid.ColumnSpan="2" Height="35" Width="85" Click="Button_Click_7"/>-->
+        <!-- Buttons to manipulate system clock -->
+        <Label Grid.Column="2"  Content="{Binding CurrentTime}" HorizontalAlignment="Center" Height="26" Margin="0,79,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Add One Minute " HorizontalAlignment="Center" Margin="0,118,0,0" VerticalAlignment="Top" Grid.Column="2" Click="btnAddOneMinute_Click" Width="120"/>
+        <Button Content="Add One Day" HorizontalAlignment="Center" Margin="0,178,0,0" VerticalAlignment="Top" Grid.Column="2" Click="btnAddOneDay_Click" Width="120"/>
+        <Button Content="Add One Hour" HorizontalAlignment="Center" Margin="0,148,0,0" VerticalAlignment="Top" Grid.Column="2" Click="btnAddOneHour_Click" Width="120"/>
+        <Button Content="Add One Year" HorizontalAlignment="Center" Margin="0,236,0,0" VerticalAlignment="Top" Grid.Column="2" Click="btnAddOneYear_Click" Width="120"/>
+        <Button Content="Add One  Month" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2" Click="btnAddOneMonth_Click" Width="120"/>
+        <!-- management buttons -->
+        <Button Content="Initialize DB" HorizontalAlignment="Left" Margin="99,120,0,0" VerticalAlignment="Top" Click="Button_InitializeDB" Width="85" Grid.Column="1"/>
+        <Button Content="Reset DB" HorizontalAlignment="Left" Margin="96,153,0,0" VerticalAlignment="Top" Click="Button_ResetDB" Width="86" Grid.Column="1"/>
+        <!--Entity management buttons -->
+        <Button Content="Handle Courier" HorizontalAlignment="Left" Margin="95,239,0,0" VerticalAlignment="Top" Click="btnHandleCourier" Grid.Column="1"/>
+        <Button Content="Handle Orders" HorizontalAlignment="Left" Margin="97,205,0,0" VerticalAlignment="Top"  Click="btnHandleOrders"  RenderTransformOrigin="0.5,0.5" Grid.Column="1"/>
     </Grid>
 </Window>
