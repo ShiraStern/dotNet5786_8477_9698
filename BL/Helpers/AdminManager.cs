@@ -1,5 +1,6 @@
 ﻿//using BO;
 using System.Runtime.CompilerServices;
+using DalTest;
 namespace Helpers;
 
 /// <summary>
@@ -20,6 +21,7 @@ internal static class AdminManager //stage 4
     ///  None, // walking
     
     internal static DateTime Now { get => s_dal.Config.Clock; } //stage 4
+    internal static int ManagerID { get => s_dal.Config.ManagerID; } //stage 4
     internal static double AvgCarSpeed { get => s_dal.Config.AvgCarSpeed; } //stage 4
     internal static double AvgMotorcycleSpeed { get => s_dal.Config.AvgMotorcycleSpeed; } //stage 4
     internal static double AvgWalkingSpeed { get => s_dal.Config.AvgWalkingSpeed; } //stage 4
@@ -68,7 +70,7 @@ internal static class AdminManager //stage 4
     {
         MaxRange = s_dal.Config.MaxRange,
         ManagerID = s_dal.Config.ManagerID,
-        Clock = s_dal.Config.Clock,
+        Clock = Now,
         CompanyAddress = s_dal.Config.CompanyAddress,
         Latitude = s_dal.Config.Latitude,
     };
@@ -107,12 +109,12 @@ internal static class AdminManager //stage 4
 
     internal static void InitializeDB() //stage 4-7
     {
-        //lock (BlMutex) //stage 7
-        //{
-        //    DalTest.Initialization.Do(); //stage 4
-        //    AdminManager.UpdateClock(AdminManager.Now);  //stage 5 - needed since we want the label on Pl to be updated           
-        //    AdminManager.SetConfig(AdminManager.GetConfig()); //stage 5 - needed for update the PL
-        //}
+        lock (BlMutex) //stage 7
+        {
+            //stage 4
+            AdminManager.UpdateClock(AdminManager.Now);  //stage 5 - needed since we want the label on Pl to be updated           
+            AdminManager.SetConfig(AdminManager.GetConfig()); //stage 5 - needed for update the PL
+        }
     }
 
     #endregion Stage 4-7
@@ -179,8 +181,8 @@ internal static class AdminManager //stage 4
             //TO_DO: //stage 7
             //Add calls here to any logic simulation that was required in stage 7
             //for example: course registration simulation
-            if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
-                _simulateTask = Task.Run(() => CourierManager.SimulateCourseRegistrationAndGrade());
+            //if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
+            //    _simulateTask = Task.Run(() => CourierManager.SimulateCourseRegistrationAndGrade());
 
             //etc...
 
@@ -192,6 +194,6 @@ internal static class AdminManager //stage 4
         }
     }
     internal static bool IsValidManagerId(int applicantId)
-    { return (applicantId == GetConfig().ManagerID); }
+    { return (applicantId == AdminManager.ManagerID); }
     #endregion Stage 7 base
 }

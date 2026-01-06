@@ -86,8 +86,9 @@ internal class CourierImpementation : ICourier
             {
                 boCouriers = filterCouriersBy.Value switch
                 {
-                    FilterCouriersByProperty.IsActive => boCouriers.OrderBy(c => c.Active),
-                    FilterCouriersByProperty.IsNotActive => boCouriers.OrderBy(c => c.Active)
+                    FilterCouriersByProperty.IsActive => boCouriers.Where(c => c.Active),
+                    FilterCouriersByProperty.IsNotActive => boCouriers.Where(c => !c.Active),
+                    FilterCouriersByProperty.All => boCouriers
 
                 };
             }
@@ -99,8 +100,6 @@ internal class CourierImpementation : ICourier
             throw new BlDataAccessException("Failed to read courier's data.", ex);
         }
     }
-
-   
 
     public BO.Courier GetDetails(int applicantId, int courierId)
     {
@@ -162,13 +161,16 @@ internal class CourierImpementation : ICourier
             throw new BlDoesNotExistException($"couldent find courier or manager with the name:{boCourier.FullName}", ex);
         }
     }
+
+
+    // Observers methods
     public void AddObserver(Action listObserver) =>
-CourierManager.Observers.AddListObserver(listObserver); //stage 5
+        CourierManager.Observers.AddListObserver(listObserver); //stage 5
     public void AddObserver(int id, Action observer) =>
-CourierManager.Observers.AddObserver(id, observer); //stage 5
+        CourierManager.Observers.AddObserver(id, observer); //stage 5
     public void RemoveObserver(Action listObserver) =>
-CourierManager.Observers.RemoveListObserver(listObserver); //stage 5
+        CourierManager.Observers.RemoveListObserver(listObserver); //stage 5
     public void RemoveObserver(int id, Action observer) =>
-CourierManager.Observers.RemoveObserver(id, observer); //stage 5
+        CourierManager.Observers.RemoveObserver(id, observer); //stage 5
 
 }

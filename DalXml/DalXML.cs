@@ -21,5 +21,5 @@ sealed internal class DalXml : IDal
         Delivery.DeleteAll();
         Courier.DeleteAll();
         Config.Reset();
-    }
+      }
 }

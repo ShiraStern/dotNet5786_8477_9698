@@ -158,7 +158,7 @@ internal class Program
         double? maxDistance = string.IsNullOrWhiteSpace(mdInput) ? existing.MaxDistance : double.Parse(mdInput);
 
         // שדות Enum:
-        Console.Write("Delivery type (0-Car,1-Motorcycle,2-Drone,3-Walking). Current " +
+        Console.Write("Delivery type (0-Car,1-Motorcycle,2-Bicycle ,3-Walking). Current " +
                       $"({(int)existing.DeliveryType}): ");
         string? dtInput = Console.ReadLine();
         DeliveryType deliveryType =
@@ -194,7 +194,7 @@ internal class Program
     private static void deleteCourier()
     {
         Console.WriteLine("Please enter ID number of courier you wish to delete."); 
-        int? id = int.Parse(Console.ReadLine());//לבדוק למה הוא מסמן כאן ירוק
+        int? id = int.Parse(Console.ReadLine()!);
         if (id == null)
             throw new Exception(@"invalid courier ID");
         if (s_dal.Delivery!.ReadAll(d => d.CourierId == id).Any())
@@ -852,8 +852,9 @@ internal class Program
             //List<DO.Order> orders = s_dalOrder!.ReadAll();
             //List<DO.Delivery> deliveries = s_dalDelivery!.ReadAll();
             // gets user choice and call the suitable function
-            
-            int choice=mainMenu();
+            initializationData();
+
+            int choice =mainMenu();
             while(choice!=0)
             {
                  switch ((MainMenu)choice)

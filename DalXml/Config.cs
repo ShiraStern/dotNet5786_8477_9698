@@ -68,8 +68,8 @@ internal class Config
     } // in KM/H
     internal static double AvgBicycleSpeed
     {
-        get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "AvgDroneSpeed");
-        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgDroneSpeed", value = 20);
+        get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "AvgBicycleSpeed");
+        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgBicycleSpeed", value = 20);
     } // in KM/H
     internal static double AvgWalkingSpeed
     {

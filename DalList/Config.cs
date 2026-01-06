@@ -31,7 +31,7 @@ internal static class Config
     internal static double? MaxRange { get; set; } =297; // in KM, in Israel
     internal static double AvgCarSpeed { get; set; } = 50;// in KM/H
     internal static double AvgMotorcycleSpeed { get; set; } = 60;// in KM/H
-    internal static double AvgDroneSpeed { get; set; } = 20;// in KM/H
+    internal static double AvgBicycleSpeed { get; set; } = 20;// in KM/H
     internal static double AvgWalkingSpeed { get; set; } = 6;// in KM/H
     internal static TimeSpan MaxDeliveryDuration { get; set; } = TimeSpan.FromDays(30);
     internal static TimeSpan DelayRiskTime { get; set; } = TimeSpan.FromDays(25);
@@ -49,7 +49,7 @@ internal static class Config
         Longitude = null;
         MaxRange = null;
         AvgCarSpeed = 50;
-        AvgDroneSpeed = 60;
+        AvgBicycleSpeed = 60;
         AvgMotorcycleSpeed = 20;
         AvgWalkingSpeed = 6;
         MaxDeliveryDuration = TimeSpan.FromDays(30);

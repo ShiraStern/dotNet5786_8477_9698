@@ -24,7 +24,7 @@ namespace PL.Courier
     public partial class CourierListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        public BO.FilterCouriersByProperty FilterCouriers { get; set; } = BO.FilterCouriersByProperty.All;
+       public BO.FilterCouriersByProperty FilterCouriers { get; set; } = BO.FilterCouriersByProperty.All;
 
 
         public IEnumerable<BO.CourierInList> CourierInList

@@ -289,7 +289,7 @@ internal class Program
         foreach (var courier in s_bl.courier.GetCourierList(applicantID, true, BO.FilterCouriersByProperty.IsActive))
 
         {
-            Console.WriteLine(courier);
+            Console.WriteLine(courier.ToString());
         }
     }
     private static void DeleteCourier()
@@ -538,11 +538,7 @@ internal class Program
     {
         try
         {
-            //List<DO.Courier> courier=s_dalCourier!.ReadAll(); 
-            //List<DO.Order> orders = s_dalOrder!.ReadAll();
-            //List<DO.Delivery> deliveries = s_dalDelivery!.ReadAll();
-            // gets user choice and call the suitable function
-
+            
             int choice = mainMenuOptions();
             while (choice != 0)
             {

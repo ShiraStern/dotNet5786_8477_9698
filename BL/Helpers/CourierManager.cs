@@ -88,21 +88,25 @@ internal static class CourierManager
 
     internal static int? GetNumberOfDeliveriesInProcess(int id)
     {
-        throw new NotImplementedException();
+        return s_dal.Delivery.ReadAll().
+                    Where(c => c.CourierId == id &&
+                    c.DeliveryTermintionType is null ).Count();
     }
 
     internal static int GetNumOfDeliveriesNotOnTime(int id)
     {
-        throw new NotImplementedException();
+        return s_dal.Delivery.ReadAll().
+            Where(c => c.CourierId == id &&
+            c.DeliveryTermintionType == DO.DeliveryTermintionType.DeliveredSeccessfully &&
+            c.DeliveryEndTime > c.DeliveryStartTime + AdminManager.MaxDeliveryDuration).Count();
     }
 
     internal static int GetNumOfDeliveriesOnTime(int id)
     {
-        throw new NotImplementedException();
+        return s_dal.Delivery.ReadAll().
+            Where(c=> c.CourierId==id &&
+            c.DeliveryTermintionType==DO.DeliveryTermintionType.DeliveredSeccessfully &&
+            c.DeliveryEndTime<= c.DeliveryStartTime+AdminManager.MaxDeliveryDuration).Count();
     }
 
-    internal static void SimulateCourseRegistrationAndGrade()
-    {
-        throw new NotImplementedException();
-    }
 }

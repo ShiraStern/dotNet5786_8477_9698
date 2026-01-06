@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ public class Config
 {
     public double? MaxRange { get; set; }
     public int ManagerID { get; set; }
-    public DateTime Clock { get; set; } = DateTime.Now;
+    public DateTime Clock { get; set; } = AdminManager.Now;
     public string? CompanyAddress { get; set; } = "בית הדפוס 9 ירושלים";
     public double? Latitude { get; set; }
     public double? Longitude { get; set; }

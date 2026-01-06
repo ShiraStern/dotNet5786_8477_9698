@@ -1,5 +1,6 @@
 ﻿namespace DalApi;
 using System.Xml.Linq;
+//C:\Users\User\source\repos\dotNet5786_8477_9698\DalFacade\DalApi\DalConfig.cs
 
 static class DalConfig
 {
