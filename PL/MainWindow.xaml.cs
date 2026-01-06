@@ -51,32 +51,74 @@ namespace PL
                 typeof(BO.Config),
                 typeof(MainWindow)
             );
-
+        //כפתורי עדכון השעה  והתאריך במערכת
         private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
         {
             s_bl.Admin.ForwardClock(BO.TimeUnit.Minute);
         }
-   
-        private void btnAddOneDay_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.ForwardClock(BO.TimeUnit.Day);
-        }
-
         private void btnAddOneHour_Click(object sender, RoutedEventArgs e)
         {
             s_bl.Admin.ForwardClock(BO.TimeUnit.Hour);
         }
-
+        private void btnAddOneDay_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.ForwardClock(BO.TimeUnit.Day);
+        }
+        private void btnAddOneMonth_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.ForwardClock(BO.TimeUnit.Month);
+        }
         private void btnAddOneYear_Click(object sender, RoutedEventArgs e)
         {
             s_bl.Admin.ForwardClock(BO.TimeUnit.Year);
         }
 
-        private void btnAddOneMonth_Click(object sender, RoutedEventArgs e)
+        //מטודות לטיפול בכפתורי אתחול ואיפוס מסד הנתונים
+        private void Button_InitializeDB(object sender, RoutedEventArgs e)
         {
-            s_bl.Admin.ForwardClock(BO.TimeUnit.Month);
+            var result = MessageBox.Show(
+        "Are you sure you want to initialize the database?",
+        "Confirmation",
+        MessageBoxButton.YesNo,
+        MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window != this)
+                    window.Close();
+            }
+
+            Mouse.OverrideCursor = Cursors.Wait;
+            s_bl.Admin.InitializeDB();
+            Mouse.OverrideCursor = null;
+        }
+        private void Button_ResetDB(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show(
+                    "Are you sure you want to reset the database?",
+                    "Confirmation",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window != this)
+                    window.Close();
+            }
+
+            Mouse.OverrideCursor = Cursors.Wait;
+            s_bl.Admin.ResetDB();
+            Mouse.OverrideCursor = null;
         }
 
+
+        //מטודות לטיפול בכפתורי ניהול משלוחים והזמנות
         private void btnHandleOrders(object sender, RoutedEventArgs e)
         {
             new OrderListWindow().Show();
@@ -86,7 +128,32 @@ namespace PL
         private void btnHandleCourier(object sender, RoutedEventArgs e)
         {
             new CourierListWindow().Show();
-
         }
+
+        //מטודות התצפית על השעון והקונפיגורציה
+        private void clockObserver()
+        {
+            CurrentTime = s_bl.Admin.GetClock();
+        }
+        private void configObserver()
+        {
+            Configuration = s_bl.Admin.GetConfig();
+        }
+        //מטודות שטוענות את השעון ואת הקונפיגורציה בעת טעינת החלון וסגירתו
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            CurrentTime = s_bl.Admin.GetClock();
+            Configuration = s_bl.Admin.GetConfig();
+
+            s_bl.Admin.AddClockObserver(clockObserver);
+            s_bl.Admin.AddConfigObserver(configObserver);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            s_bl.Admin.RemoveClockObserver(clockObserver);
+            s_bl.Admin.RemoveConfigObserver(configObserver);
+        }
+
     }
 }
