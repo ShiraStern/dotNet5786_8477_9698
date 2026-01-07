@@ -22,8 +22,8 @@ internal class Config
 
     internal static DateTime Clock
     {
-        get => XMLTools.GetConfigDateVal(s_data_config_xml, "Clock");
-        set => XMLTools.SetConfigDateVal(s_data_config_xml, "Clock", value);
+        get => XMLTools.GetConfigDateVal(s_data_config_xml, "clock");
+        set => XMLTools.SetConfigDateVal(s_data_config_xml, "clock", value);
     }
 
     internal static int ManagerID 
