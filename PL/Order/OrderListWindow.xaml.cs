@@ -22,6 +22,7 @@ namespace PL.Order
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+        public BO.filterOrdersByProperty filterOrdersByProp  { get; set; } = BO.filterOrdersByProperty.OrderStatus;
 
         public IEnumerable<BO.OrderInList> OrderInList
         {
@@ -35,9 +36,34 @@ namespace PL.Order
                 typeof(OrderListWindow), new PropertyMetadata(null));
 
 
+
         public OrderListWindow()
         {
             InitializeComponent();
+        }
+
+
+        private void queryOrderList()
+        {
+            int managetID = s_bl.Admin.GetConfig().ManagerID;
+            OrderInList = (filterOrdersByProp == BO.filterOrdersByProperty.OrderStatus) ?
+                s_bl?.order!.GetOrderList(managetID, null, filterOrdersByProperty.OrderStatus)!
+                : filterOrdersByProp == BO.filterOrdersByProperty.OrderType ?
+                s_bl?.order!.GetOrderList(managetID, null, BO.filterOrdersByProperty.OrderType)! :
+                s_bl?.order!.GetOrderList(managetID, null, BO.filterOrdersByProperty.DeliveryType)!;
+        }
+        private void courseListObserver()
+            => queryOrderList();
+ 
+private void Window_Loaded(object sender, RoutedEventArgs e)
+    => s_bl.order.AddObserver(courseListObserver);
+
+        private void Window_Closed(object sender, EventArgs e)
+            => s_bl.order.RemoveObserver(courseListObserver);
+
+        private void OrderFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            queryOrderList();
         }
     }
 }

@@ -23,10 +23,59 @@
             </Grid.ColumnDefinitions>
             <Label Content="Label" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <ComboBox Grid.Column="1" SelectedValue="{Binding Path=FilterCouriers, Mode=TwoWay}"
-                        ItemsSource="{Binding Source={StaticResource CourierActivityCollectionKey}}" SelectionChanged="ComboBox_SelectionChanged"/>
+                        ItemsSource="{Binding Source={StaticResource CourierActivityCollectionKey}}" SelectionChanged="CourierFilterComboBox_SelectionChanged"/>
 
         </Grid>
-        <DataGrid Margin="5" Grid.Row="1" ItemsSource="{Binding CourierInList}"/>
+        <DataGrid Margin="5"
+                  Grid.Row="1" 
+                  ItemsSource="{Binding Path=CourierInList}"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Binding="{Binding Id}"
+                            Header="ID"
+                            Width="Auto"/>
+
+                <DataGridTextColumn Binding="{Binding FullName}"
+                            Header="Full Name"
+                            Width="*"/>
+
+                <!-- ENABLED -->
+                <DataGridTemplateColumn Header="Enabled"
+                                Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsActive}"
+                              IsEnabled="False"
+                              HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Binding="{Binding DeliveryType}"
+                            Header="Delivery Type"
+                            Width="Auto"/>
+
+                <!-- DATE FORMAT -->
+                <DataGridTextColumn Header="Employment Start Date"
+                            Width="Auto"
+                            Binding="{Binding EmploymentStartDate,
+                                              StringFormat={}{0:dd/MM/yyyy}}"/>
+
+                <DataGridTextColumn Binding="{Binding NumOfDeliveriesOnTime}"
+                            Header="On Time"
+                            Width="Auto"/>
+
+                <DataGridTextColumn Binding="{Binding NumOfDeliveriesNotOnTime}"
+                            Header="Late"
+                            Width="Auto"/>
+
+                <DataGridTextColumn Binding="{Binding NumberOfDeliveriesInProcess}"
+                            Header="In Process"
+                            Width="Auto"/>
+
+            </DataGrid.Columns>
+        </DataGrid> 
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
 
     </Grid>

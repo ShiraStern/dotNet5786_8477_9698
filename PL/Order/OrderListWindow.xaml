@@ -8,24 +8,73 @@
         Title="OrderListWindow" Height="640" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Grid>
-        <!--<Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        --><!--Internal, Upper Grid--><!--
-        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="Label" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <ComboBox Grid.Column="1" SelectedValue="{Binding Path=FilterCouriers, Mode=TwoWay}"
-            ItemsSource="{Binding Source={StaticResource CourierActivityCollectionKey}}" SelectionChanged="ComboBox_SelectionChanged"/>
+        <!--External Grid-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="500*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!--Internal, Upper Grid-->
+            <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Label" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1" SelectedValue="{Binding Path=filterOrdersByProp, Mode=TwoWay}"
+                       ItemsSource="{Binding Source={StaticResource OrderStatusCollectionKey}}" SelectionChanged="OrderFilterComboBox_SelectionChanged"/>
 
-        </Grid>-->
-        <DataGrid Margin="5" Grid.Row="1" ItemsSource="{Binding OrderInList}"/>
+            </Grid>
+        <DataGrid Margin="5" 
+                  Grid.Row="1" 
+                  ItemsSource="{Binding Path=OrderInList}" 
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Binding="{Binding DeliveryId}"
+                            Header="Delivery ID"
+                            Width="Auto"/>
+
+                <DataGridTextColumn Binding="{Binding OrderId}"
+                            Header="Order ID"
+                            Width="Auto"/>
+
+                <DataGridTextColumn Binding="{Binding DeliveryType}"
+                            Header="Delivery Type"
+                            Width="Auto"/>
+
+                <DataGridTextColumn Binding="{Binding AirDistance}"
+                            Header="Air Distance"
+                            Width="Auto"/>
+
+                <DataGridTextColumn Binding="{Binding OrderStatus}"
+                            Header="Order Status"
+                            Width="Auto"/>
+
+                <DataGridTextColumn Binding="{Binding ScheduleStatus}"
+                            Header="Schedule Status"
+                            Width="Auto"/>
+
+                <!-- TIME LEFT -->
+                <DataGridTextColumn Header="Time Left"
+                            Width="Auto"
+                            Binding="{Binding DeliveryTimeLeft,
+                                              StringFormat={}{0:hh\\:mm}}"/>
+
+                <!-- TOTAL HANDLING TIME -->
+                <DataGridTextColumn Header="Handling Time"
+                            Width="Auto"
+                            Binding="{Binding TotalHandlingTime,
+                                              StringFormat={}{0:hh\\:mm}}"/>
+
+                <DataGridTextColumn Binding="{Binding TotalDeliveries}"
+                            Header="Total Deliveries"
+                            Width="Auto"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
     </Grid>
 </Window>
+    
+    

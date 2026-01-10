@@ -45,7 +45,7 @@ namespace PL.Courier
             InitializeComponent();
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void queryCourierList()
         {
             int managetID = s_bl.Admin.GetConfig().ManagerID;
             CourierInList = (FilterCouriers == BO.FilterCouriersByProperty.All) ?
@@ -53,8 +53,22 @@ namespace PL.Courier
                 : FilterCouriers == BO.FilterCouriersByProperty.IsActive ?
                 s_bl?.courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsActive)! :
                 s_bl?.courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsNotActive)!;
-                
+        }
+        private void courseListObserver()
+            => queryCourierList();
+ 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+            => s_bl.courier.AddObserver(courseListObserver);
 
+        private void Window_Closed(object sender, EventArgs e)
+            => s_bl.courier.RemoveObserver(courseListObserver);
+
+
+
+
+        private void CourierFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            queryCourierList();
         }
     }
 }
