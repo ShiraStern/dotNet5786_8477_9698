@@ -63,12 +63,32 @@ namespace PL.Courier
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.courier.RemoveObserver(courseListObserver);
 
-
-
-
         private void CourierFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             queryCourierList();
         }
+        private void AddCourier_Click(object sender, RoutedEventArgs e)
+        {
+            int managerId = s_bl.Admin.GetConfig().ManagerID;
+            new CourierWindow(managerId, new BO.Courier()).Show();
+        }
+
+        private void EditCourier_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = CourierListView.SelectedItem as BO.CourierInList;
+
+            if (selected == null)
+            {
+                MessageBox.Show("Please select a courier first.");
+                return;
+            }
+
+            int managerId = s_bl.Admin.GetConfig().ManagerID;
+            var fullCourier = s_bl.courier.GetDetails(managerId, selected.ID);
+
+            new CourierWindow(managerId, fullCourier).Show();
+        }
+
+
     }
 }

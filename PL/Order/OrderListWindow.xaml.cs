@@ -1,17 +1,8 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.Order
 {
@@ -22,7 +13,7 @@ namespace PL.Order
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public BO.filterOrdersByProperty filterOrdersByProp  { get; set; } = BO.filterOrdersByProperty.OrderStatus;
+        public BO.filterOrdersByProperty filterOrdersByProp { get; set; } = BO.filterOrdersByProperty.OrderStatus;
 
         public IEnumerable<BO.OrderInList> OrderInList
         {
@@ -30,7 +21,6 @@ namespace PL.Order
             set { SetValue(OrderInListProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for OrderInList.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty OrderInListProperty =
             DependencyProperty.Register("OrderInList", typeof(IEnumerable<BO.OrderInList>),
                 typeof(OrderListWindow), new PropertyMetadata(null));
@@ -45,25 +35,64 @@ namespace PL.Order
 
         private void queryOrderList()
         {
-            int managetID = s_bl.Admin.GetConfig().ManagerID;
+            int managerId = s_bl.Admin.GetConfig().ManagerID;
+
             OrderInList = (filterOrdersByProp == BO.filterOrdersByProperty.OrderStatus) ?
-                s_bl?.order!.GetOrderList(managetID, null, filterOrdersByProperty.OrderStatus)!
-                : filterOrdersByProp == BO.filterOrdersByProperty.OrderType ?
-                s_bl?.order!.GetOrderList(managetID, null, BO.filterOrdersByProperty.OrderType)! :
-                s_bl?.order!.GetOrderList(managetID, null, BO.filterOrdersByProperty.DeliveryType)!;
+                s_bl?.order!.GetOrderList(managerId, null, filterOrdersByProperty.OrderStatus)! :
+                filterOrdersByProp == BO.filterOrdersByProperty.OrderType ?
+                s_bl?.order!.GetOrderList(managerId, null, BO.filterOrdersByProperty.OrderType)! :
+                s_bl?.order!.GetOrderList(managerId, null, BO.filterOrdersByProperty.DeliveryType)!;
         }
+
+
         private void courseListObserver()
             => queryOrderList();
- 
-private void Window_Loaded(object sender, RoutedEventArgs e)
-    => s_bl.order.AddObserver(courseListObserver);
+
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+            => s_bl.order.AddObserver(courseListObserver);
+
 
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.order.RemoveObserver(courseListObserver);
+
 
         private void OrderFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             queryOrderList();
         }
+
+        private void AddOrder_Click(object sender, RoutedEventArgs e)
+        {
+            int managerId = s_bl.Admin.GetConfig().ManagerID;
+
+            // יצירת אובייקט חדש וריק
+            var newOrder = new BO.Order();
+
+            // פתיחת חלון ההזמנה במצב "הוספה"
+            new OrderWindow(managerId, newOrder).Show();
+        }
+
+
+        private void EditOrder_Click(object sender, RoutedEventArgs e)
+        {
+            // שליפת פריט נבחר
+            var selected = OrderListView.SelectedItem as BO.OrderInList;
+
+            if (selected == null)
+            {
+                MessageBox.Show("Please select an order first.");
+                return;
+            }
+
+            int managerId = s_bl.Admin.GetConfig().ManagerID;
+
+            // שליפה מלאה של האובייקט מה-BL
+            var fullOrder = s_bl.order.GetDetails(managerId, selected.OrderId);
+
+            // פתיחת החלון במצב 'עדכון'
+            new OrderWindow(managerId, fullOrder).Show();
+        }
     }
+
 }

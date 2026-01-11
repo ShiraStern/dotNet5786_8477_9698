@@ -3,9 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PL"
              StartupUri="MainWindow.xaml">
+
     <Application.Resources>
+        <!-- רשימות enum לשימוש ב-ComboBox -->
         <local:CourierActivityCollection x:Key="CourierActivityCollectionKey" />
         <local:OrderStatusCollection x:Key="OrderStatusCollectionKey" />
-    </Application.Resources>
-</Application>
 
+        <!-- הקונברטרים שאנחנו צריכים בשלב 9ג -->
+        <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
+        <local:ConvertUpdateToVisible x:Key="ConvertUpdateToVisibleKey" />
+    </Application.Resources>
+
+</Application>

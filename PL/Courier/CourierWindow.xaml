@@ -1,12 +1,149 @@
 ﻿<Window x:Class="PL.Courier.CourierWindow"
+        
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Courier"
         mc:Ignorable="d"
-        Title="CourierWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="CourierWindow" Height="600" Width="750">
+    
+    <Window.Resources xmlns:local="clr-namespace:PL">
+        <local:CourierActivityCollection x:Key="CourierActivityList"/>
+    </Window.Resources>
+
+    <Grid Margin="20">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- ID -->
+            <RowDefinition Height="Auto"/>
+            <!-- FullName -->
+            <RowDefinition Height="Auto"/>
+            <!-- PhoneNumber -->
+            <RowDefinition Height="Auto"/>
+            <!-- Email -->
+            <RowDefinition Height="Auto"/>
+            <!-- Password -->
+            <RowDefinition Height="Auto"/>
+            <!-- Active -->
+            <RowDefinition Height="Auto"/>
+            <!-- MaxDistance -->
+            <RowDefinition Height="Auto"/>
+            <!-- DeliveryType -->
+            <RowDefinition Height="Auto"/>
+            <!-- EmploymentStartDate -->
+            <RowDefinition Height="Auto"/>
+            <!-- NumOfDeliveriesInTime -->
+            <RowDefinition Height="Auto"/>
+            <!-- NumOfDeliveriesNotInTime -->
+            <RowDefinition Height="Auto"/>
+            <!-- OrderInProgress -->
+            <RowDefinition Height="Auto"/>
+            <!-- Button -->
+        </Grid.RowDefinitions>
+
+
+        <!-- ID -->
+        <Label Grid.Row="0" Grid.Column="0" Content="Courier ID:"/>
+        <TextBox Grid.Row="0" Grid.Column="2"
+         Text="{Binding CurrentCourier.ID}"
+         IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}"/>
+
+
+        <!-- FullName -->
+        <Label Grid.Row="1" Grid.Column="0" Content="Full Name:"/>
+        <TextBox Grid.Row="1" Grid.Column="2"
+                 Text="{Binding CurrentCourier.FullName}"/>
+
+
+        <!-- PhoneNumber -->
+        <Label Grid.Row="2" Grid.Column="0" Content="Phone Number:"/>
+        <TextBox Grid.Row="2" Grid.Column="2"
+                 Text="{Binding CurrentCourier.PhoneNumber}"/>
+
+
+        <!-- Email -->
+        <Label Grid.Row="3" Grid.Column="0" Content="Email:"/>
+        <TextBox Grid.Row="3" Grid.Column="2"
+                 Text="{Binding CurrentCourier.Email}"/>
+
+
+        <!-- Password -->
+        <Label Grid.Row="4" Grid.Column="0" Content="Password:"/>
+        <TextBox Grid.Row="4" Grid.Column="2"
+                 Text="{Binding CurrentCourier.Password}"/>
+
+
+        <!-- Active -->
+        <Label Grid.Row="5" Grid.Column="0" Content="Active:"/>
+        <CheckBox Grid.Row="5" Grid.Column="2"
+                  IsChecked="{Binding CurrentCourier.Active}"/>
+
+
+        <!-- MaxDistance -->
+        <Label Grid.Row="6" Grid.Column="0" Content="Max Distance:"/>
+        <TextBox Grid.Row="6" Grid.Column="2"
+                 Text="{Binding CurrentCourier.MaxDistance}"/>
+
+
+        <!-- DeliveryType -->
+        <Label Grid.Row="7" Grid.Column="0" Content="Delivery Type:"/>
+        <ComboBox Grid.Row="7" Grid.Column="2"
+                  ItemsSource="{Binding Source={StaticResource CourierActivityList}}"
+                  SelectedItem="{Binding CurrentCourier.DeliveryType}"
+                  Width="500"/>
+
+
+        <!-- EmploymentStartDate -->
+        <Label Grid.Row="8" Grid.Column="0" Content="Employment Start:"
+       Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+
+        <DatePicker Grid.Row="8" Grid.Column="2"
+            SelectedDate="{Binding CurrentCourier.EmploymentStartDate}"
+            IsEnabled="False"
+            Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+
+        <!-- NumOfDeliveriesInTime -->
+        <Label Grid.Row="9" Grid.Column="0" Content="Deliveries In Time:"
+       Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+
+        <TextBox Grid.Row="9" Grid.Column="2" 
+         Text="{Binding CurrentCourier.NumOfDeliveriesInTime}" 
+         IsReadOnly="True"
+         Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+
+
+        <!-- NumOfDeliveriesNotInTime -->
+        <Label Grid.Row="10" Grid.Column="0" Content="Late Deliveries:"
+       Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+
+        <TextBox Grid.Row="10" Grid.Column="2" 
+         Text="{Binding CurrentCourier.NumOfDeliveriesNotInTime}" 
+         IsReadOnly="True"
+         Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+
+        <!-- OrderInProgress -->
+        <Label Grid.Row="11" Grid.Column="0" Content="Order In Progress:"
+       Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+
+        <TextBlock Grid.Row="11" Grid.Column="2"
+           Text="{Binding CurrentCourier.OrderInProgress}"
+           Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+
+
+        <!-- Button -->
+        <Button Grid.Row="12" Grid.Column="2"
+                Content="{Binding ButtonText}"
+                Click="btnAddUpdate_Click"
+                Width="120" Height="35"
+                HorizontalAlignment="Right"
+                Margin="0,20,0,0"/>
     </Grid>
 </Window>

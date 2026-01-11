@@ -7,77 +7,62 @@
         mc:Ignorable="d"
         Title="CourierListWindow" Height="640" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-    
-    <!--External Grid-->
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <!--Internal, Upper Grid-->
-        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
+
+        <!-- Upper filter area -->
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Label" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <ComboBox Grid.Column="1" SelectedValue="{Binding Path=FilterCouriers, Mode=TwoWay}"
-                        ItemsSource="{Binding Source={StaticResource CourierActivityCollectionKey}}" SelectionChanged="CourierFilterComboBox_SelectionChanged"/>
 
+            <Label Content="Filter:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <ComboBox Grid.Column="1"
+                      SelectedValue="{Binding Path=FilterCouriers, Mode=TwoWay}"
+                      ItemsSource="{Binding Source={StaticResource CourierActivityCollectionKey}}"
+                      SelectionChanged="CourierFilterComboBox_SelectionChanged"/>
         </Grid>
-        <DataGrid Margin="5"
-                  Grid.Row="1" 
-                  ItemsSource="{Binding Path=CourierInList}"
+
+        <!-- MAIN LIST -->
+        <DataGrid x:Name="CourierListView"
+                  Grid.Row="1"
+                  Margin="5"
+                  ItemsSource="{Binding CourierInList}"
                   AutoGenerateColumns="False">
+
             <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding ID}" Header="ID" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding FullName}" Header="Full Name" Width="*"/>
 
-                <DataGridTextColumn Binding="{Binding Id}"
-                            Header="ID"
-                            Width="Auto"/>
-
-                <DataGridTextColumn Binding="{Binding FullName}"
-                            Header="Full Name"
-                            Width="*"/>
-
-                <!-- ENABLED -->
-                <DataGridTemplateColumn Header="Enabled"
-                                Width="Auto">
+                <DataGridTemplateColumn Header="Active" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding IsActive}"
-                              IsEnabled="False"
-                              HorizontalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding Active}" IsEnabled="False" HorizontalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Binding="{Binding DeliveryType}"
-                            Header="Delivery Type"
-                            Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding DeliveryType}" Header="Delivery Type" Width="Auto"/>
 
-                <!-- DATE FORMAT -->
-                <DataGridTextColumn Header="Employment Start Date"
-                            Width="Auto"
-                            Binding="{Binding EmploymentStartDate,
-                                              StringFormat={}{0:dd/MM/yyyy}}"/>
+                <DataGridTextColumn Binding="{Binding EmploymentStartDate, StringFormat={}{0:dd/MM/yyyy}}" Header="Start Date" Width="Auto"/>
 
-                <DataGridTextColumn Binding="{Binding NumOfDeliveriesOnTime}"
-                            Header="On Time"
-                            Width="Auto"/>
-
-                <DataGridTextColumn Binding="{Binding NumOfDeliveriesNotOnTime}"
-                            Header="Late"
-                            Width="Auto"/>
-
-                <DataGridTextColumn Binding="{Binding NumberOfDeliveriesInProcess}"
-                            Header="In Process"
-                            Width="Auto"/>
-
+                <DataGridTextColumn Binding="{Binding NumOfDeliveriesInTime}" Header="On Time" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding NumOfDeliveriesNotInTime}" Header="Late" Width="Auto"/>
             </DataGrid.Columns>
-        </DataGrid> 
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        </DataGrid>
+
+        <!-- BUTTONS -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Add Courier" Click="AddCourier_Click" Width="100" Height="40" Margin="10"/>
+            <Button Content="Edit Courier" Click="EditCourier_Click" Width="100" Height="40" Margin="10"/>
+        </StackPanel>
 
     </Grid>
-
 </Window>
