@@ -3,7 +3,8 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace PL
+namespace PL.Courier
+
 {
     // מחזיר true במצב Update ו-false במצב Add – לשימוש עם IsReadOnly
     public class ConvertUpdateToTrue : IValueConverter

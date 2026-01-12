@@ -1,27 +1,62 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PL;
-internal class OrderStatusCollection : IEnumerable
+namespace PL
 {
-    static readonly IEnumerable<BO.filterOrdersByProperty> oreder_enums =
-        (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
+    // רשימות עבור מסכי LIST
 
-    public IEnumerator GetEnumerator() => oreder_enums.GetEnumerator();
-}
-internal class CourierActivityCollection : IEnumerable
-{
-    static readonly IEnumerable<BO.FilterCouriersByProperty> courier_enums =
-        (Enum.GetValues(typeof(BO.FilterCouriersByProperty)) as IEnumerable<BO.FilterCouriersByProperty>)!;
+    internal class OrderStatusCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.filterOrdersByProperty> orderEnums =
+            (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
 
-    public IEnumerator GetEnumerator() => courier_enums.GetEnumerator();
-}
+        public IEnumerator GetEnumerator() => orderEnums.GetEnumerator();
+    }
+
+    internal class CourierActivityCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.FilterCouriersByProperty> courierEnums =
+            (Enum.GetValues(typeof(BO.FilterCouriersByProperty)) as IEnumerable<BO.FilterCouriersByProperty>)!;
+
+        public IEnumerator GetEnumerator() => courierEnums.GetEnumerator();
+    }
 
 
-internal class Enums
-{
+    // רשימות עבור מסך ORDER
+
+    internal class OrderTypeCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.OrderType> types =
+            (Enum.GetValues(typeof(BO.OrderType)) as IEnumerable<BO.OrderType>)!;
+
+        public IEnumerator GetEnumerator() => types.GetEnumerator();
+    }
+
+    internal class OrderStatusCollectionForOrder : IEnumerable
+    {
+        static readonly IEnumerable<BO.OrderStatus> statuses =
+            (Enum.GetValues(typeof(BO.OrderStatus)) as IEnumerable<BO.OrderStatus>)!;
+
+        public IEnumerator GetEnumerator() => statuses.GetEnumerator();
+    }
+
+    internal class ScheduleStatusCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.ScheduleStatus> schedules =
+            (Enum.GetValues(typeof(BO.ScheduleStatus)) as IEnumerable<BO.ScheduleStatus>)!;
+
+        public IEnumerator GetEnumerator() => schedules.GetEnumerator();
+    }
+
+
+    // רשימות עבור מסך COURIER
+
+    internal class DeliveryTypeCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.DeliveryType> deliveries =
+            (Enum.GetValues(typeof(BO.DeliveryType)) as IEnumerable<BO.DeliveryType>)!;
+
+        public IEnumerator GetEnumerator() => deliveries.GetEnumerator();
+    }
 }

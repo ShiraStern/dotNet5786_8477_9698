@@ -8,10 +8,6 @@
         <!-- רשימות enum לשימוש ב-ComboBox -->
         <local:CourierActivityCollection x:Key="CourierActivityCollectionKey" />
         <local:OrderStatusCollection x:Key="OrderStatusCollectionKey" />
-
-        <!-- הקונברטרים שאנחנו צריכים בשלב 9ג -->
-        <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
-        <local:ConvertUpdateToVisible x:Key="ConvertUpdateToVisibleKey" />
     </Application.Resources>
 
 </Application>
