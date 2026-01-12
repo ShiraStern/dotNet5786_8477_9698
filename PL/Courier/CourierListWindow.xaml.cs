@@ -100,5 +100,33 @@ namespace PL.Courier
             }
             new CourierWindow(selectedCourier.ID).Show();
         }
+        private void DeleteCourier_Click(object sender, RoutedEventArgs e)
+        {
+            var courier = ((FrameworkElement)sender).DataContext as BO.CourierInList;
+
+            if (courier == null)
+                return;
+
+            if (MessageBox.Show("Are you sure you want to delete this courier?",
+                                "Confirm Delete",
+                                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    int managerId = s_bl.Admin.GetConfig().ManagerID;
+
+                    s_bl.courier.Delete(managerId, courier.ID);
+
+                    MessageBox.Show("Courier deleted successfully!");
+
+                    queryCourierList(); // רענון הרשימה 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
     }
 }

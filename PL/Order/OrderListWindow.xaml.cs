@@ -99,6 +99,34 @@ namespace PL.Order
             }
             new OrderWindow(selectedOrder.OrderId).Show();
         }
+        private void DeleteOrder_Click(object sender, RoutedEventArgs e)
+        {
+            var order = ((FrameworkElement)sender).DataContext as BO.OrderInList;
+
+            if (order == null)
+                return;
+
+            if (MessageBox.Show("Are you sure you want to delete this order?",
+                                "Confirm Delete",
+                                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    int managerId = s_bl.Admin.GetConfig().ManagerID;
+
+                    s_bl.order.Delete(managerId, order.OrderId);
+
+                    MessageBox.Show("Order deleted successfully!");
+
+                    queryOrderList(); // רענון הרשימה
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
     }
 
 }

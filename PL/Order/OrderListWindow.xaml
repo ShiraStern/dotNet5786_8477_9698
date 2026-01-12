@@ -58,7 +58,18 @@
                                     Binding="{Binding TotalHandlingTime, StringFormat={}{0:hh\\:mm}}"/>
 
                 <DataGridTextColumn Binding="{Binding TotalDeliveries}" Header="Total Deliveries" Width="Auto"/>
+
             </DataGrid.Columns>
+            <DataGridTemplateColumn Header="Delete" Width="80">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button Content="Delete"
+                    Width="60"
+                    Click="DeleteOrder_Click"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
         </DataGrid>
 
         <!-- BUTTONS -->
