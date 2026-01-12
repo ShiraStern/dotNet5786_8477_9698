@@ -2,6 +2,7 @@
 
 using BlApi;
 using BO;
+using PL.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -24,9 +26,10 @@ namespace PL.Courier
     public partial class CourierListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-       public BO.FilterCouriersByProperty FilterCouriers { get; set; } = BO.FilterCouriersByProperty.All;
+        int managerId = s_bl.Admin.GetConfig().ManagerID;
+        public BO.FilterCouriersByProperty FilterCouriers { get; set; } = BO.FilterCouriersByProperty.All;
 
-
+        public BO.CourierInList selectedCourier { get; set; }
         public IEnumerable<BO.CourierInList> CourierInList
         {
             get { return (IEnumerable<BO.CourierInList> )GetValue(CourierInListProperty); }
@@ -69,26 +72,33 @@ namespace PL.Courier
         }
         private void AddCourier_Click(object sender, RoutedEventArgs e)
         {
-            int managerId = s_bl.Admin.GetConfig().ManagerID;
-            new CourierWindow(managerId, new BO.Courier()).Show();
+           
+            new CourierWindow().Show();
         }
 
-        private void EditCourier_Click(object sender, RoutedEventArgs e)
-        {
-            var selected = CourierListView.SelectedItem as BO.CourierInList;
+        //private void EditCourier_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var selected = CourierListView.SelectedItem as BO.CourierInList;
 
-            if (selected == null)
+        //    if (selected == null)
+        //    {
+        //        MessageBox.Show("Please select a courier first.");
+        //        return;
+        //    }
+
+        //    var fullCourier = s_bl.courier.GetDetails(managerId, selected.ID);
+
+        //    new CourierWindow(selectedCourier.ID).Show();
+        //}
+
+        private void selectCourier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (selectedCourier == null)
             {
                 MessageBox.Show("Please select a courier first.");
                 return;
             }
-
-            int managerId = s_bl.Admin.GetConfig().ManagerID;
-            var fullCourier = s_bl.courier.GetDetails(managerId, selected.ID);
-
-            new CourierWindow(managerId, fullCourier).Show();
+            new CourierWindow(selectedCourier.ID).Show();
         }
-
-
     }
 }

@@ -1,8 +1,11 @@
 ﻿using BO;
+using PL.Courier;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 
 namespace PL.Order
 {
@@ -12,6 +15,10 @@ namespace PL.Order
     public partial class OrderListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        int managerId = s_bl.Admin.GetConfig().ManagerID;
+
+        public BO.OrderInList selectedOrder { get; set; }
+
 
         public BO.filterOrdersByProperty filterOrdersByProp { get; set; } = BO.filterOrdersByProperty.OrderStatus;
 
@@ -64,34 +71,33 @@ namespace PL.Order
 
         private void AddOrder_Click(object sender, RoutedEventArgs e)
         {
-            int managerId = s_bl.Admin.GetConfig().ManagerID;
-
-            // יצירת אובייקט חדש וריק
-            var newOrder = new BO.Order();
-
-            // פתיחת חלון ההזמנה במצב "הוספה"
-            new OrderWindow(managerId, newOrder).Show();
+            new OrderWindow().Show();
         }
 
 
-        private void EditOrder_Click(object sender, RoutedEventArgs e)
-        {
-            // שליפת פריט נבחר
-            var selected = OrderListView.SelectedItem as BO.OrderInList;
+        //private void EditOrder_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // שליפת פריט נבחר
+        //    var selected = OrderListView.SelectedItem as BO.OrderInList;
 
-            if (selected == null)
+        //    if (selected == null)
+        //    {
+        //        MessageBox.Show("Please select an order first.");
+        //        return;
+        //    }
+
+        //    // פתיחת החלון במצב 'עדכון'
+        //    new OrderWindow().Show();
+        //}
+
+        private void selectCourier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (selectedOrder == null)
             {
-                MessageBox.Show("Please select an order first.");
+                MessageBox.Show("Please select a courier first.");
                 return;
             }
-
-            int managerId = s_bl.Admin.GetConfig().ManagerID;
-
-            // שליפה מלאה של האובייקט מה-BL
-            var fullOrder = s_bl.order.GetDetails(managerId, selected.OrderId);
-
-            // פתיחת החלון במצב 'עדכון'
-            new OrderWindow(managerId, fullOrder).Show();
+            new OrderWindow(selectedOrder.OrderId).Show();
         }
     }
 

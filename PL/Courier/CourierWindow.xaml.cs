@@ -7,6 +7,9 @@ namespace PL.Courier
 {
     public partial class CourierWindow : Window
     {
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        int managerId = s_bl.Admin.GetConfig().ManagerID;
+
         private int _applicantId;
 
         public string ButtonText { get; set; }
@@ -25,20 +28,45 @@ namespace PL.Courier
                 typeof(CourierWindow),
                 new PropertyMetadata(null));
 
-        public CourierWindow(int applicantId, BO.Courier courier)
+        //public CourierWindow(int applicantId, BO.Courier courier)
+        //{
+        //    InitializeComponent();
+
+        //    _applicantId = applicantId;
+
+        //    // הכנסת השליח לתוך ה־DependencyProperty
+        //    CurrentCourier = courier;
+
+        //    // קביעת טקסט הכפתור לפי מצב המסך
+        //    ButtonText = courier.ID == 0 ? "Add" : "Update";
+
+        //    DataContext = this;
+        //}
+
+        public CourierWindow(int courierId = 0)
         {
             InitializeComponent();
 
-            _applicantId = applicantId;
-
-            // הכנסת השליח לתוך ה־DependencyProperty
-            CurrentCourier = courier;
-
-            // קביעת טקסט הכפתור לפי מצב המסך
-            ButtonText = courier.ID == 0 ? "Add" : "Update";
+            if (courierId == 0)
+            {
+                // מצב הוספה
+                CurrentCourier = new BO.Courier
+                {
+                    ID = 0
+                    // ערכי ברירת מחדל נוספים אם צריך
+                };
+                ButtonText = "Add";
+            }
+            else
+            {
+                // מצב עדכון
+                CurrentCourier = s_bl.courier.GetDetails(managerId,courierId);
+                ButtonText = "Update";
+            }
 
             DataContext = this;
         }
+
 
 
 

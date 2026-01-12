@@ -7,7 +7,10 @@ namespace PL.Order
 {
     public partial class OrderWindow : Window
     {
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        int managerId = s_bl.Admin.GetConfig().ManagerID;
         private int _applicantId;
+        public BO.CourierInList selectedOrder { get; set; }
 
         public string ButtonText { get; set; }
 
@@ -25,17 +28,40 @@ namespace PL.Order
                 typeof(OrderWindow),
                 new PropertyMetadata(null));
 
-        public OrderWindow(int applicantId, BO.Order order)
+        //public OrderWindow(int applicantId, BO.Order order)
+        //{
+        //    InitializeComponent();
+
+        //    _applicantId = applicantId;
+
+        //    // הכנסת ההזמנה לתוך ה־DependencyProperty
+        //    CurrentOrder = order;
+
+        //    // קובע טקסט לכפתור
+        //    ButtonText = order.ID == 0 ? "Add" : "Update";
+
+        //    DataContext = this;
+        //}
+
+        public OrderWindow(int orderId = 0)
         {
             InitializeComponent();
 
-            _applicantId = applicantId;
-
-            // הכנסת ההזמנה לתוך ה־DependencyProperty
-            CurrentOrder = order;
-
-            // קובע טקסט לכפתור
-            ButtonText = order.ID == 0 ? "Add" : "Update";
+            if (orderId == 0)
+            {
+                // מצב הוספה
+                CurrentOrder = new BO.Order
+                {
+                    ID = 0
+                };
+                ButtonText = "Add";
+            }
+            else
+            {
+                // מצב עדכון
+                CurrentOrder = s_bl.order.GetDetails(managerId ,orderId);
+                ButtonText = "Update";
+            }
 
             DataContext = this;
         }

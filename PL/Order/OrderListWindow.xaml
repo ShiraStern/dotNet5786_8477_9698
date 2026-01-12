@@ -36,7 +36,10 @@
                   Margin="5"
                   Grid.Row="1"
                   ItemsSource="{Binding OrderInList}"
-                  AutoGenerateColumns="False">
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding selectedOrder}" 
+                  MouseDoubleClick="selectCourier_MouseDoubleClick">
+        
 
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding DeliveryId}" Header="Delivery ID" Width="Auto"/>
@@ -61,7 +64,6 @@
         <!-- BUTTONS -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
             <Button Content="Add" Width="100" Height="40" Margin="10" Click="AddOrder_Click"/>
-            <Button Content="Edit" Width="100" Height="40" Margin="10" Click="EditOrder_Click"/>
         </StackPanel>
 
        
