@@ -8,6 +8,7 @@
         <!-- רשימות enum לשימוש ב-ComboBox -->
         <local:CourierActivityCollection x:Key="CourierActivityCollectionKey" />
         <local:OrderStatusCollection x:Key="OrderStatusCollectionKey" />
+        
     </Application.Resources>
 
 </Application>

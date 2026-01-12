@@ -11,7 +11,7 @@
 
         <!-- רשימות Enum למסך Order -->
         <local:OrderTypeCollection x:Key="OrderTypeList" />
-        <local:OrderStatusEnumCollection x:Key="OrderStatusList" />
+        <local:OrderStatusCollection x:Key="OrderStatusList" />
         <local:ScheduleStatusCollection x:Key="ScheduleStatusList" />
 
         <!-- קונברטרים משלב 9ג -->
@@ -21,7 +21,7 @@
     </Window.Resources>
 
 
-        <Grid Margin="20">
+    <Grid Margin="20">
 
         <!-- עמודות -->
         <Grid.ColumnDefinitions>
