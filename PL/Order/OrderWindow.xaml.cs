@@ -64,9 +64,27 @@ namespace PL.Order
             }
 
             DataContext = this;
+            this.Loaded += OrderWindow_Loaded;
+            this.Closing += OrderWindow_Closing;
+
         }
 
+        private void RefreshOrder()
+        {
+            int id = CurrentOrder!.ID;
+            CurrentOrder = s_bl.order.GetDetails(managerId, id);
+        }
 
+        private void OrderWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (CurrentOrder!.ID != 0)
+                s_bl.order.AddObserver(CurrentOrder.ID, RefreshOrder);
+        }
+        private void OrderWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (CurrentOrder!.ID != 0)
+                s_bl.order.RemoveObserver(CurrentOrder.ID, RefreshOrder);
+        }
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {

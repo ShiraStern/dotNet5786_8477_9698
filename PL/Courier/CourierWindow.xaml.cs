@@ -42,6 +42,11 @@ namespace PL.Courier
 
         //    DataContext = this;
         //}
+        private void CourierWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (CurrentCourier!.ID != 0)
+                s_bl.courier.AddObserver(CurrentCourier.ID, RefreshCourier);
+        }
 
         public CourierWindow(int courierId = 0)
         {
@@ -65,9 +70,19 @@ namespace PL.Courier
             }
 
             DataContext = this;
+
+            this.Loaded += CourierWindow_Loaded;
+
+            this.Closing += CourierWindow_Closing;
+
         }
 
 
+        private void RefreshCourier()
+        {
+            int id = CurrentCourier!.ID;
+            CurrentCourier = s_bl.courier.GetDetails(managerId, id);
+        }
 
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
@@ -113,5 +128,11 @@ namespace PL.Courier
                 MessageBox.Show(ex.Message);
             }
         }
+        private void CourierWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (CurrentCourier!.ID != 0)
+                s_bl.courier.RemoveObserver(CurrentCourier.ID, RefreshCourier);
+        }
+
     }
 }
