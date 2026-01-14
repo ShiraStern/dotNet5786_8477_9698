@@ -1,6 +1,6 @@
 ﻿//using BO;
 using System.Runtime.CompilerServices;
-using DalTest;
+//using DalTest;
 namespace Helpers;
 
 /// <summary>
@@ -39,7 +39,7 @@ internal static class AdminManager //stage 4
     /// <param name="newClock">updated clock value</param>
     internal static void UpdateClock(DateTime newClock) //stage 4-7
     {
-        var oldClock = s_dal.Config.Clock; //stage 4
+        var oldClock = AdminManager.Now; //stage 4
         s_dal.Config.Clock = newClock; //stage 4
         
         //Add calls here to any logic method that should be called periodically,
@@ -103,7 +103,7 @@ internal static class AdminManager //stage 4
         {
             s_dal.ResetDB(); //stage 4
             AdminManager.UpdateClock(AdminManager.Now); //stage 5 - needed since we want the label on Pl to be updated
-            AdminManager.SetConfig(AdminManager.GetConfig()); //stage 5 - needed to update PL 
+            ConfigUpdatedObservers?.Invoke();
         }
     }
 
@@ -112,9 +112,9 @@ internal static class AdminManager //stage 4
         lock (BlMutex) //stage 7
         {
             //stage 4
+            DalTest.Initialization.Do();
             AdminManager.UpdateClock(AdminManager.Now);  //stage 5 - needed since we want the label on Pl to be updated           
-            AdminManager.SetConfig(AdminManager.GetConfig()); //stage 5 - needed for update the PL
-        }
+            ConfigUpdatedObservers?.Invoke();        }
     }
 
     #endregion Stage 4-7

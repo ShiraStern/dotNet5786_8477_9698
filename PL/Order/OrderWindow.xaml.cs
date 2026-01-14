@@ -12,6 +12,7 @@ namespace PL.Order
         private int _applicantId;
         public BO.CourierInList selectedOrder { get; set; }
 
+
         public string ButtonText { get; set; }
 
         // DependencyProperty עבור אובייקט ההזמנה
@@ -28,20 +29,7 @@ namespace PL.Order
                 typeof(OrderWindow),
                 new PropertyMetadata(null));
 
-        //public OrderWindow(int applicantId, BO.Order order)
-        //{
-        //    InitializeComponent();
-
-        //    _applicantId = applicantId;
-
-        //    // הכנסת ההזמנה לתוך ה־DependencyProperty
-        //    CurrentOrder = order;
-
-        //    // קובע טקסט לכפתור
-        //    ButtonText = order.ID == 0 ? "Add" : "Update";
-
-        //    DataContext = this;
-        //}
+        
 
         public OrderWindow(int orderId = 0)
         {
@@ -59,7 +47,7 @@ namespace PL.Order
             else
             {
                 // מצב עדכון
-                CurrentOrder = s_bl.order.GetDetails(managerId ,orderId);
+                CurrentOrder = s_bl.Order.GetDetails(managerId ,orderId);
                 ButtonText = "Update";
             }
 
@@ -72,18 +60,18 @@ namespace PL.Order
         private void RefreshOrder()
         {
             int id = CurrentOrder!.ID;
-            CurrentOrder = s_bl.order.GetDetails(managerId, id);
+            CurrentOrder = s_bl.Order.GetDetails(managerId, id);
         }
 
         private void OrderWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (CurrentOrder!.ID != 0)
-                s_bl.order.AddObserver(CurrentOrder.ID, RefreshOrder);
+                s_bl.Order.AddObserver(CurrentOrder.ID, RefreshOrder);
         }
         private void OrderWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             if (CurrentOrder!.ID != 0)
-                s_bl.order.RemoveObserver(CurrentOrder.ID, RefreshOrder);
+                s_bl.Order.RemoveObserver(CurrentOrder.ID, RefreshOrder);
         }
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
@@ -112,14 +100,14 @@ namespace PL.Order
                 if (CurrentOrder.ID == 0)
                 {
                     // הוספת הזמנה חדשה
-                    BlApi.Factory.Get().order.AddOrder(_applicantId, CurrentOrder);
+                    BlApi.Factory.Get().Order.AddOrder(_applicantId, CurrentOrder);
 
                     MessageBox.Show("Order added successfully!");
                 }
                 else
                 {
                     // עדכון הזמנה קיימת
-                    BlApi.Factory.Get().order.UpdateDetails(_applicantId, CurrentOrder);
+                    BlApi.Factory.Get().Order.UpdateDetails(_applicantId, CurrentOrder);
 
                     MessageBox.Show("Order updated successfully!");
                 }

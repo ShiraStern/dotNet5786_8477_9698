@@ -1,4 +1,4 @@
-﻿namespace Dal;
+﻿namespace DalTest;
 using DalApi;
 using DO;
 using System.Numerics;

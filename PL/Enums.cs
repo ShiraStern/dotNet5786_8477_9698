@@ -8,8 +8,8 @@ namespace PL
 
     internal class OrderStatusCollection : IEnumerable
     {
-        static readonly IEnumerable<BO.filterOrdersByProperty> orderEnums =
-            (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
+        static readonly IEnumerable<BO.OrderStatus> orderEnums =
+            (Enum.GetValues(typeof(BO.OrderStatus)) as IEnumerable<BO.OrderStatus>)!;
 
         public IEnumerator GetEnumerator() => orderEnums.GetEnumerator();
     }

@@ -96,7 +96,7 @@
         <!-- DeliveryType -->
         <Label Grid.Row="7" Grid.Column="0" Content="Delivery Type:"/>
         <ComboBox Grid.Row="7" Grid.Column="2"
-                  ItemsSource="{Binding Source={StaticResource CourierActivityList}}"
+                  ItemsSource="{Binding Source={StaticResource DeliveryTypeCollectionKey}}"
                   SelectedItem="{Binding CurrentCourier.DeliveryType}"
                   Width="500"/>
 

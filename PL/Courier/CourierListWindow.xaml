@@ -36,7 +36,8 @@
                   Margin="5"
                   ItemsSource="{Binding CourierInList}"
                   AutoGenerateColumns="False"
-                  MouseDoubleClick="selectCourier_MouseDoubleClick" >
+                  MouseDoubleClick="selectCourier_MouseDoubleClick" 
+                  IsReadOnly="True">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding ID}" Header="ID" Width="Auto"/>

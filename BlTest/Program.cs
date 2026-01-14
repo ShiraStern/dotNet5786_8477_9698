@@ -15,14 +15,14 @@ internal class Program
         Console.WriteLine("Please enter the ID of applicant and courier ID");
         int applicantID = int.Parse(Console.ReadLine()!);
         int courierID = int.Parse(Console.ReadLine()!);
-        s_bl.order.GetDeliveriesPerCourier(applicantID, courierID);
+        s_bl.Order.GetDeliveriesPerCourier(applicantID, courierID);
     }//
     private static void GetClosedDeliveriesPerCourier()
     {
         Console.WriteLine("Please enter the ID of applicant and courier ID");
         int applicantID = int.Parse(Console.ReadLine()!);
         int courierID = int.Parse(Console.ReadLine()!);
-        s_bl.order.GetClosedDeliveriesPerCourier(applicantID, courierID);
+        s_bl.Order.GetClosedDeliveriesPerCourier(applicantID, courierID);
     }//
 
     private static void EndOrderHandle()
@@ -32,7 +32,7 @@ internal class Program
         int courierID = int.Parse(Console.ReadLine()!);
         int orderID = int.Parse(Console.ReadLine()!);
         int deliveryID = int.Parse(Console.ReadLine()!);
-        s_bl.order.EndOrderHandle(applicantID, courierID, orderID, deliveryID);
+        s_bl.Order.EndOrderHandle(applicantID, courierID, orderID, deliveryID);
     }//
     private static void AddOrder()
     {
@@ -73,14 +73,14 @@ internal class Program
             TimeLeftToCompleteOrder = TimeSpan.FromDays(TimeLeftToCompleteOrder)
         };
         //  להוסיף חישוב של קאורדינטות
-        s_bl.order.UpdateDetails(applicantID, order);
+        s_bl.Order.UpdateDetails(applicantID, order);
     }//
     private static void DeleteOrder()
     {
         Console.WriteLine("Please enter the ID of applicant and order ID");
         int applicantID = int.Parse(Console.ReadLine()!);
         int orderID = int.Parse(Console.ReadLine()!);
-        s_bl.order.Delete(applicantID, orderID);
+        s_bl.Order.Delete(applicantID, orderID);
     }//
     
     private static void CancelOrder()
@@ -88,7 +88,7 @@ internal class Program
         Console.WriteLine("Please enter the ID of applicant and order ID");
         int applicantID = int.Parse(Console.ReadLine()!);
         int orderID = int.Parse(Console.ReadLine()!);
-        s_bl.order.CancelOrder(applicantID, orderID);
+        s_bl.Order.CancelOrder(applicantID, orderID);
     }//
     private static void UpdateOrderDetails()
     {
@@ -129,7 +129,7 @@ internal class Program
             TimeLeftToCompleteOrder = TimeSpan.FromDays(TimeLeftToCompleteOrder)
         };
         //  להוסיף חישוב של קאורדינטות
-        s_bl.order.UpdateDetails(applicantID, order);
+        s_bl.Order.UpdateDetails(applicantID, order);
     }//
 
     private static void GetOrderDetails()
@@ -137,19 +137,19 @@ internal class Program
         Console.WriteLine("Please enter the ID of applicant and order ID");
         int applicantID = int.Parse(Console.ReadLine()!);
         int orderID = int.Parse(Console.ReadLine()!);
-        s_bl.order.GetDetails(applicantID, orderID);
+        s_bl.Order.GetDetails(applicantID, orderID);
     }//
     private static void GetOrderList()
     {
         Console.WriteLine("Please enter the ID of applicant");
         int applicantID = int.Parse(Console.ReadLine()!);
-        s_bl.order.GetOrderList(applicantID);
+        s_bl.Order.GetOrderList(applicantID);
     }//
     private static void GetOrdersStatusCounts()
     {
         Console.WriteLine("Please enter the ID of applicant");
         int applicantID = int.Parse(Console.ReadLine()!);
-        s_bl.order.GetOrdersStatusCounts(applicantID);
+        s_bl.Order.GetOrdersStatusCounts(applicantID);
     }//
 
     private static void UpdateCourierDetails()
@@ -199,7 +199,7 @@ internal class Program
         Console.WriteLine("Please enter the ID of applicant and ID of specipic courier");
         int applicantID = int.Parse(Console.ReadLine()!);
         int courierID = int.Parse(Console.ReadLine()!);
-        BO.Courier? courier = s_bl.courier.GetDetails(applicantID, courierID);
+        BO.Courier? courier = s_bl.Courier.GetDetails(applicantID, courierID);
         Console.WriteLine(courier);
     }//
     private static void ForwardClock()
@@ -286,7 +286,7 @@ internal class Program
     {
         Console.WriteLine("Please enter the ID of applicant");
         int applicantID = int.Parse(Console.ReadLine()!);
-        foreach (var courier in s_bl.courier.GetCourierList(applicantID, true, BO.FilterCouriersByProperty.IsActive))
+        foreach (var courier in s_bl.Courier.GetCourierList(applicantID, true, BO.FilterCouriersByProperty.IsActive))
 
         {
             Console.WriteLine(courier.ToString());
@@ -297,8 +297,8 @@ internal class Program
         Console.WriteLine("Please enter the ID of applicant and ID of specipic courier");
         int applicantID = int.Parse(Console.ReadLine()!);
         int courierID = int.Parse(Console.ReadLine()!);
-        BO.Courier? courier = s_bl.courier.GetDetails(applicantID, courierID);
-        s_bl.courier.Delete(applicantID, courierID);
+        BO.Courier? courier = s_bl.Courier.GetDetails(applicantID, courierID);
+        s_bl.Courier.Delete(applicantID, courierID);
     }//
     private static void Login()//
     {
@@ -306,7 +306,7 @@ internal class Program
         string userName = Console.ReadLine()!;
         Console.WriteLine("Please enter password:");
         string password = Console.ReadLine()!;
-        string status = s_bl.courier.Login(userName, password);
+        string status = s_bl.Courier.Login(userName, password);
         Console.WriteLine($"{status} have successfully connected!");
     }
     private static void AddCourier()//
@@ -349,7 +349,7 @@ internal class Program
             EmploymentStartDate = employmentStartDate
         };
    
-        s_bl.courier.AddCourier(applicantID, courier);
+        s_bl.Courier.AddCourier(applicantID, courier);
         Console.WriteLine("Courier added successfully");
     }
 

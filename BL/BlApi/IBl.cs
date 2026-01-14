@@ -4,7 +4,7 @@ using DalApi;
 namespace BlApi;
 public interface IBl
 {
-    ICourier courier { get; }
-    IOrder order { get; }
+    ICourier Courier { get; }
+    IOrder Order { get; }
     IAdmin Admin { get; }
 }

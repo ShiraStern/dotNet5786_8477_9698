@@ -44,11 +44,14 @@ namespace PL.Order
         {
             int managerId = s_bl.Admin.GetConfig().ManagerID;
 
-            OrderInList = (filterOrdersByProp == BO.filterOrdersByProperty.OrderStatus) ?
-                s_bl?.order!.GetOrderList(managerId, null, filterOrdersByProperty.OrderStatus)! :
-                filterOrdersByProp == BO.filterOrdersByProperty.OrderType ?
-                s_bl?.order!.GetOrderList(managerId, null, BO.filterOrdersByProperty.OrderType)! :
-                s_bl?.order!.GetOrderList(managerId, null, BO.filterOrdersByProperty.DeliveryType)!;
+            OrderInList = s_bl.Order.GetOrderList(managerId, filterOrdersByProp)!;
+            /*
+             * (filterOrdersByProp == BO.filterOrdersByProperty.OrderStatus) ?
+            s_bl?.order!.GetOrderList(managerId, null, filterOrdersByProperty.OrderStatus)! :
+            filterOrdersByProp == BO.filterOrdersByProperty.OrderType ?
+            s_bl?.order!.GetOrderList(managerId, null, BO.filterOrdersByProperty.OrderType)! :
+            s_bl?.order!.GetOrderList(managerId, null, BO.filterOrdersByProperty.DeliveryType)!;
+            */
         }
 
 
@@ -57,11 +60,11 @@ namespace PL.Order
 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-            => s_bl.order.AddObserver(courseListObserver);
+            => s_bl.Order.AddObserver(courseListObserver);
 
 
         private void Window_Closed(object sender, EventArgs e)
-            => s_bl.order.RemoveObserver(courseListObserver);
+            => s_bl.Order.RemoveObserver(courseListObserver);
 
 
         private void OrderFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -114,7 +117,7 @@ namespace PL.Order
                 {
                     int managerId = s_bl.Admin.GetConfig().ManagerID;
 
-                    s_bl.order.Delete(managerId, order.OrderId);
+                    s_bl.Order.Delete(managerId, order.OrderId);
 
                     MessageBox.Show("Order deleted successfully!");
 

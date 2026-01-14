@@ -20,6 +20,6 @@ public class Config
     public  double AvgWalkingSpeed { get; set; } = 6;// in KM/H
     public TimeSpan MaxDeliveryDuration { get; set; } = TimeSpan.FromDays(30);
     public TimeSpan DelayRiskTime { get; set; } = TimeSpan.FromDays(25);
-    public TimeSpan InactivityThreshold { get; set; }
+    public TimeSpan InactivityThreshold { get; set; } = TimeSpan.FromDays(30);
 
 }

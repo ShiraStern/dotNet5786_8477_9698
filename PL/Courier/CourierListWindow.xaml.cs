@@ -52,19 +52,19 @@ namespace PL.Courier
         {
             int managetID = s_bl.Admin.GetConfig().ManagerID;
             CourierInList = (FilterCouriers == BO.FilterCouriersByProperty.All) ?
-                s_bl?.courier!.GetCourierList(managetID, null, FilterCouriersByProperty.All)!
+                s_bl?.Courier!.GetCourierList(managetID, null, FilterCouriersByProperty.All)!
                 : FilterCouriers == BO.FilterCouriersByProperty.IsActive ?
-                s_bl?.courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsActive)! :
-                s_bl?.courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsNotActive)!;
+                s_bl?.Courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsActive)! :
+                s_bl?.Courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsNotActive)!;
         }
         private void courseListObserver()
             => queryCourierList();
  
         private void Window_Loaded(object sender, RoutedEventArgs e)
-            => s_bl.courier.AddObserver(courseListObserver);
+            => s_bl.Courier.AddObserver(courseListObserver);
 
         private void Window_Closed(object sender, EventArgs e)
-            => s_bl.courier.RemoveObserver(courseListObserver);
+            => s_bl.Courier.RemoveObserver(courseListObserver);
 
         private void CourierFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -115,7 +115,7 @@ namespace PL.Courier
                 {
                     int managerId = s_bl.Admin.GetConfig().ManagerID;
 
-                    s_bl.courier.Delete(managerId, courier.ID);
+                    s_bl.Courier.Delete(managerId, courier.ID);
 
                     MessageBox.Show("Courier deleted successfully!");
 

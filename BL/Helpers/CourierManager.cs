@@ -14,7 +14,17 @@ internal static class CourierManager
     internal static ObserverManager Observers = new(); //stage 5
     internal static void PeriodicCourierUpdates(DateTime oldClock, DateTime newClock)
     {
-        throw new NotImplementedException();
+        var list = s_dal.Courier.ReadAll().ToList();
+        foreach (var doCoureir in list)
+        {
+            ////if courier  is not active more than inactivitySpanTime 30 days
+            ////then courier should be automatically updated to 'not active'
+            //if (AdminManager.Now.Year - doStudent.RegistrationDate?.Year >= s_dal.Config.MaxRange)
+            //{
+            //    s_dal.Student.Update(doStudent with { IsActive = false });
+            //}
+        }
+
     }
 
     internal static bool IsValidCourierId(int applicantId)

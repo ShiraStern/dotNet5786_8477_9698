@@ -45,7 +45,7 @@ namespace PL.Courier
         private void CourierWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (CurrentCourier!.ID != 0)
-                s_bl.courier.AddObserver(CurrentCourier.ID, RefreshCourier);
+                s_bl.Courier.AddObserver(CurrentCourier.ID, RefreshCourier);
         }
 
         public CourierWindow(int courierId = 0)
@@ -65,7 +65,7 @@ namespace PL.Courier
             else
             {
                 // מצב עדכון
-                CurrentCourier = s_bl.courier.GetDetails(managerId,courierId);
+                CurrentCourier = s_bl.Courier.GetDetails(managerId,courierId);
                 ButtonText = "Update";
             }
 
@@ -81,7 +81,7 @@ namespace PL.Courier
         private void RefreshCourier()
         {
             int id = CurrentCourier!.ID;
-            CurrentCourier = s_bl.courier.GetDetails(managerId, id);
+            CurrentCourier = s_bl.Courier.GetDetails(managerId, id);
         }
 
 
@@ -111,13 +111,13 @@ namespace PL.Courier
                 if (CurrentCourier.ID == 0)
                 {
                     // הוספה
-                    BlApi.Factory.Get().courier.AddCourier(_applicantId, CurrentCourier);
+                    BlApi.Factory.Get().Courier.AddCourier(_applicantId, CurrentCourier);
                     MessageBox.Show("Courier added successfully!");
                 }
                 else
                 {
                     // עדכון
-                    BlApi.Factory.Get().courier.UpdateDetails(_applicantId, CurrentCourier);
+                    BlApi.Factory.Get().Courier.UpdateDetails(_applicantId, CurrentCourier);
                     MessageBox.Show("Courier updated successfully!");
                 }
 
@@ -131,7 +131,7 @@ namespace PL.Courier
         private void CourierWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             if (CurrentCourier!.ID != 0)
-                s_bl.courier.RemoveObserver(CurrentCourier.ID, RefreshCourier);
+                s_bl.Courier.RemoveObserver(CurrentCourier.ID, RefreshCourier);
         }
 
     }
