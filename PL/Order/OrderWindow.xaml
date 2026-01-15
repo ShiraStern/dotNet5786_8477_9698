@@ -1,4 +1,4 @@
-﻿<Window x:Class="PL.Order.OrderWindow"
+﻿<!--<Window x:Class="PL.Order.OrderWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,12 +9,12 @@
 
     <Window.Resources>
 
-        <!-- רשימות Enum למסך Order -->
+        --><!-- רשימות Enum למסך Order --><!--
         <local:OrderTypeCollection x:Key="OrderTypeList" />
         <local:OrderStatusCollection x:Key="OrderStatusList" />
         <local:ScheduleStatusCollection x:Key="ScheduleStatusList" />
 
-        <!-- קונברטרים משלב 9ג -->
+        --><!-- קונברטרים משלב 9ג --><!--
         <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
         <local:ConvertUpdateToVisible x:Key="ConvertUpdateToVisibleKey" />
 
@@ -23,58 +23,58 @@
 
     <Grid Margin="20">
 
-        <!-- עמודות -->
+        --><!-- עמודות --><!--
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- שורות -->
+        --><!-- שורות --><!--
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- ID -->
+            --><!-- ID --><!--
             <RowDefinition Height="Auto"/>
-            <!-- OrderType -->
+            --><!-- OrderType --><!--
             <RowDefinition Height="Auto"/>
-            <!-- VerbalDescription -->
+            --><!-- VerbalDescription --><!--
             <RowDefinition Height="Auto"/>
-            <!-- FullAddress -->
+            --><!-- FullAddress --><!--
             <RowDefinition Height="Auto"/>
-            <!-- Latitude -->
+            --><!-- Latitude --><!--
             <RowDefinition Height="Auto"/>
-            <!-- Longitude -->
+            --><!-- Longitude --><!--
             <RowDefinition Height="Auto"/>
-            <!-- AirDistance -->
+            --><!-- AirDistance --><!--
             <RowDefinition Height="Auto"/>
-            <!-- FullName -->
+            --><!-- FullName --><!--
             <RowDefinition Height="Auto"/>
-            <!-- Phone -->
+            --><!-- Phone --><!--
             <RowDefinition Height="Auto"/>
-            <!-- OrderProperties -->
+            --><!-- OrderProperties --><!--
             <RowDefinition Height="Auto"/>
-            <!-- OpeningTime -->
+            --><!-- OpeningTime --><!--
             <RowDefinition Height="Auto"/>
-            <!-- Estimated -->
+            --><!-- Estimated --><!--
             <RowDefinition Height="Auto"/>
-            <!-- MaxDelivery -->
+            --><!-- MaxDelivery --><!--
             <RowDefinition Height="Auto"/>
-            <!-- OrderStatus -->
+            --><!-- OrderStatus --><!--
             <RowDefinition Height="Auto"/>
-            <!-- ScheduleStatus -->
+            --><!-- ScheduleStatus --><!--
             <RowDefinition Height="Auto"/>
-            <!-- TimeLeft -->
+            --><!-- TimeLeft --><!--
         </Grid.RowDefinitions>
 
 
-        <!-- ID -->
+        --><!-- ID --><!--
         <Label Grid.Row="0" Grid.Column="0" Content="Order ID:"/>
         <TextBox Grid.Row="0" Grid.Column="2"
          Text="{Binding CurrentOrder.ID}"
          IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}"/>
 
 
-        <!-- OrderType -->
+        --><!-- OrderType --><!--
         <Label Grid.Row="1" Grid.Column="0" Content="Order Type:"/>
         <ComboBox Grid.Row="1" Grid.Column="2"
                   ItemsSource="{Binding Source={StaticResource OrderTypeList}}"
@@ -82,49 +82,49 @@
                   Width="540"/>
 
 
-        <!-- VerbalDescription -->
+        --><!-- VerbalDescription --><!--
         <Label Grid.Row="2" Grid.Column="0" Content="Description:"/>
         <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding CurrentOrder.VerbalDescription}"/>
 
 
-        <!-- FullAddressOfTheOrder -->
+        --><!-- FullAddressOfTheOrder --><!--
         <Label Grid.Row="3" Grid.Column="0" Content="Address:"/>
         <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding CurrentOrder.FullAddressOfTheOrder}"/>
 
 
-        <!-- Latitude -->
+        --><!-- Latitude --><!--
         <Label Grid.Row="4" Grid.Column="0" Content="Latitude:"/>
         <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding CurrentOrder.Latitude}" IsReadOnly="True"/>
 
 
-        <!-- Longitude -->
+        --><!-- Longitude --><!--
         <Label Grid.Row="5" Grid.Column="0" Content="Longitude:"/>
         <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding CurrentOrder.Longitude}" IsReadOnly="True"/>
 
 
-        <!-- AirDistance -->
+        --><!-- AirDistance --><!--
         <Label Grid.Row="6" Grid.Column="0" Content="Air Distance:"/>
         <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding CurrentOrder.AirDistance}"/>
 
 
-        <!-- FullNameOfTheInviter -->
+        --><!-- FullNameOfTheInviter --><!--
         <Label Grid.Row="7" Grid.Column="0" Content="Inviter Name:"/>
         <TextBox Grid.Row="7" Grid.Column="2" Text="{Binding CurrentOrder.FullNameOfTheInviter}"/>
 
 
-        <!-- OrderersPhoneNumber -->
+        --><!-- OrderersPhoneNumber --><!--
         <Label Grid.Row="8" Grid.Column="0" Content="Inviter Phone:"/>
         <TextBox Grid.Row="8" Grid.Column="2" Text="{Binding CurrentOrder.OrderersPhoneNumber}"/>
 
 
-        <!-- OrderProperties -->
+        --><!-- OrderProperties --><!--
         <Label Grid.Row="9" Grid.Column="0" Content="Order Properties:"/>
         <ComboBox Grid.Row="9" Grid.Column="2"
                   ItemsSource="{Binding OrderPropertiesList}"
                   SelectedItem="{Binding CurrentOrder.OrderProperties}"/>
 
 
-        <!-- OrderOpeningTime -->
+        --><!-- OrderOpeningTime --><!--
         <Label Grid.Row="10" Grid.Column="0" Content="Opening Time:"
        Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
@@ -133,39 +133,39 @@
             Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
 
-        <!-- EstimatedDeliveryTime -->
+        --><!-- EstimatedDeliveryTime --><!--
         <Label Grid.Row="11" Grid.Column="0" Content="Estimated Delivery:"/>
         <DatePicker Grid.Row="11" Grid.Column="2"
                     SelectedDate="{Binding CurrentOrder.EstimatedDeliveryTime}"/>
 
 
-        <!-- MaximumDeliveryTime -->
+        --><!-- MaximumDeliveryTime --><!--
         <Label Grid.Row="12" Grid.Column="0" Content="Maximum Delivery:"/>
         <DatePicker Grid.Row="12" Grid.Column="2"
                     SelectedDate="{Binding CurrentOrder.MaximumDeliveryTime}"/>
 
 
-        <!-- OrderStatus -->
+        --><!-- OrderStatus --><!--
         <Label Grid.Row="13" Grid.Column="0" Content="Order Status:"/>
         <ComboBox Grid.Row="13" Grid.Column="2"
                   ItemsSource="{Binding OrderStatusList}"
                   SelectedItem="{Binding CurrentOrder.OrderStatus}"/>
 
 
-        <!-- ScheduleStatus -->
+        --><!-- ScheduleStatus --><!--
         <Label Grid.Row="14" Grid.Column="0" Content="Schedule Status:"/>
         <ComboBox Grid.Row="14" Grid.Column="2"
                   ItemsSource="{Binding ScheduleStatusList}"
                   SelectedItem="{Binding CurrentOrder.ScheduleStatus}"/>
 
 
-        <!-- TimeLeftToCompleteOrder -->
+        --><!-- TimeLeftToCompleteOrder --><!--
         <Label Grid.Row="15" Grid.Column="0" Content="Time Left:"/>
         <TextBox Grid.Row="15" Grid.Column="2"
                  Text="{Binding CurrentOrder.TimeLeftToCompleteOrder}"/>
 
 
-        <!-- כפתור שמירה -->
+        --><!-- כפתור שמירה --><!--
         <Button Grid.Row="12" Grid.Column="2"
                 Content="{Binding ButtonText}"
                 Click="btnAddUpdate_Click"
@@ -173,5 +173,192 @@
                 HorizontalAlignment="Right"
                 Margin="0,20,0,0"/>
 
+    </Grid>
+</Window>-->
+<Window x:Class="PL.Order.OrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL"
+        mc:Ignorable="d"
+        Title="פרטי הזמנה"
+        Height="650" Width="900">
+
+    <Window.Resources>
+        <!-- רשימות Enum למסך Order -->
+        <local:OrderTypeCollection x:Key="OrderTypeList" />
+        <local:OrderStatusCollection x:Key="OrderStatusList" />
+        <local:ScheduleStatusCollection x:Key="ScheduleStatusList" />
+
+        <!-- קונברטרים משלב 9ג -->
+        <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
+        <local:ConvertUpdateToVisible x:Key="ConvertUpdateToVisibleKey" />
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Border Style="{StaticResource CardBorderStyle}">
+            <Grid Margin="10">
+                <!-- עמודות -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- שורות -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- כותרת -->
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <!-- ID -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- OrderType -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- VerbalDescription -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- FullAddress -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Latitude -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Longitude -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- AirDistance -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- FullName -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Phone -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- OrderProperties -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- OpeningTime -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Estimated -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- MaxDelivery -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- OrderStatus -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- ScheduleStatus -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- TimeLeft -->
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Button -->
+                </Grid.RowDefinitions>
+
+                <!-- כותרת -->
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="3"
+                           Text="{Binding HeaderTitle, FallbackValue=Order Details}"
+                           Style="{StaticResource SectionTitleTextBlockStyle}"
+                           FontSize="20"/>
+
+                <!-- ID -->
+                <Label Grid.Row="2" Grid.Column="0" Content="Order ID:"/>
+                <TextBox Grid.Row="2" Grid.Column="2"
+                         Text="{Binding CurrentOrder.ID}"
+                         IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}"/>
+
+                <!-- OrderType -->
+                <Label Grid.Row="3" Grid.Column="0" Content="Order Type:"/>
+                <ComboBox Grid.Row="3" Grid.Column="2"
+                          ItemsSource="{Binding Source={StaticResource OrderTypeList}}"
+                          SelectedItem="{Binding CurrentOrder.OrderType}"
+                          Width="540"/>
+
+                <!-- VerbalDescription -->
+                <Label Grid.Row="4" Grid.Column="0" Content="Description:"/>
+                <TextBox Grid.Row="4" Grid.Column="2"
+                         Text="{Binding CurrentOrder.VerbalDescription}"
+                         AcceptsReturn="True"
+                         Height="60"
+                         VerticalScrollBarVisibility="Auto"/>
+
+                <!-- FullAddressOfTheOrder -->
+                <Label Grid.Row="5" Grid.Column="0" Content="Address:"/>
+                <TextBox Grid.Row="5" Grid.Column="2"
+                         Text="{Binding CurrentOrder.FullAddressOfTheOrder}"/>
+
+                <!-- Latitude -->
+                <Label Grid.Row="6" Grid.Column="0" Content="Latitude:"/>
+                <TextBox Grid.Row="6" Grid.Column="2"
+                         Text="{Binding CurrentOrder.Latitude}"
+                         IsReadOnly="True"/>
+
+                <!-- Longitude -->
+                <Label Grid.Row="7" Grid.Column="0" Content="Longitude:"/>
+                <TextBox Grid.Row="7" Grid.Column="2"
+                         Text="{Binding CurrentOrder.Longitude}"
+                         IsReadOnly="True"/>
+
+                <!-- AirDistance -->
+                <Label Grid.Row="8" Grid.Column="0" Content="Air Distance:"/>
+                <TextBox Grid.Row="8" Grid.Column="2"
+                         Text="{Binding CurrentOrder.AirDistance}"/>
+
+                <!-- FullNameOfTheInviter -->
+                <Label Grid.Row="9" Grid.Column="0" Content="Inviter Name:"/>
+                <TextBox Grid.Row="9" Grid.Column="2"
+                         Text="{Binding CurrentOrder.FullNameOfTheInviter}"/>
+
+                <!-- OrderersPhoneNumber -->
+                <Label Grid.Row="10" Grid.Column="0" Content="Inviter Phone:"/>
+                <TextBox Grid.Row="10" Grid.Column="2"
+                         Text="{Binding CurrentOrder.OrderersPhoneNumber}"/>
+
+                <!-- OrderProperties -->
+                <Label Grid.Row="11" Grid.Column="0" Content="Order Properties:"/>
+                <ComboBox Grid.Row="11" Grid.Column="2"
+                          ItemsSource="{Binding OrderPropertiesList}"
+                          SelectedItem="{Binding CurrentOrder.OrderProperties}"/>
+
+                <!-- OrderOpeningTime -->
+                <Label Grid.Row="12" Grid.Column="0"
+                       Content="Opening Time:"
+                       Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+
+                <DatePicker Grid.Row="12" Grid.Column="2"
+                            SelectedDate="{Binding CurrentOrder.OrderOpeningTime}"
+                            Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+
+                <!-- EstimatedDeliveryTime -->
+                <Label Grid.Row="13" Grid.Column="0" Content="Estimated Delivery:"/>
+                <DatePicker Grid.Row="13" Grid.Column="2"
+                            SelectedDate="{Binding CurrentOrder.EstimatedDeliveryTime}"/>
+
+                <!-- MaximumDeliveryTime -->
+                <Label Grid.Row="14" Grid.Column="0" Content="Maximum Delivery:"/>
+                <DatePicker Grid.Row="14" Grid.Column="2"
+                            SelectedDate="{Binding CurrentOrder.MaximumDeliveryTime}"/>
+
+                <!-- OrderStatus -->
+                <Label Grid.Row="15" Grid.Column="0" Content="Order Status:"/>
+                <ComboBox Grid.Row="15" Grid.Column="2"
+                          ItemsSource="{Binding OrderStatusList}"
+                          SelectedItem="{Binding CurrentOrder.OrderStatus}"/>
+
+                <!-- ScheduleStatus -->
+                <Label Grid.Row="16" Grid.Column="0" Content="Schedule Status:"/>
+                <ComboBox Grid.Row="16" Grid.Column="2"
+                          ItemsSource="{Binding ScheduleStatusList}"
+                          SelectedItem="{Binding CurrentOrder.ScheduleStatus}"/>
+
+                <!-- TimeLeftToCompleteOrder -->
+                <Label Grid.Row="17" Grid.Column="0" Content="Time Left:"/>
+                <TextBox Grid.Row="17" Grid.Column="2"
+                         Text="{Binding CurrentOrder.TimeLeftToCompleteOrder}"/>
+
+                <!-- כפתור שמירה -->
+                <StackPanel Grid.Row="19" Grid.ColumnSpan="3"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Content="{Binding ButtonText}"
+                            Width="140" Height="38"
+                            Click="btnAddUpdate_Click"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
     </Grid>
 </Window>
