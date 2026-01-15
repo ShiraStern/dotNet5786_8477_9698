@@ -1,7 +1,9 @@
 ﻿using BO;
 using PL.Courier;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -21,6 +23,9 @@ namespace PL.Order
 
 
         public BO.filterOrdersByProperty filterOrdersByProp { get; set; } = BO.filterOrdersByProperty.OrderStatus;
+        //public BO.DeliveryType deliveryTypeKey { get; set; } 
+        //public BO.OrderType orderTypeKey { get; set; } 
+        //public BO.OrderStatus orderStatusKey{ get; set; } 
 
         public IEnumerable<BO.OrderInList> OrderInList
         {
@@ -31,6 +36,24 @@ namespace PL.Order
         public static readonly DependencyProperty OrderInListProperty =
             DependencyProperty.Register("OrderInList", typeof(IEnumerable<BO.OrderInList>),
                 typeof(OrderListWindow), new PropertyMetadata(null));
+
+        public class OrderFilterPropCollection : IEnumerable
+        {
+            static readonly IEnumerable<BO.filterOrdersByProperty> ordersFilterEnums =
+                (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
+
+            public IEnumerator GetEnumerator() => ordersFilterEnums.GetEnumerator();
+        }
+
+        //public IEnumerable<BO.filterOrdersByProperty> OrdersFilter
+        //{
+        //    get { return (IEnumerable<BO.filterOrdersByProperty>)GetValue(OrdersFilterProperty); }
+        //    set { SetValue(OrdersFilterProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty OrdersFilterProperty =
+        //    DependencyProperty.Register("OrderInList", typeof(IEnumerable<BO.filterOrdersByProperty>),
+        //        typeof(da), new PropertyMetadata(null));
 
 
 
@@ -45,13 +68,6 @@ namespace PL.Order
             int managerId = s_bl.Admin.GetConfig().ManagerID;
 
             OrderInList = s_bl.Order.GetOrderList(managerId, filterOrdersByProp)!;
-            /*
-             * (filterOrdersByProp == BO.filterOrdersByProperty.OrderStatus) ?
-            s_bl?.order!.GetOrderList(managerId, null, filterOrdersByProperty.OrderStatus)! :
-            filterOrdersByProp == BO.filterOrdersByProperty.OrderType ?
-            s_bl?.order!.GetOrderList(managerId, null, BO.filterOrdersByProperty.OrderType)! :
-            s_bl?.order!.GetOrderList(managerId, null, BO.filterOrdersByProperty.DeliveryType)!;
-            */
         }
 
 
@@ -95,6 +111,7 @@ namespace PL.Order
 
         private void selectCourier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+
             if (selectedOrder == null)
             {
                 MessageBox.Show("Please select a courier first.");

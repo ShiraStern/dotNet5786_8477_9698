@@ -7,7 +7,9 @@
         mc:Ignorable="d"
         Title="OrderListWindow" Height="640" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-
+    <Window.Resources>
+        <local:OrderFilterPropCollection x:Key="OrderFilterPropCollectionKey" />
+    </Window.Resources>
     <Grid>
 
         <Grid.RowDefinitions>
@@ -21,11 +23,20 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            
+            
 
             <Label Content="Filter:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            
 
             <ComboBox Grid.Column="1"
+                      SelectedValue="{Binding Path=filterOrdersByProp, Mode=TwoWay}"
+                      x:Name="filterCMB"
+                      ItemsSource="{Binding OrderFilterPropCollection}"
+                      SelectionChanged="OrderFilterComboBox_SelectionChanged"/>
+            <ComboBox Grid.Column="2"
                       SelectedValue="{Binding Path=filterOrdersByProp, Mode=TwoWay}"
                       ItemsSource="{Binding Source={StaticResource OrderStatusCollectionKey}}"
                       SelectionChanged="OrderFilterComboBox_SelectionChanged"/>

@@ -7,8 +7,8 @@
     <Application.Resources>
         <!-- רשימות enum לשימוש ב-ComboBox -->
         <local:CourierActivityCollection x:Key="CourierActivityCollectionKey" />
-        <local:OrderStatusCollection x:Key="OrderStatusCollectionKey" />
-        <local:OrderStatusCollection x:Key="DeliveryTypeCollectionKey" />
+        <local:OrderStatusCollectionForOrder x:Key="OrderStatusCollectionKey" />
+        <!--<local:DeliveryTypeCollection x:Key="DeliveryTypeCollectionKey" />-->
         
     </Application.Resources>
 

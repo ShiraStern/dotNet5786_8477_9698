@@ -11,7 +11,7 @@
 
         <!-- רשימות Enum למסך Order -->
         <local:OrderTypeCollection x:Key="OrderTypeList" />
-        <local:OrderStatusCollection x:Key="OrderStatusList" />
+        <!--<local:OrderStatusCollection x:Key="OrderStatusList" />-->
         <local:ScheduleStatusCollection x:Key="ScheduleStatusList" />
 
         <!-- קונברטרים משלב 9ג -->

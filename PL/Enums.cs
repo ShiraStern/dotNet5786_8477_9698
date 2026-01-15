@@ -5,14 +5,7 @@ using System.Collections.Generic;
 namespace PL
 {
     // רשימות עבור מסכי LIST
-
-    internal class OrderFilterPropCollection : IEnumerable
-    {
-        static readonly IEnumerable<BO.filterOrdersByProperty> ordersFilterEnums =
-            (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
-
-        public IEnumerator GetEnumerator() => ordersFilterEnums.GetEnumerator();
-    }
+   
 
     internal class CourierActivityCollection : IEnumerable
     {
@@ -21,6 +14,8 @@ namespace PL
 
         public IEnumerator GetEnumerator() => courierEnums.GetEnumerator();
     }
+
+   
 
 
     // רשימות עבור מסך ORDER
