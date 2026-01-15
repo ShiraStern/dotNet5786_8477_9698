@@ -6,12 +6,12 @@ namespace PL
 {
     // רשימות עבור מסכי LIST
 
-    internal class OrderStatusCollection : IEnumerable
+    internal class OrderFilterPropCollection : IEnumerable
     {
-        static readonly IEnumerable<BO.OrderStatus> orderEnums =
-            (Enum.GetValues(typeof(BO.OrderStatus)) as IEnumerable<BO.OrderStatus>)!;
+        static readonly IEnumerable<BO.filterOrdersByProperty> ordersFilterEnums =
+            (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
 
-        public IEnumerator GetEnumerator() => orderEnums.GetEnumerator();
+        public IEnumerator GetEnumerator() => ordersFilterEnums.GetEnumerator();
     }
 
     internal class CourierActivityCollection : IEnumerable
