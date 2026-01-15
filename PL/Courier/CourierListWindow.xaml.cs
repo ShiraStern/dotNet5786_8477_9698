@@ -29,7 +29,7 @@ namespace PL.Courier
         int managerId = s_bl.Admin.GetConfig().ManagerID;
         public BO.FilterCouriersByProperty FilterCouriers { get; set; } = BO.FilterCouriersByProperty.All;
 
-        public BO.CourierInList selectedCourier { get; set; }
+        public BO.CourierInList? selectedCourier { get; set; }
         public IEnumerable<BO.CourierInList> CourierInList
         {
             get { return (IEnumerable<BO.CourierInList> )GetValue(CourierInListProperty); }
@@ -50,12 +50,16 @@ namespace PL.Courier
 
         private void queryCourierList()
         {
-            int managetID = s_bl.Admin.GetConfig().ManagerID;
-            CourierInList = (FilterCouriers == BO.FilterCouriersByProperty.All) ?
-                s_bl?.Courier!.GetCourierList(managetID, null, FilterCouriersByProperty.All)!
-                : FilterCouriers == BO.FilterCouriersByProperty.IsActive ?
-                s_bl?.Courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsActive)! :
-                s_bl?.Courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsNotActive)!;
+            //int managetID = s_bl.Admin.GetConfig().ManagerID;
+            //CourierInList = (FilterCouriers == BO.FilterCouriersByProperty.All) ?
+            //    s_bl?.Courier!.GetCourierList(managetID, null, FilterCouriersByProperty.All)!
+            //    : FilterCouriers == BO.FilterCouriersByProperty.IsActive ?
+            //    s_bl?.Courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsActive)! :
+            //    s_bl?.Courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsNotActive)!;
+
+            int managerId = s_bl.Admin.GetConfig().ManagerID;
+
+            CourierInList = s_bl.Courier.GetCourierList(managerId,true, FilterCouriers)!;//GetCourierList הוא מקבל שלוש פרמטרים ? ככה זה אמור להיות ? כי במקבילה באורר זה לא ככה שם הו אמקבל רק 2 פרמרטרים לבדוק אם זה נכון שבהגדרה של 
         }
         private void courseListObserver()
             => queryCourierList();
