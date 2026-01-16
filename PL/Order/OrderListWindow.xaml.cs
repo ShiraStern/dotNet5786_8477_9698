@@ -23,9 +23,7 @@ namespace PL.Order
 
 
         public BO.filterOrdersByProperty filterOrdersByProp { get; set; } = BO.filterOrdersByProperty.OrderStatus;
-        //public BO.DeliveryType deliveryTypeKey { get; set; } 
-        //public BO.OrderType orderTypeKey { get; set; } 
-        //public BO.OrderStatus orderStatusKey{ get; set; } 
+        public object filterPropertyKeys { get; set; }
 
         public IEnumerable<BO.OrderInList> OrderInList
         {
@@ -37,13 +35,13 @@ namespace PL.Order
             DependencyProperty.Register("OrderInList", typeof(IEnumerable<BO.OrderInList>),
                 typeof(OrderListWindow), new PropertyMetadata(null));
 
-        public class OrderFilterPropCollection : IEnumerable
-        {
-            static readonly IEnumerable<BO.filterOrdersByProperty> ordersFilterEnums =
-                (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
+        //public class OrderFilterPropCollection : IEnumerable
+        //{
+        //    static readonly IEnumerable<BO.filterOrdersByProperty> ordersFilterEnums =
+        //        (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
 
-            public IEnumerator GetEnumerator() => ordersFilterEnums.GetEnumerator();
-        }
+        //    public IEnumerator GetEnumerator() => ordersFilterEnums.GetEnumerator();
+        //}
 
         //public IEnumerable<BO.filterOrdersByProperty> OrdersFilter
         //{

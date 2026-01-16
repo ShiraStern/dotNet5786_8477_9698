@@ -35,6 +35,13 @@ namespace PL
 
         public IEnumerator GetEnumerator() => statuses.GetEnumerator();
     }
+    internal class OrederFilterCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.filterOrdersByProperty> order_filter =
+            (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
+
+        public IEnumerator GetEnumerator() => order_filter.GetEnumerator();
+    }
 
     internal class ScheduleStatusCollection : IEnumerable
     {
