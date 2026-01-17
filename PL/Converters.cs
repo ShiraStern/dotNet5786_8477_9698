@@ -3,7 +3,9 @@ using System.Windows;
 using System.Windows.Data;
 
 namespace PL;
-
+////האם שדה יהיה ReadOnly
+// האם שדה יוצג או יוסתר
+//בהתאם לטקסט “Update” או “Add”.
 // מחזיר true במצב Update ו-false במצב Add – לשימוש עם IsReadOnly
 public class ConvertUpdateToTrue : IValueConverter
 {
