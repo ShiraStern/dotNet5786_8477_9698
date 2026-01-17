@@ -22,7 +22,7 @@ namespace PL.Order
         public BO.OrderInList selectedOrder { get; set; }
 
 
-        public BO.filterOrdersByProperty filterOrdersByProp { get; set; } = BO.filterOrdersByProperty.OrderStatus;
+        public BO.filterOrdersByProperty filterOrdersByProp { get; set; } = BO.filterOrdersByProperty.All;
         public object filterPropertyKeys { get; set; }
 
         public IEnumerable<BO.OrderInList> OrderInList
@@ -35,25 +35,7 @@ namespace PL.Order
             DependencyProperty.Register("OrderInList", typeof(IEnumerable<BO.OrderInList>),
                 typeof(OrderListWindow), new PropertyMetadata(null));
 
-        //public class OrderFilterPropCollection : IEnumerable
-        //{
-        //    static readonly IEnumerable<BO.filterOrdersByProperty> ordersFilterEnums =
-        //        (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
-
-        //    public IEnumerator GetEnumerator() => ordersFilterEnums.GetEnumerator();
-        //}
-
-        //public IEnumerable<BO.filterOrdersByProperty> OrdersFilter
-        //{
-        //    get { return (IEnumerable<BO.filterOrdersByProperty>)GetValue(OrdersFilterProperty); }
-        //    set { SetValue(OrdersFilterProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty OrdersFilterProperty =
-        //    DependencyProperty.Register("OrderInList", typeof(IEnumerable<BO.filterOrdersByProperty>),
-        //        typeof(da), new PropertyMetadata(null));
-
-
+       
 
         public OrderListWindow()
         {
@@ -115,6 +97,7 @@ namespace PL.Order
                 MessageBox.Show("Please select a courier first.");
                 return;
             }
+
             new OrderWindow(selectedOrder.OrderId).Show();
         }
         private void DeleteOrder_Click(object sender, RoutedEventArgs e)

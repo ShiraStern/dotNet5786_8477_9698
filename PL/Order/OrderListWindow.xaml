@@ -153,9 +153,9 @@
                     <ComboBox Grid.Column="2"
                               MinWidth="180"
                               SelectedValue="{Binding Path=filterPropertyKeys, Mode=TwoWay}"
-                              sel/>
+                              Visibility="Visible"/>
 
-                </Grid>
+                 </Grid>
 
                 <!-- ORDERS LIST -->
                 <DataGrid x:Name="OrderListView"
