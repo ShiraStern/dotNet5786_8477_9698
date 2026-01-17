@@ -1,42 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfOrder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Order>
-    <Id>1000</Id>
-    <OrderType>Small</OrderType>
-    <OrderNote />
-    <CustomerAddress>הרצל 12 תל אביב</CustomerAddress>
-    <Latitude>34.770001</Latitude>
-    <Longitude>32.062309</Longitude>
-    <CustomerFullName>David Cohen</CustomerFullName>
-    <CustomerPhone>0587833675</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2025-09-10T11:36:34.7359503+03:00</OrderDate>
-  </Order>
-  <Order>
-    <Id>1001</Id>
-    <OrderType>Large</OrderType>
-    <OrderNote />
-    <CustomerAddress>שדרות רוטשילד 45 תל אביב</CustomerAddress>
-    <Latitude>34.7747952</Latitude>
-    <Longitude>32.0642206</Longitude>
-    <CustomerFullName>Moshe Levi</CustomerFullName>
-    <CustomerPhone>0513197042</CustomerPhone>
-    <OrderProperties>None</OrderProperties>
-    <OrderDate>2025-11-18T11:36:34.7656342+02:00</OrderDate>
-  </Order>
-  <Order>
-    <Id>1002</Id>
-    <OrderType>Large</OrderType>
-    <OrderNote />
-    <CustomerAddress>אלנבי 78 תל אביב</CustomerAddress>
-    <Latitude>34.7710218</Latitude>
-    <Longitude>32.0678237</Longitude>
-    <CustomerFullName>Yossi Mizrahi</CustomerFullName>
-    <CustomerPhone>0564558268</CustomerPhone>
-    <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2024-09-30T11:36:34.8005081+03:00</OrderDate>
-  </Order>
-  <Order>
     <Id>1003</Id>
     <OrderType>Large</OrderType>
     <OrderNote />
@@ -231,7 +195,7 @@
   <Order>
     <Id>1019</Id>
     <OrderType>Small</OrderType>
-    <OrderNote> </OrderNote>
+    <OrderNote />
     <CustomerAddress>דרך הכרמל 44 חיפה</CustomerAddress>
     <Latitude>35.0169178</Latitude>
     <Longitude>32.8000289</Longitude>
@@ -591,7 +555,7 @@
   <Order>
     <Id>1049</Id>
     <OrderType>Large</OrderType>
-    <OrderNote> </OrderNote>
+    <OrderNote />
     <CustomerAddress>רחוב סוקולוב 7 רמת השרון</CustomerAddress>
     <Latitude>34.821731</Latitude>
     <Longitude>32.138883</Longitude>
@@ -599,5 +563,41 @@
     <CustomerPhone>0547601969</CustomerPhone>
     <OrderProperties>FragileAndWeighty</OrderProperties>
     <OrderDate>2025-07-15T11:36:36.0616661+03:00</OrderDate>
+  </Order>
+  <Order>
+    <Id>1002</Id>
+    <OrderType>Large</OrderType>
+    <OrderNote />
+    <CustomerAddress>יעאבלי 50</CustomerAddress>
+    <Latitude>0</Latitude>
+    <Longitude>0</Longitude>
+    <CustomerFullName>זכגנ זכנ</CustomerFullName>
+    <CustomerPhone>0548721456</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2024-09-30T11:36:34.8005081+03:00</OrderDate>
+  </Order>
+  <Order>
+    <Id>1000</Id>
+    <OrderType>Medium</OrderType>
+    <OrderNote />
+    <CustomerAddress>shira</CustomerAddress>
+    <Latitude>0</Latitude>
+    <Longitude>0</Longitude>
+    <CustomerFullName>shia</CustomerFullName>
+    <CustomerPhone>0552146325851651</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2025-09-10T11:36:34.7359503+03:00</OrderDate>
+  </Order>
+  <Order>
+    <Id>1001</Id>
+    <OrderType>Medium</OrderType>
+    <OrderNote />
+    <CustomerAddress>שדרות רוטשילד 45 תל אביב</CustomerAddress>
+    <Latitude>34.7747952</Latitude>
+    <Longitude>32.0642206</Longitude>
+    <CustomerFullName>Moshe Levi</CustomerFullName>
+    <CustomerPhone>0513197042</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2025-11-18T11:36:34.7656342+02:00</OrderDate>
   </Order>
 </ArrayOfOrder>

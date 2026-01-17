@@ -8,8 +8,7 @@ namespace PL.Order
     public partial class OrderWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        int managerId = s_bl.Admin.GetConfig().ManagerID;
-        private int _applicantId;
+        private int _applicantId = s_bl.Admin.GetConfig().ManagerID;
         public BO.CourierInList selectedOrder { get; set; }
 
 
@@ -47,7 +46,7 @@ namespace PL.Order
             else
             {
                 // מצב עדכון
-                CurrentOrder = s_bl.Order.GetDetails(managerId ,orderId);
+                CurrentOrder = s_bl.Order.GetDetails(_applicantId ,orderId);
                 ButtonText = "Update";
             }
 
@@ -60,7 +59,7 @@ namespace PL.Order
         private void RefreshOrder()
         {
             int id = CurrentOrder!.ID;
-            CurrentOrder = s_bl.Order.GetDetails(managerId, id);
+            CurrentOrder = s_bl.Order.GetDetails(_applicantId, id);
         }
 
         private void OrderWindow_Loaded(object sender, RoutedEventArgs e)
