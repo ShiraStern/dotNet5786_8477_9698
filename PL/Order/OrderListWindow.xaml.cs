@@ -1,7 +1,9 @@
 ﻿using BO;
 using PL.Courier;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -20,7 +22,8 @@ namespace PL.Order
         public BO.OrderInList selectedOrder { get; set; }
 
 
-        public BO.filterOrdersByProperty filterOrdersByProp { get; set; } = BO.filterOrdersByProperty.OrderStatus;
+        public BO.filterOrdersByProperty filterOrdersByProp { get; set; } = BO.filterOrdersByProperty.All;
+        public object filterPropertyKeys { get; set; }
 
         public IEnumerable<BO.OrderInList> OrderInList
         {
@@ -32,7 +35,7 @@ namespace PL.Order
             DependencyProperty.Register("OrderInList", typeof(IEnumerable<BO.OrderInList>),
                 typeof(OrderListWindow), new PropertyMetadata(null));
 
-
+       
 
         public OrderListWindow()
         {
@@ -45,13 +48,6 @@ namespace PL.Order
             int managerId = s_bl.Admin.GetConfig().ManagerID;
 
             OrderInList = s_bl.Order.GetOrderList(managerId, filterOrdersByProp)!;
-            /*
-             * (filterOrdersByProp == BO.filterOrdersByProperty.OrderStatus) ?
-            s_bl?.order!.GetOrderList(managerId, null, filterOrdersByProperty.OrderStatus)! :
-            filterOrdersByProp == BO.filterOrdersByProperty.OrderType ?
-            s_bl?.order!.GetOrderList(managerId, null, BO.filterOrdersByProperty.OrderType)! :
-            s_bl?.order!.GetOrderList(managerId, null, BO.filterOrdersByProperty.DeliveryType)!;
-            */
         }
 
 
@@ -95,11 +91,13 @@ namespace PL.Order
 
         private void selectCourier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+
             if (selectedOrder == null)
             {
                 MessageBox.Show("Please select a courier first.");
                 return;
             }
+
             new OrderWindow(selectedOrder.OrderId).Show();
         }
         private void DeleteOrder_Click(object sender, RoutedEventArgs e)

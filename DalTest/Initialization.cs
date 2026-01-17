@@ -222,12 +222,12 @@ public static class Initialization
             "Amir Dahan",
             "Eitan Rosen",
             "Ronen Halevi",
-             "Gil Ben-Ami",
+            "Gil Ben-Ami",
             "Tal Oren",
             "Yair Hadad",
             "Harel Romano",
             "Oren Tal",
-             "Barak Almog",
+            "Barak Almog",
             "Lior Peled",
             "Ziv Avraham",
             "Gal Sharon",
@@ -267,7 +267,7 @@ public static class Initialization
                 Longitude = double.Parse(Longitudes[i]),  
                 CustomerFullName = customerFullNames[i],
                 CustomerPhone = "05" + Random.Shared.Next(0, 10) + Random.Shared.Next(1000000, 9999999),
-                OrderDate = DateTime.Now.AddDays(-s_random.Next(0, 600)),
+                OrderDate = DateTime.Now.AddDays(-s_random.Next(-650,0)),
                 OrderProperties = (OrderProperties)s_random.Next(Enum.GetValues<OrderProperties>().Length)
             };
             s_dal!.Order.Create(order);

@@ -1,88 +1,4 @@
-﻿<!--<Window x:Class="PL.Order.OrderListWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL.Order"
-        mc:Ignorable="d"
-        Title="OrderListWindow" Height="640" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-
-    <Grid>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        --><!-- FILTER SECTION --><!--
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Label Content="Filter:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-            <ComboBox Grid.Column="1"
-                      SelectedValue="{Binding Path=filterOrdersByProp, Mode=TwoWay}"
-                      ItemsSource="{Binding Source={StaticResource OrderStatusCollectionKey}}"
-                      SelectionChanged="OrderFilterComboBox_SelectionChanged"/>
-        </Grid>
-
-        --><!-- ORDERS LIST --><!--
-        <DataGrid x:Name="OrderListView"
-                  Margin="5"
-                  Grid.Row="1"
-                  ItemsSource="{Binding OrderInList}"
-                  AutoGenerateColumns="False"
-                  SelectedItem="{Binding selectedOrder}" 
-                  MouseDoubleClick="selectCourier_MouseDoubleClick"
-                  IsReadOnly="True" >
-        
-
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding DeliveryId}" Header="Delivery ID" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding OrderId}" Header="Order ID" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding DeliveryType}" Header="Delivery Type" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding AirDistance}" Header="Air Distance" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding OrderStatus}" Header="Order Status" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding ScheduleStatus}" Header="Schedule Status" Width="Auto"/>
-
-                <DataGridTextColumn Header="Time Left"
-                                    Width="Auto"
-                                    Binding="{Binding DeliveryTimeLeft, StringFormat={}{0:hh\\:mm}}"/>
-
-                <DataGridTextColumn Header="Handling Time"
-                                    Width="Auto"
-                                    Binding="{Binding TotalHandlingTime, StringFormat={}{0:hh\\:mm}}"/>
-
-                <DataGridTextColumn Binding="{Binding TotalDeliveries}" Header="Total Deliveries" Width="Auto"/>
-                <DataGridTemplateColumn Header="Delete" Width="80">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Delete"
-          Width="60"
-          Click="DeleteOrder_Click"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-          
-
-        </DataGrid>
-
-        --><!-- BUTTONS --><!--
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Add" Width="100" Height="40" Margin="10" Click="AddOrder_Click"/>
-        </StackPanel>
-
-       
-       
-
-    </Grid>
-</Window>-->
+﻿
 <Window x:Class="PL.Order.OrderListWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -110,7 +26,7 @@
                    Margin="0,0,0,10"/>
 
         <!-- Card עיקרי -->
-        <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}">
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -126,6 +42,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <Label Content="Filter by status:"
@@ -135,9 +52,14 @@
                     <ComboBox Grid.Column="1"
                               MinWidth="180"
                               SelectedValue="{Binding Path=filterOrdersByProp, Mode=TwoWay}"
-                              ItemsSource="{Binding Source={StaticResource OrderStatusCollectionKey}}"
+                              ItemsSource="{Binding Source={StaticResource OrederFilterCollectionKey}}"
                               SelectionChanged="OrderFilterComboBox_SelectionChanged"/>
-                </Grid>
+                    <ComboBox Grid.Column="2"
+                              MinWidth="180"
+                              SelectedValue="{Binding Path=filterPropertyKeys, Mode=TwoWay}"
+                              Visibility="Visible"/>
+
+                 </Grid>
 
                 <!-- ORDERS LIST -->
                 <DataGrid x:Name="OrderListView"

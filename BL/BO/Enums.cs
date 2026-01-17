@@ -101,6 +101,7 @@ public enum sortOrdersByProperty
 
 public enum filterOrdersByProperty
 {
+    All,
     OrderStatus,
     DeliveryType,
     OrderType

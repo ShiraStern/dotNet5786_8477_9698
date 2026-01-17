@@ -5,14 +5,7 @@ using System.Collections.Generic;
 namespace PL
 {
     // רשימות עבור מסכי LIST
-
-    internal class OrderStatusCollection : IEnumerable
-    {
-        static readonly IEnumerable<BO.OrderStatus> orderEnums =
-            (Enum.GetValues(typeof(BO.OrderStatus)) as IEnumerable<BO.OrderStatus>)!;
-
-        public IEnumerator GetEnumerator() => orderEnums.GetEnumerator();
-    }
+   
 
     internal class CourierActivityCollection : IEnumerable
     {
@@ -21,6 +14,8 @@ namespace PL
 
         public IEnumerator GetEnumerator() => courierEnums.GetEnumerator();
     }
+
+   
 
 
     // רשימות עבור מסך ORDER
@@ -39,6 +34,13 @@ namespace PL
             (Enum.GetValues(typeof(BO.OrderStatus)) as IEnumerable<BO.OrderStatus>)!;
 
         public IEnumerator GetEnumerator() => statuses.GetEnumerator();
+    }
+    internal class OrederFilterCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.filterOrdersByProperty> order_filter =
+            (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
+
+        public IEnumerator GetEnumerator() => order_filter.GetEnumerator();
     }
 
     internal class ScheduleStatusCollection : IEnumerable

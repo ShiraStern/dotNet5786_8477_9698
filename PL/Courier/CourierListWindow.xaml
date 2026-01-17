@@ -37,6 +37,7 @@
                   ItemsSource="{Binding CourierInList}"
                   AutoGenerateColumns="False"
                   MouseDoubleClick="selectCourier_MouseDoubleClick" 
+                  SelectedItem="{Binding selectedCourier}"
                   IsReadOnly="True">
 
             <DataGrid.Columns>
