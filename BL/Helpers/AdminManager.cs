@@ -27,6 +27,7 @@ internal static class AdminManager //stage 4
     internal static double AvgWalkingSpeed { get => s_dal.Config.AvgWalkingSpeed; } //stage 4
     internal static double AvgBicycleSpeed { get => s_dal.Config.AvgBicycleSpeed; } //stage 4
     internal static TimeSpan MaxDeliveryDuration { get => s_dal.Config.MaxDeliveryDuration; } //stage 4
+    internal static TimeSpan DelayRiskTime { get => s_dal.Config.DelayRiskTime; } //stage 4
 
     internal static event Action? ConfigUpdatedObservers; //stage 5 - for config update observers
     internal static event Action? ClockUpdatedObservers; //stage 5 - for clock update observers

@@ -37,6 +37,7 @@ public enum OrderProperties
 /// </summary>
 public enum DeliveryTermintionType
 {
+    None,
     DeliveredSeccessfully,
     RefusedToAccept,
     Cancelled,

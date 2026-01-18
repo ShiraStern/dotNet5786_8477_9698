@@ -25,7 +25,7 @@ public record Delivery
     DeliveryType DeliveryType,
     DateTime DeliveryStartTime,
     double? ActualDistance = null,
-    DeliveryTermintionType? DeliveryTermintionType = null,
+    DeliveryTermintionType DeliveryTermintionType = DO.DeliveryTermintionType.None,
     DateTime? DeliveryEndTime = null
   )
 {

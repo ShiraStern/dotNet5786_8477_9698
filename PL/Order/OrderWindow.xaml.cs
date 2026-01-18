@@ -10,7 +10,7 @@ namespace PL.Order
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         private int _applicantId = s_bl.Admin.GetConfig().ManagerID;
         public BO.CourierInList selectedOrder { get; set; }
-
+        public BO.OrderProperties OrderProperties { get; set; } = BO.OrderProperties.None;
 
         public string ButtonText { get; set; }
 
@@ -32,28 +32,28 @@ namespace PL.Order
 
         public OrderWindow(int orderId = 0)
         {
+            ButtonText = orderId == 0 ? "Add" : "Update";
+
+            DataContext = this;
             InitializeComponent();
 
             if (orderId == 0)
             {
-                // מצב הוספה
                 CurrentOrder = new BO.Order
                 {
-                    ID = 0
+                    ID = 0,
+                    OrderOpenDate = s_bl.Admin.GetClock(),
+                    OrderStatus = BO.OrderStatus.Open
                 };
-                ButtonText = "Add";
             }
             else
             {
-                // מצב עדכון
-                CurrentOrder = s_bl.Order.GetDetails(_applicantId ,orderId);
-                ButtonText = "Update";
+                // update mode
+                CurrentOrder = s_bl.Order.GetDetails(_applicantId, orderId);
             }
 
-            DataContext = this;
-            this.Loaded += OrderWindow_Loaded;
+            this.Loaded += OrderWindow_Loaded; // single subscription
             this.Closing += OrderWindow_Closing;
-
         }
 
         private void RefreshOrder()
@@ -96,7 +96,7 @@ namespace PL.Order
                     return;
                 }
 
-                if (CurrentOrder.ID == 0)
+                if (CurrentOrder.ID == 0 )
                 {
                     // הוספת הזמנה חדשה
                     BlApi.Factory.Get().Order.AddOrder(_applicantId, CurrentOrder);
@@ -112,6 +112,7 @@ namespace PL.Order
                 }
 
                 this.Close();
+                RefreshOrder();
             }
             catch (Exception ex)
             {

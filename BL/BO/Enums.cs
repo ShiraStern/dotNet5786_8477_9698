@@ -26,9 +26,9 @@ public enum OrderProperties
 /// </summary>
 public enum OrderType
 {
-    Small,
+    Large,
     Medium,
-    Large
+    Small
 }
 
 /// <summary>
@@ -58,11 +58,13 @@ public enum ScheduleStatus
 /// </summary>
 public enum DeliveryTerminationType
 {
-    DeliveredSuccessfully,
+    None,
+    DeliveredSeccessfully,
     RefusedToAccept,
     Cancelled,
     CustomerNotHome,
     FailedToDeliver
+    
 }
 
 /// <summary>

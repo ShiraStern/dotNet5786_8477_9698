@@ -50,6 +50,13 @@ namespace PL
 
         public IEnumerator GetEnumerator() => schedules.GetEnumerator();
     }
+    internal class OrderPropertiesCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.OrderProperties> properties =
+            (Enum.GetValues(typeof(BO.OrderProperties)) as IEnumerable<BO.OrderProperties>)!;
+
+        public IEnumerator GetEnumerator() => properties.GetEnumerator();
+    }
 
 
     // רשימות עבור מסך COURIER

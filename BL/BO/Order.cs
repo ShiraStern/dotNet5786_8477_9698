@@ -25,7 +25,7 @@ namespace BO
         public string? OrderersPhoneNumber { get; set; }
 
         public OrderProperties OrderProperties { get; set; }
-        public DateTime OrderOpeningTime { get; set; }
+        public DateTime OrderOpenDate { get; set; }
         public DateTime? EstimatedDeliveryTime { get; set; }
         public DateTime MaximumDeliveryTime { get; set; }
         public OrderStatus OrderStatus { get; set; }
