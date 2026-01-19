@@ -13,18 +13,6 @@
     <OrderDate>2025-07-28T11:36:34.8291758+03:00</OrderDate>
   </Order>
   <Order>
-    <Id>1004</Id>
-    <OrderType>Large</OrderType>
-    <OrderNote />
-    <CustomerAddress>סוקולוב 56 רמת גן</CustomerAddress>
-    <Latitude>34.8187769</Latitude>
-    <Longitude>32.0940739</Longitude>
-    <CustomerFullName>Noam Ben-David</CustomerFullName>
-    <CustomerPhone>0518440426</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2024-08-01T11:36:34.8539953+03:00</OrderDate>
-  </Order>
-  <Order>
     <Id>1005</Id>
     <OrderType>Medium</OrderType>
     <OrderNote />
@@ -599,5 +587,17 @@
     <CustomerPhone>0513197042</CustomerPhone>
     <OrderProperties>None</OrderProperties>
     <OrderDate>2025-11-18T11:36:34.7656342+02:00</OrderDate>
+  </Order>
+  <Order>
+    <Id>1004</Id>
+    <OrderType>Large</OrderType>
+    <OrderNote />
+    <CustomerAddress>דרך האבות</CustomerAddress>
+    <Latitude>0</Latitude>
+    <Longitude>0</Longitude>
+    <CustomerFullName>שולמית</CustomerFullName>
+    <CustomerPhone>0535461257</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2024-08-01T11:36:34.8539953+03:00</OrderDate>
   </Order>
 </ArrayOfOrder>

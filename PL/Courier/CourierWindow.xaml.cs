@@ -111,7 +111,7 @@ namespace PL.Courier
                 if (CurrentCourier.ID == 0)
                 {
                     // הוספה
-                    BlApi.Factory.Get().Courier.AddCourier(_applicantId, CurrentCourier);
+                    s_bl.Courier.AddCourier(_applicantId, CurrentCourier);
                     MessageBox.Show("Courier added successfully!");
                 }
                 else

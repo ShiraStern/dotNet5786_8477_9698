@@ -13,7 +13,7 @@ static class XMLTools
         if (!Directory.Exists(s_xmlDir))
             Directory.CreateDirectory(s_xmlDir);
     }
-
+    //XMLSerializerאזור פונקציות עזר על ידי שימוש ב
     #region SaveLoadWithXMLSerializer
     public static void SaveListToXMLSerializer<T>(List<T> list, string xmlFileName) where T : class
     {
@@ -46,6 +46,7 @@ static class XMLTools
         }
     }
     #endregion
+    //XElement פונקציות עזר על ידי שימוש 
 
     #region SaveLoadWithXElement
     public static void SaveListToXMLElement(XElement rootElem, string xmlFileName)
@@ -79,7 +80,7 @@ static class XMLTools
         }
     }
     #endregion
-
+// אזור ראשון - מתודת עזר לגישה למשתנים בקובץ הקונפיג
     #region XmlConfig
     public static int GetAndIncreaseConfigIntVal(string xmlFileName, string elemName)
     {
@@ -104,6 +105,8 @@ static class XMLTools
     public static DateTime GetConfigDateVal(string xmlFileName, string elemName)
     {
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
+
+
         DateTime dt = root.ToDateTimeNullable(elemName) ?? throw new FormatException($"can't convert:  {xmlFileName}, {elemName}");
         return dt;
     }
@@ -141,7 +144,7 @@ static class XMLTools
     }
     #endregion
 
-
+    //אזור 4 מתודות הרבה לXElement כך שממיר טקסט למשתנים
     #region ExtensionFuctions
     public static T? ToEnumNullable<T>(this XElement element, string name) where T : struct, Enum =>
         Enum.TryParse<T>((string?)element.Element(name), out var result) ? (T?)result : null;

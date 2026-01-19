@@ -7,9 +7,9 @@ namespace PL.Order
 {
     public partial class OrderWindow : Window
     {
-        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        static readonly IBl s_bl = Factory.Get();
         private int _applicantId = s_bl.Admin.GetConfig().ManagerID;
-        public BO.CourierInList selectedOrder { get; set; }
+        public CourierInList selectedOrder { get; set; }
 
 
         public string ButtonText { get; set; }
