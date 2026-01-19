@@ -45,8 +45,6 @@ namespace PL.Order
 
         private void queryOrderList()
         {
-            int managerId = s_bl.Admin.GetConfig().ManagerID;
-
             OrderInList = s_bl.Order.GetOrderList(managerId, filterOrdersByProp)!;
         }
 
@@ -89,7 +87,7 @@ namespace PL.Order
         //    new OrderWindow().Show();
         //}
 
-        private void selectCourier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void selectOrder_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
             if (selectedOrder == null)
@@ -100,6 +98,8 @@ namespace PL.Order
 
             new OrderWindow(selectedOrder.OrderId).Show();
         }
+
+
         private void DeleteOrder_Click(object sender, RoutedEventArgs e)
         {
             var order = ((FrameworkElement)sender).DataContext as BO.OrderInList;
@@ -113,13 +113,9 @@ namespace PL.Order
             {
                 try
                 {
-                    int managerId = s_bl.Admin.GetConfig().ManagerID;
-
                     s_bl.Order.Delete(managerId, order.OrderId);
-
-                    MessageBox.Show("Order deleted successfully!");
-
                     queryOrderList(); // רענון הרשימה
+                    MessageBox.Show("Order deleted successfully!");
                 }
                 catch (Exception ex)
                 {

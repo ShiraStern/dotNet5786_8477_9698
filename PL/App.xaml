@@ -95,6 +95,8 @@
                 <Setter Property="Foreground" Value="{StaticResource TextSoftBrush}"/>
                 <Setter Property="Margin" Value="0,0,0,12"/>
             </Style>
+            
+            <local:TimeSpanToDaysHoursConverter x:Key="TimeSpanToDaysHoursConverterKey"/>
 
             <local:CourierActivityCollection x:Key="CourierActivityCollectionKey"/>
             <local:OrderStatusCollectionForOrder x:Key="OrderStatusCollectionKey"/>

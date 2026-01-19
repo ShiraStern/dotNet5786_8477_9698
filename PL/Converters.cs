@@ -36,4 +36,20 @@ public class ConvertUpdateToVisible : IValueConverter
     {
         throw new NotImplementedException();
     }
+
+}
+
+
+public class TimeSpanToDaysHoursConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is TimeSpan ts)
+            return $"{ts.Days} days, {ts.Hours} hours";
+
+        return string.Empty;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => Binding.DoNothing;
 }
