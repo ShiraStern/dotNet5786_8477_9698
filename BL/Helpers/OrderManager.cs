@@ -48,14 +48,10 @@ namespace Helpers
 
         }
 
-            
-    
         
-           
-
         internal static int CalculateAirDistance(double latitude, double longitude)
         {
-            return 50;
+            throw new Exception("Not implemented yet");
         }
 
         /// This method is not permitted to delete orders and always throws a logical exception according to system requirements.
@@ -211,7 +207,8 @@ namespace Helpers
                 OrderersPhoneNumber = order.CustomerPhone,
                 OrderOpenDate = order.OrderDate,
                 deliveryPerOrderList = DeliveryManager.GetDeliveryPerOrderList(order.Id) ?? null,
-                OrderProperties = (BO.OrderProperties)order.OrderProperties
+                OrderProperties = (BO.OrderProperties)order.OrderProperties,
+                MaximumDeliveryDate=AdminManager.Now+ AdminManager.MaxDeliveryDuration
             };
 
 
@@ -270,7 +267,7 @@ namespace Helpers
    
                 }
 
-                }
+             }
                 return boOrder; 
         }
                     
@@ -329,12 +326,12 @@ namespace Helpers
         object? type,
         sortOrdersByProperty? sortBy)
             {
-                //  שליפת כל ההזמנות מה-DAL
-                IEnumerable<DO.Order> doOrders = s_dal.Order.ReadAll();
-                //  המרה ל-BO.Order (כולל חישוב סטטוסים ומשלוח אחרון)
+                
+                IEnumerable<DO.Order> doOrders = s_dal.Order.ReadAll(); // DO.order list from dal
                 IEnumerable<BO.Order> boOrders = doOrders
-                    .Select(o => ConvertToOrder(o));
-                // סינון (רק אם נדרש)
+                    .Select(o => ConvertToOrder(o));   //convert DO.order list to BO.order list 
+
+                //filter if it's required
                 if (filterBy != null && type != null)
                 {
                     switch (filterBy)

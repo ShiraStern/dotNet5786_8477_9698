@@ -67,7 +67,7 @@ internal class Program
             OrderProperties = orderProperties,
             OrderOpenDate = OrderOpeningTime,
             EstimatedDeliveryTime = EstimatedDeliveryTime,
-            MaximumDeliveryTime = MaximumDeliveryTime,
+            MaximumDeliveryDate = MaximumDeliveryTime,
             OrderStatus = OrderStatus,
             ScheduleStatus = ScheduleStatus,
             TimeLeftToCompleteOrder = TimeSpan.FromDays(TimeLeftToCompleteOrder)
@@ -123,7 +123,7 @@ internal class Program
             OrderProperties = orderProperties,
             OrderOpenDate = OrderOpeningTime,
             EstimatedDeliveryTime = EstimatedDeliveryTime,
-            MaximumDeliveryTime = MaximumDeliveryTime,
+            MaximumDeliveryDate = MaximumDeliveryTime,
             OrderStatus = OrderStatus,
             ScheduleStatus = ScheduleStatus,
             TimeLeftToCompleteOrder = TimeSpan.FromDays(TimeLeftToCompleteOrder)

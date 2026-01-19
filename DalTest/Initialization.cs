@@ -293,7 +293,7 @@ public static class Initialization
                 OrderId = order.Id,
                 CourierId = courier.Id,
                 DeliveryType = (DeliveryType)s_random.Next(Enum.GetValues<DeliveryType>().Length),
-                DeliveryStartTime = DateTime.Now.AddDays(s_random.Next(0, 500)),
+                DeliveryStartTime = DateTime.Now.AddDays(s_random.Next(-500, 0)),
                 ActualDistance = null,
                 DeliveryTermintionType = (DeliveryTermintionType)s_random.Next(Enum.GetValues<DeliveryTermintionType>().Length),
                 DeliveryEndTime = null
