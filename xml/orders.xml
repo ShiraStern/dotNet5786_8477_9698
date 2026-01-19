@@ -230,7 +230,7 @@
   </Order>
   <Order>
     <Id>1019</Id>
-    <OrderType>Medium</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>דרך הכרמל 44 חיפה</CustomerAddress>
     <Latitude>35.0169178</Latitude>
@@ -266,7 +266,7 @@
   </Order>
   <Order>
     <Id>1022</Id>
-    <OrderType>Medium</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>ויצמן 33 חיפה</CustomerAddress>
     <Latitude>34.9984731</Latitude>
@@ -278,7 +278,7 @@
   </Order>
   <Order>
     <Id>1023</Id>
-    <OrderType>Medium</OrderType>
+    <OrderType>Large</OrderType>
     <OrderNote />
     <CustomerAddress>שדרות הנשיא 77 חיפה</CustomerAddress>
     <Latitude>34.984288</Latitude>
@@ -350,7 +350,7 @@
   </Order>
   <Order>
     <Id>1029</Id>
-    <OrderType>Medium</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>דרך ירושלים 88 רחובות</CustomerAddress>
     <Latitude>34.8105658</Latitude>
@@ -434,7 +434,7 @@
   </Order>
   <Order>
     <Id>1036</Id>
-    <OrderType>Small</OrderType>
+    <OrderType>Medium</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב דגניה 12 כפר סבא</CustomerAddress>
     <Latitude>34.912614</Latitude>

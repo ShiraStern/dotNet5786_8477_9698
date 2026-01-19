@@ -37,7 +37,7 @@
     <DeliveryType>None</DeliveryType>
     <DeliveryStartTime>2025-01-24T17:47:45.3739323+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
+    <DeliveryTermintionType>RefusedToAccept</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
@@ -47,7 +47,7 @@
     <DeliveryType>Car</DeliveryType>
     <DeliveryStartTime>2025-05-07T17:47:45.3881202+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>DeliveredSeccessfully</DeliveryTermintionType>
+    <DeliveryTermintionType>None</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
@@ -87,7 +87,7 @@
     <DeliveryType>Motorcycle</DeliveryType>
     <DeliveryStartTime>2025-03-11T17:47:45.4496834+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>None</DeliveryTermintionType>
+    <DeliveryTermintionType>RefusedToAccept</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
@@ -147,7 +147,7 @@
     <DeliveryType>Bicycle</DeliveryType>
     <DeliveryStartTime>2025-04-11T17:47:45.5386905+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>CustomerNotHome</DeliveryTermintionType>
+    <DeliveryTermintionType>Cancelled</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
@@ -177,7 +177,7 @@
     <DeliveryType>Motorcycle</DeliveryType>
     <DeliveryStartTime>2024-11-14T17:47:45.584933+02:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>DeliveredSeccessfully</DeliveryTermintionType>
+    <DeliveryTermintionType>RefusedToAccept</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
@@ -247,7 +247,7 @@
     <DeliveryType>Car</DeliveryType>
     <DeliveryStartTime>2025-10-06T17:47:45.6992726+03:00</DeliveryStartTime>
     <ActualDistance xsi:nil="true" />
-    <DeliveryTermintionType>RefusedToAccept</DeliveryTermintionType>
+    <DeliveryTermintionType>DeliveredSeccessfully</DeliveryTermintionType>
     <DeliveryEndTime xsi:nil="true" />
   </Delivery>
   <Delivery>
