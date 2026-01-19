@@ -74,7 +74,6 @@
         <TextBox Grid.Row="3" Grid.Column="2"
                  Text="{Binding CurrentCourier.Email}"/>
 
-
         <!-- Password -->
         <Label Grid.Row="4" Grid.Column="0" Content="Password:"/>
         <TextBox Grid.Row="4" Grid.Column="2"

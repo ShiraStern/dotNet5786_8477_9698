@@ -600,4 +600,16 @@
     <OrderProperties>Weighty</OrderProperties>
     <OrderDate>2027-02-25T12:20:53.3532912+02:00</OrderDate>
   </Order>
+  <Order>
+    <Id>1004</Id>
+    <OrderType>Large</OrderType>
+    <OrderNote />
+    <CustomerAddress>דרך האבות</CustomerAddress>
+    <Latitude>0</Latitude>
+    <Longitude>0</Longitude>
+    <CustomerFullName>שולמית</CustomerFullName>
+    <CustomerPhone>0535461257</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2024-08-01T11:36:34.8539953+03:00</OrderDate>
+  </Order>
 </ArrayOfOrder>
