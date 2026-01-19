@@ -17,6 +17,7 @@ public interface IConfig
     TimeSpan DelayRiskTime { get; set; }
     TimeSpan InactivityThreshold { get; set; }
     public int ManagerID { get; set; }
+    public string ManagerPassword { get; set; }
 
     void Reset();
 }

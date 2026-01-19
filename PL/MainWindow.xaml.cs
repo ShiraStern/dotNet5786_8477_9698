@@ -26,6 +26,7 @@ namespace PL
 
         public MainWindow()
         {
+            InitializeComponent();
         }
         public DateTime CurrentTime //תכונת תלות  שמיצגת את ערכו של התאריך המוצג על המסך.
         {

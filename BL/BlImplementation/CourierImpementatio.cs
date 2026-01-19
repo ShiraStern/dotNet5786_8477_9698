@@ -122,26 +122,45 @@ internal class CourierImpementation : ICourier
         }
     }
 
-    
-    public string Login(string userName, string password)
+    public string Login(string userId, string password)
     {
         try
         {
-            DO.Courier? courier = CourierManager.ReadAll().FirstOrDefault(c => c.FullName == userName) ?? null;
-            if (courier is null)
-                throw new BlDoesNotExistException($"couldent find courier or manager with the name:{userName}");
-            if (courier.Password != password)
-                throw new BlInvalidPasswordException($"Incorrect password");
-            if (courier.Id == AdminManager.GetConfig().ManagerID)
+            if (!int.TryParse(userId, out int id))
+                throw new BlArgumentNullException("ID must be numeric");
+
+            var config = AdminManager.GetConfig();
+
+            // בדיקת מנהל
+            if (id == config.ManagerID)
+            {
+                if (config.ManagerPassword != password)
+                    throw new BlInvalidPasswordException("Incorrect password");
+
                 return "Manager";
+            }
+
+            // בדיקת שליח
+            DO.Courier? courier =
+                CourierManager.ReadAll().FirstOrDefault(c => c.Id == id);
+
+            if (courier is null)
+                throw new BlDoesNotExistException(
+                    $"Could not find courier with ID: {id}");
+
+            if (courier.Password != password)
+                throw new BlInvalidPasswordException("Incorrect password");
+
             return "Courier";
         }
         catch (DalXMLFileLoadCreateException ex)
         {
-            // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
-            throw new BlDataAccessException("Failed to read courier's data.", ex);
+            throw new BlDataAccessException(
+                "Failed to read courier data.", ex);
         }
     }
+
+    
 
     public void UpdateDetails(int applicantId, BO.Courier boCourier)
     {

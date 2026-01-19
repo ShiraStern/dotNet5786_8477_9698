@@ -20,6 +20,13 @@ internal class ConfigImplementation : IConfig
         get => Config.ManagerID;
         set => Config.ManagerID = value;
     }
+
+    public string ManagerPassword
+    {
+        get => Config.ManagerPassword;
+        set => Config.ManagerPassword = value;
+    }
+
     public double? Latitude
     {
         get => Config.Latitude;
