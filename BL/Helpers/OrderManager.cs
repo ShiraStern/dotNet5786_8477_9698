@@ -55,10 +55,16 @@ namespace Helpers
         }
 
         /// This method is not permitted to delete orders and always throws a logical exception according to system requirements.
-        internal static void DeleteOrder(int applicantId, int orderId)
+        internal static void DeleteOrder( int orderId)
         {
-            throw new BlUnauthorizedAccessException(
-                "Orders cannot be deleted in the system.");
+            try
+            {
+                s_dal.Order.Delete(orderId);
+            }
+            catch(DalDoesNotExistException ex)
+            {
+                throw new BlDoesNotExistException($"Order with ID={orderId} does not exist so it can't be deleted");
+            }
         }       
 
 

@@ -64,7 +64,7 @@ internal class OrderImplementation : BlApi.IOrder
         try
         {
             // delete order via DAL   
-            CourierManager.Delete(orderId);
+            OrderManager.DeleteOrder(orderId);
         }
         catch (DalDoesNotExistException ex)
         {
@@ -262,7 +262,7 @@ internal class OrderImplementation : BlApi.IOrder
     sortClosedDeliveriesByProperty? byProperty = null)
     {
         //  הרשאה – רק השליח עצמו
-        if (applicantId != courierId)
+        if (applicantId != courierId && applicantId != AdminManager.ManagerID)
             throw new BlUnauthorizedAccessException(
                 "Only the courier can view open orders.");
 

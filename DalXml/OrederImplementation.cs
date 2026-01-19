@@ -20,11 +20,11 @@ internal class OrederImplementation : IOrder
 
     public void Delete(int id)
     {
-        XElement orderRootElem = XMLTools.LoadListFromXMLElement(Config.s_courier_xml);      
+        XElement orderRootElem = XMLTools.LoadListFromXMLElement(Config.s_order_xml);      
         XElement? orderElem = orderRootElem.Elements("Order")        
                                                 .FirstOrDefault(st => (int?)st.Element("Id") == id);
         if (orderElem is null)
-        { throw new DalDoesNotExistException($"Courier with ID={id} does not exist"); }
+        { throw new DalDoesNotExistException($"Order with ID={id} does not exist"); }
         orderElem.Remove();        // delete the Element
         XMLTools.SaveListToXMLElement(orderRootElem, Config.s_courier_xml); // save the updated XElement 
     }
@@ -40,7 +40,7 @@ internal class OrederImplementation : IOrder
         return Order.FirstOrDefault(it => it.Id==id);
     }
 
-    public Order? Read(Func<Order, bool> filter)
+    public DO.Order? Read(Func<Order, bool> filter)
     {
         List<Order> Order = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);
             return  Order.FirstOrDefault(filter);

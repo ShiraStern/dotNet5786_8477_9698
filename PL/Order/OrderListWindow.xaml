@@ -10,6 +10,8 @@
         Height="640" Width="900"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
+   
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -54,6 +56,7 @@
                               SelectedValue="{Binding Path=filterOrdersByProp, Mode=TwoWay}"
                               ItemsSource="{Binding Source={StaticResource OrederFilterCollectionKey}}"
                               SelectionChanged="OrderFilterComboBox_SelectionChanged"/>
+                    
                     <ComboBox Grid.Column="2"
                               MinWidth="180"
                               SelectedValue="{Binding Path=filterPropertyKeys, Mode=TwoWay}"
@@ -68,7 +71,7 @@
                           ItemsSource="{Binding OrderInList}"
                           AutoGenerateColumns="False"
                           SelectedItem="{Binding selectedOrder}"
-                          MouseDoubleClick="selectCourier_MouseDoubleClick"
+                          MouseDoubleClick="selectOrder_MouseDoubleClick"
                           IsReadOnly="True">
 
                     <DataGrid.Columns>
@@ -81,7 +84,7 @@
 
                         <DataGridTextColumn Header="Time Left"
                                             Width="auto"
-                                            Binding="{Binding DeliveryTimeLeft, StringFormat={}{0:dd\\:hh}}"/>
+                                            Binding="{Binding DeliveryTimeLeft, Converter={StaticResource TimeSpanToDaysHoursConverterKey}}"/>
 
                         <DataGridTextColumn Header="Handling Time"
                                             Width="*"
