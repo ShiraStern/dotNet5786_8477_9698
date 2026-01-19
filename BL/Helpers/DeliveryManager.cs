@@ -3,6 +3,7 @@ using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,25 @@ namespace Helpers
         internal static List<DO.Delivery>? GetDoDeliveriesByOrderId(int orderId) // אנחנו צריכות להחזיר DO דליברי  לפי ה ORDER.ID
         {
             return s_dal.Delivery.ReadAll().Where(c => c.OrderId == orderId).ToList();
+        }
+
+
+        internal static List<BO.DeliveryPerOrderInList>? GetDeliveryPerOrderList(int id)
+            => GetDoDeliveriesByOrderId(id).Select(static d => ConvertTODeliveryPerOrderInList(d)).ToList();
+        
+
+        internal static DO.Delivery? GetLastDelivery(IEnumerable<DeliveryPerOrderInList> list)
+        {
+            return s_dal.Delivery.Read(list.Last().DeliveryId) ??
+                throw new BO.BlArgumentNullException("No deliveries found for the given order.");
+        }
+
+
+        internal static List< DO.Delivery>?  GetDelivriesPerCourier(int id)
+        {
+            var deliveryList = s_dal.Delivery.ReadAll();
+            return deliveryList.Where(d => d.CourierId == id).ToList() ??
+                throw new BO.BlArgumentNullException($"No deliveries found for the given courier with ID: {id}.");
         }
 
 
@@ -63,26 +83,10 @@ namespace Helpers
         /// empty list if <paramref name="doDeliveries"/> is empty.</returns>
         internal static List<BO.DeliveryPerOrderInList> ConvertToDeliveryPerOrderInListList(List<DO.Delivery> doDeliveries)
         {
-            List<BO.DeliveryPerOrderInList> boDeliveries = new();
-            foreach (var d in doDeliveries)
-            {
-                boDeliveries.Add(ConvertTODeliveryPerOrderInList(d));
-            }
-            return boDeliveries;
+           
+            return doDeliveries.Select(d => ConvertTODeliveryPerOrderInList(d)).ToList();
         }
-
-        internal static List<BO.DeliveryPerOrderInList>? GetDeliveryPerOrderList(int id)
-        {
-            List<DO.Delivery>? deliveries = DeliveryManager.GetDoDeliveriesByOrderId(id) ?? null;
-            return ConvertToDeliveryPerOrderInListList(deliveries ?? null);
-        }
-
-        internal static DO.Delivery? GetLastDelivery(IEnumerable<DeliveryPerOrderInList> list)
-        {
-            return s_dal.Delivery.Read(list.Last().DeliveryId) ??
-                throw new BO.BlArgumentNullException("No deliveries found for the given order.");
-        }
-                
 
     }
+
 }

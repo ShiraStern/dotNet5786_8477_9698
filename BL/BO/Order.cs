@@ -27,7 +27,7 @@ namespace BO
         public OrderProperties OrderProperties { get; set; }
         public DateTime OrderOpenDate { get; set; }
         public DateTime? EstimatedDeliveryTime { get; set; }
-        public DateTime MaximumDeliveryTime { get; set; }
+        public DateTime MaximumDeliveryDate { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public ScheduleStatus ScheduleStatus { get; set; }
         public TimeSpan TimeLeftToCompleteOrder { get; set; }

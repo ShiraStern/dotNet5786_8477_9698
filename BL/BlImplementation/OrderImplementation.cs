@@ -10,7 +10,16 @@ using System.Collections.Generic;
 internal class OrderImplementation : BlApi.IOrder
 {
 
-    // Adds a new order to the system -done
+   /// <summary>
+   /// Adds a new order for the specified applicant.
+   /// </summary>
+   /// <param name="applicantId">The unique identifier of the applicant for whom the order is being added. Must correspond to a valid
+   /// administrator.</param>
+   /// <param name="boOrder">The order to add. Cannot be <see langword="null"/>.</param>
+   /// <exception cref="BlUnauthorizedAccessException">Thrown if <paramref name="applicantId"/> does not correspond to a valid administrator.</exception>
+   /// <exception cref="BlArgumentNullException">Thrown if <paramref name="boOrder"/> is <see langword="null"/>.</exception>
+   /// <exception cref="BlAlreadyExistsException">Thrown if an order with the same identifier already exists in the system.</exception>
+   /// <exception cref="BlDataAccessException">Thrown if a data access error occurs while adding the order.</exception>
     public void AddOrder(int applicantId, BO.Order boOrder) //done
     {
         // הרשאה – מסך ניהולי
@@ -40,12 +49,41 @@ internal class OrderImplementation : BlApi.IOrder
         
     }
 
-    public void Delete(int applicantId, int orderId) //done //לפי המסמך רק צריך לזרוק חריגה כי הואלא רשאי למחוק
+
+   /// <summary>
+   /// Deletes the specified order if the applicant has administrative privileges.
+   /// </summary>
+   /// <param name="applicantId">The identifier of the user attempting to delete the order. Must represent a valid administrator.</param>
+   /// <param name="orderId">The identifier of the order to delete.</param>
+   /// <exception cref="BlUnauthorizedAccessException">Thrown if <paramref name="applicantId"/> does not correspond to a valid administrator.</exception>
+   /// <exception cref="BlDoesNotExistException">Thrown if the specified order does not exist or cannot be deleted.</exception>
+    public void Delete(int applicantId, int orderId) 
     {
-        throw new BO.BlUnauthorizedAccessException(
-            "Orders cannot be deleted from the system.");
+        if (!AdminManager.IsValidManagerId(applicantId))
+            throw new BlUnauthorizedAccessException("Only admin can delete a order.");
+        try
+        {
+            // delete order via DAL   
+            CourierManager.Delete(orderId);
+        }
+        catch (DalDoesNotExistException ex)
+        {
+            // translate unexpected DAL exceptions to a BL-level exception while preserving the inner exception
+            throw new BlDoesNotExistException("Failed to delete order.", ex);
+        }
     }
 
+
+    /// <summary>
+    /// Cancels the specified order on behalf of an administrator.
+    /// </summary>
+    /// <remarks>Only users with administrative privileges are permitted to cancel orders. Attempting to
+    /// cancel a non-existent order or an order in an invalid state will result in an exception.</remarks>
+    /// <param name="applicantId">The unique identifier of the user requesting the cancellation. Must be a valid administrator ID.</param>
+    /// <param name="orderId">The unique identifier of the order to cancel.</param>
+    /// <exception cref="BO.BlUnauthorizedAccessException">Thrown if <paramref name="applicantId"/> does not correspond to a valid administrator.</exception>
+    /// <exception cref="BO.BlDoesNotExistException">Thrown if an order with the specified <paramref name="orderId"/> does not exist.</exception>
+    /// <exception cref="BO.BlDataAccessException">Thrown if a data access error occurs while attempting to cancel the order.</exception>
     public void CancelOrder(int applicantId, int orderId) //done
     {
         if (!AdminManager.IsValidManagerId(applicantId))
@@ -71,31 +109,44 @@ internal class OrderImplementation : BlApi.IOrder
         }
     }
 
+
+    /// <summary>
+    /// Marks the specified delivery as successfully completed by the assigned courier.
+    /// </summary>
+    /// <remarks>Only the courier assigned to the delivery is authorized to end the order handling. This
+    /// method updates the delivery's status and completion time.</remarks>
+    /// <param name="applicantId">The ID of the user attempting to end the order handling. Must match the assigned courier's ID.</param>
+    /// <param name="courierId">The ID of the courier assigned to the delivery.</param>
+    /// <param name="orderId">The ID of the order associated with the delivery.</param>
+    /// <param name="deliveryId">The ID of the delivery to be marked as completed.</param>
+    /// <exception cref="BlUnauthorizedAccessException">Thrown if the applicant is not the assigned courier, or if the courier is not authorized to end this delivery.</exception>
+    /// <exception cref="BlDoesNotExistException">Thrown if the specified delivery does not exist.</exception>
+    /// <exception cref="BlDataAccessException">Thrown if an error occurs while accessing the data layer.</exception>
     public void EndOrderHandle(int applicantId, int courierId, int orderId, int deliveryId)// done
     {
-        // 1. בדיקת חוקיות המבקש – חייב להיות השליח עצמו
+        // the applicant must be the courier himself
         if (applicantId != courierId)
             throw new BlUnauthorizedAccessException(
                 "Only the assigned courier can end order handling.");
 
         try
         {
-            // 2. שליפת המשלוח מה-DAL
+            // DO/order from dal
             DO.Delivery? delivery = AdminManager.GetDal().Delivery.Read(deliveryId);
 
-            // 3. בדיקה שהמשלוח שייך להזמנה ולשליח
+            
             if (delivery.OrderId != orderId || delivery.CourierId != courierId)
                 throw new BlUnauthorizedAccessException(
                     "The courier is not authorized to end this delivery.");
 
-            // 4. עדכון המשלוח – סיום טיפול
+            // update delivery
             DO.Delivery updatedDelivery = delivery with
             {
                 DeliveryEndTime = DateTime.Now,
                 DeliveryTermintionType = DO.DeliveryTermintionType.DeliveredSeccessfully
             };
 
-            // 5. שמירה ב-DAL
+            // saving to dal
             AdminManager.GetDal().Delivery.Update(updatedDelivery);
         }
         catch (DalDoesNotExistException ex)
@@ -110,6 +161,24 @@ internal class OrderImplementation : BlApi.IOrder
         }
     }
 
+
+    /// <summary>
+    /// Retrieves a collection of closed deliveries assigned to a specific courier, with optional filtering by order
+    /// type and sorting criteria.
+    /// </summary>
+    /// <remarks>Only the courier themselves is authorized to view their delivery history. Attempting to
+    /// access another courier's history will result in an exception.</remarks>
+    /// <param name="applicantId">The ID of the user requesting the delivery history. Must match <paramref name="courierId"/> to authorize access.</param>
+    /// <param name="courierId">The ID of the courier whose closed deliveries are to be retrieved.</param>
+    /// <param name="filterOrderByType">An optional order type to filter the closed deliveries. If specified, only deliveries of this order type are
+    /// included.</param>
+    /// <param name="byProperty">An optional property by which to sort the results. If not specified, deliveries are sorted by delivery
+    /// termination type.</param>
+    /// <returns>An enumerable collection of <see cref="ClosedDeliveryInList"/> objects representing the closed deliveries for
+    /// the specified courier. The collection may be empty if no closed deliveries are found.</returns>
+    /// <exception cref="BlUnauthorizedAccessException">Thrown if <paramref name="applicantId"/> does not match <paramref name="courierId"/>.</exception>
+    /// <exception cref="BlDoesNotExistException">Thrown if a referenced delivery or order does not exist in the data store.</exception>
+    /// <exception cref="BlDataAccessException">Thrown if there is a failure accessing the data layer.</exception>
     public IEnumerable<ClosedDeliveryInList> GetClosedDeliveriesPerCourier(//done
     int applicantId,
     int courierId,
@@ -123,27 +192,24 @@ internal class OrderImplementation : BlApi.IOrder
 
         try
         {
-            var dal = AdminManager.GetDal();
-
+           
             // כל המשלוחים הסגורים של השליח
-            var closedDeliveries = dal.Delivery.ReadAll()
-                .Where(d => d.CourierId == courierId && d.DeliveryEndTime != null);
+            var closedDeliveries = DeliveryManager.GetDelivriesPerCourier(courierId)
+                    .Where(d => d.DeliveryEndTime is not null);
 
-            //  חיבור להזמנה
+            ////  חיבור להזמנה
             var result = closedDeliveries.Select(d =>
             {
-                DO.Order order = dal.Order.Read(d.OrderId);
-
                 return new ClosedDeliveryInList
                 {
                     DeliveryId = d.Id,
-                    OrderId = order.Id,
-                    OrderType = (BO.OrderType)order.OrderType,
-                    AddressOfDelivery = order.CustomerAddress,
+                    OrderId = d.Id,
+                    OrderType = (BO.OrderType)  
+                            OrderManager.GetOrderDetails(AdminManager.ManagerID, d.Id).OrderType ,
+                    AddressOfDelivery = OrderManager.GetOrderDetails(AdminManager.ManagerID, d.Id).FullAddressOfTheOrder,
                     DeliveryType = (BO.DeliveryType)d.DeliveryType,
                     ActualDistance = d.ActualDistance ?? 0,
-                    TotalHandlingTime =
-                        d.DeliveryEndTime!.Value - d.DeliveryStartTime,
+                    TotalHandlingTime = (TimeSpan)( d.DeliveryEndTime - d.DeliveryStartTime),
                     DeliveryTermintionType =
                         (BO.DeliveryTerminationType)d.DeliveryTermintionType
                 };
@@ -235,7 +301,7 @@ internal class OrderImplementation : BlApi.IOrder
                         : null,
                     ScheduleStatus = boOrder.ScheduleStatus,
                     deliveryTimeLeft = boOrder.TimeLeftToCompleteOrder,
-                    MaximumDeliveryTime = boOrder.MaximumDeliveryTime
+                    MaximumDeliveryTime = boOrder.MaximumDeliveryDate
                 };
             });
 

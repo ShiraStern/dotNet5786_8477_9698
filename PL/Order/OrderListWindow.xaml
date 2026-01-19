@@ -85,7 +85,7 @@
 
                         <DataGridTextColumn Header="Handling Time"
                                             Width="*"
-                                            Binding="{Binding TotalHandlingTime, StringFormat={}{0:dd\\:hh}}"/>
+                                            Binding="{Binding TotalHandlingTime, StringFormat={}{0:%d\\:%h}}"/>
 
                         <DataGridTextColumn Binding="{Binding TotalDeliveries}" Header="Total Deliveries" Width="auto" />
 
