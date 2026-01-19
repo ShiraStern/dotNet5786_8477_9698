@@ -44,6 +44,9 @@ internal class CourierImpementation : ICourier
         {
             // delete courier via DAL   
             CourierManager.Delete(id);
+            CourierManager.Observers.NotifyItemUpdated(id);
+            CourierManager.Observers.NotifyListUpdated();//////!!!!!!!!!!1
+            
         }
         catch (DalDoesNotExistException ex)
         {
@@ -155,6 +158,7 @@ internal class CourierImpementation : ICourier
             // create DTO/DO and persist via DAL
             DO.Courier doCourier = CourierManager.ConvertToCourier(boCourier);
             CourierManager.Update(doCourier);
+            CourierManager.Observers.NotifyItemUpdated(doCourier.Id);   ///////////////////!!!!!!!!!!!!!!!!!!!
         }
         catch (DalDoesNotExistException ex)
         {
