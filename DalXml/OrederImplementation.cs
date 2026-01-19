@@ -4,6 +4,8 @@ using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
+
 //C:\Users\User\source\repos\dotNet5786_8477_9698\DalXml\OrederImplementation.cs
 internal class OrederImplementation : IOrder
 {
@@ -18,10 +20,13 @@ internal class OrederImplementation : IOrder
 
     public void Delete(int id)
     {
-        List<Order> Order = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);
-        if (Order.RemoveAll(it => it.Id == id) == 0)
-            throw new DalDoesNotExistException($"Order with ID={id} does Not exist");
-        XMLTools.SaveListToXMLSerializer(Order, Config.s_order_xml);
+        XElement orderRootElem = XMLTools.LoadListFromXMLElement(Config.s_courier_xml);      
+        XElement? orderElem = orderRootElem.Elements("Order")        
+                                                .FirstOrDefault(st => (int?)st.Element("Id") == id);
+        if (orderElem is null)
+        { throw new DalDoesNotExistException($"Courier with ID={id} does not exist"); }
+        orderElem.Remove();        // delete the Element
+        XMLTools.SaveListToXMLElement(orderRootElem, Config.s_courier_xml); // save the updated XElement 
     }
 
     public void DeleteAll()
@@ -29,7 +34,7 @@ internal class OrederImplementation : IOrder
         XMLTools.SaveListToXMLSerializer(new List<Order>(), Config.s_order_xml);
     }
 
-    public Order? Read(int id)
+    public DO.Order? Read(int id)
     {
         List<Order> Order = XMLTools.LoadListFromXMLSerializer<Order>(Config.s_order_xml);
         return Order.FirstOrDefault(it => it.Id==id);

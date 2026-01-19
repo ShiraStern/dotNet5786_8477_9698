@@ -100,7 +100,7 @@ internal static class CourierManager
     {
         return s_dal.Delivery.ReadAll().
                     Where(c => c.CourierId == id &&
-                    c.DeliveryTermintionType is null ).Count();
+                    c.DeliveryTermintionType== DO.DeliveryTermintionType.None ).Count();
     }
 
     internal static int GetNumOfDeliveriesNotOnTime(int id)

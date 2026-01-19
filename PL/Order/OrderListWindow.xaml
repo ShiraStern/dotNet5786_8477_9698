@@ -72,22 +72,22 @@
                           IsReadOnly="True">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding DeliveryId}" Header="Delivery ID" Width="*" />
-                        <DataGridTextColumn Binding="{Binding OrderId}" Header="Order ID" Width="*" />
-                        <DataGridTextColumn Binding="{Binding DeliveryType}" Header="Delivery Type" Width="*" />
-                        <DataGridTextColumn Binding="{Binding AirDistance}" Header="Air Distance" Width="*" />
-                        <DataGridTextColumn Binding="{Binding OrderStatus}" Header="Order Status" Width="*" />
-                        <DataGridTextColumn Binding="{Binding ScheduleStatus}" Header="Schedule Status" Width="*" />
+                        <DataGridTextColumn Binding="{Binding DeliveryId}" Header="Delivery ID" Width="auto" />
+                        <DataGridTextColumn Binding="{Binding OrderId}" Header="Order ID" Width="auto" />
+                        <DataGridTextColumn Binding="{Binding DeliveryType}" Header="Delivery Type" Width="auto" />
+                        <DataGridTextColumn Binding="{Binding AirDistance}" Header="Air Distance" Width="auto" />
+                        <DataGridTextColumn Binding="{Binding OrderStatus}" Header="Order Status" Width="auto" />
+                        <DataGridTextColumn Binding="{Binding ScheduleStatus}" Header="Schedule Status" Width="auto" />
 
                         <DataGridTextColumn Header="Time Left"
-                                            Width="*"
-                                            Binding="{Binding DeliveryTimeLeft, StringFormat={}{0:hh\\:mm}}"/>
+                                            Width="auto"
+                                            Binding="{Binding DeliveryTimeLeft, StringFormat={}{0:dd\\:hh}}"/>
 
                         <DataGridTextColumn Header="Handling Time"
                                             Width="*"
-                                            Binding="{Binding TotalHandlingTime, StringFormat={}{0:hh\\:mm}}"/>
+                                            Binding="{Binding TotalHandlingTime, StringFormat={}{0:dd\\:hh}}"/>
 
-                        <DataGridTextColumn Binding="{Binding TotalDeliveries}" Header="Total Deliveries" Width="*" />
+                        <DataGridTextColumn Binding="{Binding TotalDeliveries}" Header="Total Deliveries" Width="auto" />
 
                         <DataGridTemplateColumn Header="" Width="80">
                             <DataGridTemplateColumn.CellTemplate>

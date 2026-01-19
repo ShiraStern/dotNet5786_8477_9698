@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="פרטי הזמנה"
-        Height="650" Width="900">
+        Height="650" Width="900"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
     <Window.Resources>
         <!-- רשימות Enum למסך Order -->
@@ -80,20 +81,23 @@
                 <!-- ID -->
                 <Label Grid.Row="2" Grid.Column="0" Content="Order ID:"/>
                 <Label Grid.Row="2" Grid.Column="2"
-                         Content="{Binding CurrentOrder.ID}"
-                          />
+                         Content="{Binding CurrentOrder.ID, Mode=TwoWay, 
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
+                          
 
                 <!-- OrderType -->
                 <Label Grid.Row="3" Grid.Column="0" Content="Order Type:"/>
                 <ComboBox Grid.Row="3" Grid.Column="2"
                           ItemsSource="{Binding Source={StaticResource OrderTypeList}}"
                           SelectedItem="{Binding CurrentOrder.OrderType}"
+                          SelectedValue="{Binding CurrentOrder.OrderType, Mode=TwoWay, NotifyOnValidationError=true,ValidatesOnExceptions=true}" 
                           Width="540"/>
 
                 <!-- VerbalDescription -->
                 <Label Grid.Row="4" Grid.Column="0" Content="Description:"/>
                 <TextBox Grid.Row="4" Grid.Column="2"
-                         Text="{Binding CurrentOrder.VerbalDescription}"
+                         Text="{Binding CurrentOrder.VerbalDescription, Mode=TwoWay, 
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
                          AcceptsReturn="True"
                          Height="60"
                          VerticalScrollBarVisibility="Auto"/>
@@ -101,7 +105,8 @@
                 <!-- FullAddressOfTheOrder -->
                 <Label Grid.Row="5" Grid.Column="0" Content="Address:"/>
                 <TextBox Grid.Row="5" Grid.Column="2"
-                         Text="{Binding CurrentOrder.FullAddressOfTheOrder}"/>
+                         Text="{Binding CurrentOrder.FullAddressOfTheOrder, Mode=TwoWay, 
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
 
                 <!-- Latitude -->
                 <Label Grid.Row="6" Grid.Column="0" Content="Latitude:" Visibility="Collapsed"/>
@@ -125,7 +130,8 @@
                 <!-- FullNameOfTheInviter -->
                 <Label Grid.Row="9" Grid.Column="0" Content="Inviter Name:"/>
                 <TextBox Grid.Row="9" Grid.Column="2"
-                         Text="{Binding CurrentOrder.FullNameOfTheInviter}"/>
+                         Text="{Binding CurrentOrder.FullNameOfTheInviter, Mode=TwoWay, 
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
 
                 <!-- OrderersPhoneNumber -->
                 <Label Grid.Row="10" Grid.Column="0" Content="Inviter Phone:"/>
@@ -135,7 +141,7 @@
                 <!-- OrderProperties -->
                 <Label Grid.Row="11" Grid.Column="0" Content="Order Properties:"/>
                 <ComboBox Grid.Row="11" Grid.Column="2"
-                          ItemsSource="{Binding OrderPropertiesList}"
+                          ItemsSource="{Binding Source={StaticResource OrderPropertiesCollectionKey}}"
                           SelectedItem="{Binding CurrentOrder.OrderProperties}"/>
 
                 <!-- OrderOpeningTime -->
@@ -144,35 +150,43 @@
                        Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
                 <DatePicker Grid.Row="12" Grid.Column="2"
-                            SelectedDate="{Binding CurrentOrder.OrderOpeningTime}"
+                            SelectedDate="{Binding CurrentOrder.OrderOpeningTime, Mode=TwoWay, 
+                                NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
                             Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
                 <!-- EstimatedDeliveryTime -->
-                <Label Grid.Row="13" Grid.Column="0" Content="Estimated Delivery:"/>
+                <Label Grid.Row="13" Grid.Column="0" Content="Estimated Delivery:" />
                 <DatePicker Grid.Row="13" Grid.Column="2"
-                            SelectedDate="{Binding CurrentOrder.EstimatedDeliveryTime}"/>
+                            SelectedDate="{Binding CurrentOrder.EstimatedDeliveryTime, Mode=TwoWay, 
+                                    NotifyOnValidationError=true,  ValidatesOnExceptions=true}" 
+                                    IsEnabled="False"/>
 
                 <!-- MaximumDeliveryTime -->
                 <Label Grid.Row="14" Grid.Column="0" Content="Maximum Delivery:"/>
                 <DatePicker Grid.Row="14" Grid.Column="2"
-                            SelectedDate="{Binding CurrentOrder.MaximumDeliveryTime}"/>
+                            SelectedDate="{Binding CurrentOrder.MaximumDeliveryTime, Mode=TwoWay, 
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
+                            IsEnabled="False"/>
 
                 <!-- OrderStatus -->
                 <Label Grid.Row="15" Grid.Column="0" Content="Order Status:"/>
                 <ComboBox Grid.Row="15" Grid.Column="2"
-                          ItemsSource="{Binding OrderStatusList}"
-                          SelectedItem="{Binding CurrentOrder.OrderStatus}"/>
+                          ItemsSource="{Binding Source={StaticResource OrderStatusCollectionKey}}"
+                          SelectedItem="{Binding CurrentOrder.OrderStatus, Mode=TwoWay, 
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
 
                 <!-- ScheduleStatus -->
                 <Label Grid.Row="16" Grid.Column="0" Content="Schedule Status:"/>
                 <ComboBox Grid.Row="16" Grid.Column="2"
-                          ItemsSource="{Binding ScheduleStatusList}"
-                          SelectedItem="{Binding CurrentOrder.ScheduleStatus}"/>
+                          ItemsSource="{Binding Source={StaticResource ScheduleStatusList}}"
+                          SelectedItem="{Binding CurrentOrder.ScheduleStatus, Mode=TwoWay, 
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
 
                 <!-- TimeLeftToCompleteOrder -->
                 <Label Grid.Row="17" Grid.Column="0" Content="Time Left:"/>
                 <TextBox Grid.Row="17" Grid.Column="2"
-                         Text="{Binding CurrentOrder.TimeLeftToCompleteOrder}"/>
+                         Text="{Binding CurrentOrder.TimeLeftToCompleteOrder, Mode=TwoWay, 
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
 
                 <!-- כפתור שמירה -->
                 <StackPanel Grid.Row="19" Grid.ColumnSpan="3"

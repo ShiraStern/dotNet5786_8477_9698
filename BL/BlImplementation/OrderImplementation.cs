@@ -216,7 +216,7 @@ internal class OrderImplementation : BlApi.IOrder
             //  המרה ל-OpenOrderInList
             var result = openOrders.Select(o =>
             {
-                BO.Order boOrder = OrderManager.ConvertToOrder(o, null);
+                BO.Order boOrder = OrderManager.ConvertToOrder(o);
 
                 return new OpenOrderInList
                 {
@@ -346,7 +346,7 @@ internal class OrderImplementation : BlApi.IOrder
                 CourierId = courierId,
                 DeliveryStartTime = DateTime.Now,
                 DeliveryEndTime = null,
-                DeliveryTermintionType = null,
+                DeliveryTermintionType = DO.DeliveryTermintionType.None,
                 ActualDistance = null
             };
 
