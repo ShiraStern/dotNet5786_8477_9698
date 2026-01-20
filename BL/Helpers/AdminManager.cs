@@ -71,6 +71,7 @@ internal static class AdminManager //stage 4
     {
         MaxRange = s_dal.Config.MaxRange,
         ManagerID = s_dal.Config.ManagerID,
+        ManagerPassword = s_dal.Config.ManagerPassword,
         Clock = Now,
         CompanyAddress = s_dal.Config.CompanyAddress,
         Latitude = s_dal.Config.Latitude,
@@ -89,9 +90,18 @@ internal static class AdminManager //stage 4
             s_dal.Config.MaxRange = configuration.MaxRange;
             configChanged = true;
         }
-        //TO_DO: //stage 4
-        //add a condition+assignment for each configuration property
-        //...
+        
+        if (s_dal.Config.ManagerID != configuration.ManagerID)
+        {
+            s_dal.Config.ManagerID = configuration.ManagerID;
+            configChanged = true;
+        }
+
+        if (s_dal.Config.ManagerPassword != configuration.ManagerPassword)
+        {
+            s_dal.Config.ManagerPassword = configuration.ManagerPassword;
+            configChanged = true;
+        }
 
         //Calling all the observers of configuration update
         if (configChanged) // stage 5

@@ -227,13 +227,13 @@
                  Fill="#40CDEAFE"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
-                 Margin="-80 -120 0 0"/>
+                 Margin="-40,-61,0,0"/>
 
         <Ellipse Width="300" Height="240"
                  Fill="#30AED9C7"
                  HorizontalAlignment="Right"
                  VerticalAlignment="Bottom"
-                 Margin="0 0 -80 -60"/>
+                 Margin="0,0,-27,-20"/>
 
         <Grid>
             <Grid.RowDefinitions>

@@ -38,6 +38,12 @@ internal class ConfigImplementation : IConfig
         get => Config.ManagerID;
         set => Config.ManagerID = value;
     }
+    public string ManagerPassword
+    {
+        get => Config.ManagerPassword;
+        set => Config.ManagerPassword = value;
+    }
+
     public double AvgMotorcycleSpeed
     {
         get => Config.AvgMotorcycleSpeed;
