@@ -39,7 +39,24 @@ namespace PL.Order
 
         public OrderListWindow()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+
+            }
+            catch(BlDoesNotExistException)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                "Failed to load data." ,
+                " Would you like to try again?",
+                MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.OK)
+                {
+                    s_bl.Admin.InitializeDB(); // retry logic
+                }
+                this.Close();
+            }
         }
 
 

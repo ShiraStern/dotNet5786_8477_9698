@@ -12,7 +12,10 @@ namespace Helpers
         private static DalApi.IDal s_dal = DalApi.Factory.Get;
 
         internal static ObserverManager Observers = new(); //stage 5
-        internal static void AddOrder(int applicantId, BO.Order boOrder)
+
+
+        #region Create / Update / Delete
+        internal static void AddOrder( BO.Order boOrder)
         {
             if (boOrder == null)
                 throw new BlArgumentNullException(nameof(boOrder));
@@ -47,70 +50,177 @@ namespace Helpers
             Observers.NotifyListUpdated(); //stage 5
 
         }
-
-        
-        internal static int CalculateAirDistance(double latitude, double longitude)
+        internal static void UpdateOrder(BO.Order boOrder)// פונקציית עזר לפונקצייה UpdateDetails
         {
-            throw new Exception("Not implemented yet");
-        }
+            DO.Order oldOrder = s_dal.Order.Read(boOrder.ID);
 
-        /// This method is not permitted to delete orders and always throws a logical exception according to system requirements.
+            DO.Order updated = oldOrder with
+            {
+                OrderType = (DO.OrderType)boOrder.OrderType,
+                OrderNote = boOrder.VerbalDescription ?? oldOrder.OrderNote,
+                Latitude = boOrder.Latitude,
+                Longitude = boOrder.Longitude,
+                CustomerAddress = boOrder.FullAddressOfTheOrder ?? oldOrder.CustomerAddress,
+                CustomerFullName = boOrder.FullNameOfTheInviter ?? oldOrder.CustomerFullName,
+                CustomerPhone = boOrder.OrderersPhoneNumber ?? oldOrder.CustomerPhone,
+                OrderProperties = (DO.OrderProperties)boOrder.OrderProperties,
+                OrderDate = boOrder.OrderOpenDate
+            };
+
+            s_dal.Order.Update(updated);
+            Observers.NotifyItemUpdated(boOrder.ID);//stage 5
+            Observers.NotifyListUpdated();//stage 5
+
+        }
         internal static void DeleteOrder( int orderId)
         {
             try
             {
                 s_dal.Order.Delete(orderId);
             }
-            catch(DalDoesNotExistException ex)
+            catch(DalDoesNotExistException)
             {
-                throw new BlDoesNotExistException($"Order with ID={orderId} does not exist so it can't be deleted");
+                throw new BlDoesNotExistException($"Order {orderId} does not exist");
             }
-        }       
-
-
-
-        // Retrieves full order details and converts them to a business object
-        internal static BO.Order GetOrderDetails(int applicantId, int orderId)
-        {
-            DO.Order doOrder = s_dal.Order.Read(orderId);
-
-            return new BO.Order
-            {
-                ID = doOrder.Id,
-                OrderType = (BO.OrderType)doOrder.OrderType,
-                VerbalDescription = doOrder.OrderNote,
-                FullAddressOfTheOrder = doOrder.CustomerAddress,
-                Latitude = doOrder.Latitude,
-                Longitude = doOrder.Longitude,
-                FullNameOfTheInviter = doOrder.CustomerFullName,
-                OrderersPhoneNumber = doOrder.CustomerPhone,
-                OrderOpenDate = doOrder.OrderDate
-                // Logical fields (status, timing, deliveries) are calculated elsewhere
-            };
         }
 
-        // Returns a list of orders formatted for list display
+        #endregion
+
+        #region Get Details
+        internal static BO.Order GetOrderDetails(int orderId) //פונקציית עזר - לפונקציה GetDetails
+        {
+            DO.Order? doOrder = s_dal.Order.Read(orderId)
+                ?? throw new BlDoesNotExistException($"Order with ID {orderId} does not exist.");
+            return ConvertToOrder((DO.Order)doOrder);
+        }
+
+        #endregion
+        internal static int CalculateAirDistance(double latitude, double longitude)
+        {
+            throw new Exception("Not implemented yet");
+        }
+
+        /// This method is not permitted to delete orders and always throws a logical exception according to system requirements.
+
+        #region Lists & Counts
         internal static IEnumerable<OrderInList> GetOrderList(
             int applicantId,
             filterOrdersByProperty? filterBy,
-            object? type,
+            object? filterValue,
             sortOrdersByProperty? sortBy)
         {
-            return s_dal.Order.ReadAll()
-                .Select(o => new OrderInList
+            IEnumerable<BO.Order> orders =
+                s_dal.Order.ReadAll().Select(ConvertToOrder);
+
+            if (filterBy is not null && filterValue is not null)
+            {
+                orders = filterBy switch
                 {
-                    OrderId = o.Id,
-                    DeliveryType = BO.DeliveryType.None,
-                    AirDistance = 0,
-                    OrderStatus = OrderStatus.Open,
-                    ScheduleStatus = ScheduleStatus.OnTime,
-                    DeliveryTimeLeft = TimeSpan.Zero,
-                    TotalHandlingTime = null,
-                    TotalDeliveries = 0
-                });
+                    filterOrdersByProperty.OrderStatus =>
+                        orders.Where(o => o.OrderStatus == (OrderStatus)filterValue),
+
+                    filterOrdersByProperty.OrderType =>
+                        orders.Where(o => o.OrderType == (BO.OrderType)filterValue),
+
+                    _ => orders
+                };
+            }
+
+            orders = sortBy switch
+            {
+                sortOrdersByProperty.OrderDate => orders.OrderBy(o => o.OrderOpenDate),
+                sortOrdersByProperty.CustomerName => orders.OrderBy(o => o.FullNameOfTheInviter),
+                sortOrdersByProperty.OrderStatus => orders.OrderBy(o => o.OrderStatus),
+                _ => orders
+            };
+
+            return orders.Select(o => new OrderInList
+            {
+                OrderId = o.ID,
+                DeliveryId = o.deliveryPerOrderList?.LastOrDefault()?.DeliveryId ?? 0,
+                DeliveryType = o.deliveryPerOrderList?.LastOrDefault()?.DeliveryType ?? BO.DeliveryType.None,
+                AirDistance = o.AirDistance,
+                OrderStatus = o.OrderStatus,
+                ScheduleStatus = o.ScheduleStatus,
+                DeliveryTimeLeft = o.TimeLeftToCompleteOrder,
+                TotalDeliveries = o.deliveryPerOrderList?.Count ?? 0
+            });
         }
 
 
+
+
+        #endregion
+
+        #region Conversion
+
+        internal static BO.Order ConvertToOrder(DO.Order order)
+        {
+            BO.Order bo = new()
+            {
+                ID = order.Id,
+                OrderType = (BO.OrderType)order.OrderType,
+                VerbalDescription = order.OrderNote,
+                FullAddressOfTheOrder = order.CustomerAddress,
+                Latitude = order.Latitude,
+                Longitude = order.Longitude,
+                FullNameOfTheInviter = order.CustomerFullName,
+                OrderersPhoneNumber = order.CustomerPhone,
+                OrderOpenDate = order.OrderDate,
+                OrderProperties = (BO.OrderProperties)order.OrderProperties,
+                deliveryPerOrderList = DeliveryManager.GetDeliveryPerOrderList(order.Id),
+                MaximumDeliveryDate = AdminManager.Now + AdminManager.MaxDeliveryDuration
+            };
+
+            CalculateStatusAndTiming(bo);
+            return bo;
+        }
+
+        private static void CalculateStatusAndTiming(BO.Order order)
+        {
+            var deliveries = order.deliveryPerOrderList;
+
+            if (deliveries is null || !deliveries.Any())
+            {
+                order.OrderStatus = OrderStatus.Open;
+                TimeSpan passed = AdminManager.Now - order.OrderOpenDate;
+                order.TimeLeftToCompleteOrder = AdminManager.MaxDeliveryDuration - passed;
+
+                order.ScheduleStatus =
+                    order.TimeLeftToCompleteOrder <= TimeSpan.Zero ? ScheduleStatus.Late :
+                    order.TimeLeftToCompleteOrder <= AdminManager.DelayRiskTime ? ScheduleStatus.InRisk :
+                    ScheduleStatus.OnTime;
+
+                return;
+            }
+
+            BO.DeliveryPerOrderInList last = deliveries.Last();
+
+            if (last.DeliveryEndTime is null)
+            {
+                order.OrderStatus = OrderStatus.InTreatment;
+                order.TimeLeftToCompleteOrder =
+                    AdminManager.MaxDeliveryDuration - (AdminManager.Now - last.DeliveryStart);
+                return;
+            }
+
+            order.TimeLeftToCompleteOrder = TimeSpan.Zero;
+
+            order.OrderStatus = (DO.DeliveryTermintionType)last.DeliveryTerminationType switch
+            {
+                DO.DeliveryTermintionType.Cancelled => OrderStatus.Cancelled,
+                DO.DeliveryTermintionType.RefusedToAccept => OrderStatus.Refused,
+                DO.DeliveryTermintionType.DeliveredSeccessfully => OrderStatus.Delivered,
+                _ => throw new BlInvalidStatusException("Unknown delivery termination type")
+            };
+
+            order.ScheduleStatus =
+                last.DeliveryEndTime <= last.DeliveryStart + AdminManager.MaxDeliveryDuration
+                ? ScheduleStatus.OnTime
+                : ScheduleStatus.Late;
+        }
+
+        #endregion
 
         // Returns the total count of orders grouped by logical status
         internal static IEnumerable<int> GetOrdersStatusCounts(int applicantId)
@@ -121,11 +231,11 @@ namespace Helpers
         }
 
         /// Helper method to convert BO.Order to DO.Order
-        internal static DO.Order ConvertToOrder(BO.Order order)
-        {
-            DO.Order newOrder = s_dal.Order.Read(order.ID);
-            return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.ID} does not exist.");
-        }
+        //internal static DO.Order ConvertToOrder(BO.Order order)
+        //{
+        //    DO.Order newOrder = s_dal.Order.Read(order.ID);
+        //    return newOrder ?? throw new BO.BlDoesNotExistException($"Order with ID {order.ID} does not exist.");
+        //}
         
         /// <summary>
         /// Cancels the specified order if it is in a cancellable state.    
@@ -193,92 +303,6 @@ namespace Helpers
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="order"></param>
-        /// <returns></returns>
-        internal static BO.Order ConvertToOrder(DO.Order order)
-        {
-
-            BO.Order boOrder = new BO.Order
-            {
-                ID = order.Id,
-                OrderType = (BO.OrderType)order.OrderType,
-                VerbalDescription = order.OrderNote,
-                FullAddressOfTheOrder = order.CustomerAddress,
-                Latitude = order.Latitude,
-                Longitude = order.Longitude,
-                FullNameOfTheInviter = order.CustomerFullName,
-                OrderersPhoneNumber = order.CustomerPhone,
-                OrderOpenDate = order.OrderDate,
-                deliveryPerOrderList = DeliveryManager.GetDeliveryPerOrderList(order.Id) ?? null,
-                OrderProperties = (BO.OrderProperties)order.OrderProperties,
-                MaximumDeliveryDate=AdminManager.Now+ AdminManager.MaxDeliveryDuration
-            };
-
-
-
-            // set order status and timing based on deliveries
-            if (boOrder.deliveryPerOrderList.Count()==0)
-            {
-                boOrder.OrderStatus = OrderStatus.Open;
-                // ts = Time elapsed since the order was opened
-                TimeSpan ts = AdminManager.Now - boOrder.OrderOpenDate;
-                boOrder.TimeLeftToCompleteOrder = AdminManager.MaxDeliveryDuration - ts;
-                if (boOrder.TimeLeftToCompleteOrder > AdminManager.DelayRiskTime)
-                {
-                    boOrder.ScheduleStatus = ScheduleStatus.OnTime;
-                }
-                else if (boOrder.TimeLeftToCompleteOrder< AdminManager.DelayRiskTime)
-                {
-                    boOrder.ScheduleStatus = ScheduleStatus.InRisk;
-                }
-                else
-                {
-                    if (TimeSpan.Zero > boOrder.TimeLeftToCompleteOrder)
-                        boOrder.ScheduleStatus = ScheduleStatus.Late;
-                }
-            }
-            else
-            {
-                DO.Delivery? delivery = DeliveryManager.GetLastDelivery(boOrder.deliveryPerOrderList);
-                if (delivery is not null)
-                {
-                    boOrder.TimeLeftToCompleteOrder = TimeSpan.Zero;
-                    if (delivery.DeliveryTermintionType == DO.DeliveryTermintionType.Cancelled)
-                        boOrder.OrderStatus = OrderStatus.Cancelled;
-                    else if (delivery.DeliveryTermintionType == DO.DeliveryTermintionType.RefusedToAccept)
-                        boOrder.OrderStatus = OrderStatus.Refused;
-                    else if (delivery.DeliveryTermintionType == DO.DeliveryTermintionType.DeliveredSeccessfully)
-                        boOrder.OrderStatus = OrderStatus.Delivered;
-                        else if (delivery.DeliveryEndTime is null && delivery.DeliveryTermintionType == DO.DeliveryTermintionType.None)
-                        {
-                            boOrder.OrderStatus = OrderStatus.InTreatment;
-                            boOrder.TimeLeftToCompleteOrder =
-                                AdminManager.MaxDeliveryDuration - (AdminManager.Now - delivery.DeliveryStartTime);
-
-                        }
-
-                    if(boOrder.OrderStatus != OrderStatus.InTreatment)
-                    {
-                        if(delivery.DeliveryEndTime <= delivery.DeliveryStartTime+AdminManager.MaxDeliveryDuration)
-                             boOrder.ScheduleStatus = ScheduleStatus.OnTime;
-                        else
-                        {
-                             boOrder.ScheduleStatus = ScheduleStatus.Late;  
-                        }
-
-                    }
-   
-                }
-
-             }
-                return boOrder; 
-        }
-                    
-
-
         internal static IEnumerable<int> GetOrdersStatusCountsInternal(int applicantId)//פונקצית עזר לפונקציה GetOrdersStatusCounts 
         {
             int[] result = new int[9];
@@ -326,113 +350,9 @@ namespace Helpers
                 $"Invalid status combination: OrderStatus={order.OrderStatus}, ScheduleStatus={order.ScheduleStatus}");
 
         }
-        internal static IEnumerable<OrderInList> GetOrderListInternal( //מטודת עזר ל -  פונקצית GetOrderList
-        int applicantId,
-        filterOrdersByProperty? filterBy,
-        object? type,
-        sortOrdersByProperty? sortBy)
-            {
-                
-                IEnumerable<DO.Order> doOrders = s_dal.Order.ReadAll(); // DO.order list from dal
-                IEnumerable<BO.Order> boOrders = doOrders
-                    .Select(o => ConvertToOrder(o));   //convert DO.order list to BO.order list 
+      
 
-                //filter if it's required
-                if (filterBy != null && type != null)
-                {
-                    switch (filterBy)
-                    {
-                        case filterOrdersByProperty.OrderStatus:
-                            boOrders = boOrders.Where(o => o.OrderStatus == (BO.OrderStatus)type);
-                            break;
-
-                        case filterOrdersByProperty.OrderType:
-                            boOrders = boOrders.Where(o => o.OrderType == (BO.OrderType)type);
-                            break;
-
-                        default:
-                            // לא מסננים
-                            break;
-                    }
-
-                }
-
-
-
-                //  מיון – ברירת מחדל: לפי סטטוס הזמנה
-                boOrders = sortBy switch
-                {
-                    // ברירת מחדל – מיון לפי סטטוס הזמנה
-                    null =>
-                        boOrders.OrderBy(o => o.OrderStatus),
-
-                    sortOrdersByProperty.OrderDate =>
-                        boOrders.OrderBy(o => o.OrderOpenDate),
-
-                    sortOrdersByProperty.DeliveryDate =>
-                        boOrders.OrderBy(o => o.EstimatedDeliveryTime),
-
-                    sortOrdersByProperty.CustomerName =>
-                        boOrders.OrderBy(o => o.FullNameOfTheInviter),
-
-                    sortOrdersByProperty.OrderStatus =>
-                        boOrders.OrderBy(o => o.OrderStatus),
-
-                    _ => boOrders
-                };
-
-
-                //  המרה ל-OrderInList (ישות לוגית למסך)
-                return boOrders.Select(o => new OrderInList
-                {
-                    OrderId = o.ID,
-
-                    // משלוח אחרון (אם קיים)
-                    DeliveryId = o.deliveryPerOrderList?.LastOrDefault()?.DeliveryId ?? 0,
-
-                    DeliveryType = o.deliveryPerOrderList?.LastOrDefault()?.DeliveryType
-                       ?? BO.DeliveryType.None,
-
-                    AirDistance = o.AirDistance,
-
-                    OrderStatus = o.OrderStatus,
-                    ScheduleStatus = o.ScheduleStatus,
-
-                    DeliveryTimeLeft = o.TimeLeftToCompleteOrder,
-
-                    TotalHandlingTime = null,   // ← תיקון כאן
-
-                    TotalDeliveries = o.deliveryPerOrderList?.Count ?? 0
-                });
-            }
-        internal static BO.Order GetOrderDetails(int orderId) //פונקציית עזר - לפונקציה GetDetails
-        {
-            DO.Order? doOrder = s_dal.Order.Read(orderId);
-            return ConvertToOrder(doOrder);
-        }
-
-        internal static void UpdateOrderDetails(BO.Order boOrder)// פונקציית עזר לפונקצייה UpdateDetails
-        {
-            DO.Order? oldOrder = s_dal.Order.Read(boOrder.ID);
-
-            DO.Order? updatedOrder = oldOrder with
-            {
-                OrderType = (DO.OrderType)boOrder.OrderType,
-                OrderNote = boOrder.VerbalDescription ?? oldOrder.OrderNote,
-                Latitude = boOrder.Latitude,
-                Longitude = boOrder.Longitude,
-                CustomerAddress = boOrder.FullAddressOfTheOrder ?? oldOrder.CustomerAddress,
-                CustomerFullName = boOrder.FullNameOfTheInviter ?? oldOrder.CustomerFullName,
-                CustomerPhone = boOrder.OrderersPhoneNumber ?? oldOrder.CustomerPhone,
-                OrderProperties = (DO.OrderProperties)boOrder.OrderProperties,
-                OrderDate = boOrder.OrderOpenDate
-            };
-
-            s_dal.Order.Update(updatedOrder);
-            Observers.NotifyItemUpdated(boOrder.ID);//stage 5
-            Observers.NotifyListUpdated();//stage 5
-
-        }
+       
 
 
     }

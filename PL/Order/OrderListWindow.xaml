@@ -72,7 +72,8 @@
                           AutoGenerateColumns="False"
                           SelectedItem="{Binding selectedOrder}"
                           MouseDoubleClick="selectOrder_MouseDoubleClick"
-                          IsReadOnly="True">
+                          IsReadOnly="True"
+                          ColumnWidth="auto">
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding DeliveryId}" Header="Delivery ID" Width="auto" />
@@ -87,8 +88,8 @@
                                             Binding="{Binding DeliveryTimeLeft, Converter={StaticResource TimeSpanToDaysHoursConverterKey}}"/>
 
                         <DataGridTextColumn Header="Handling Time"
-                                            Width="*"
-                                            Binding="{Binding TotalHandlingTime, StringFormat={}{0:%d\\:%h}}"/>
+                                            Width="auto"
+                                            Binding="{Binding TotalHandlingTime, Converter={StaticResource TimeSpanToDaysHoursConverterKey}}"/>
 
                         <DataGridTextColumn Binding="{Binding TotalDeliveries}" Header="Total Deliveries" Width="auto" />
 

@@ -34,7 +34,7 @@ internal class OrderImplementation : BlApi.IOrder
         try
         {
             // ה-ID נוצר אוטומטית ב-DAL
-            OrderManager.AddOrder(applicantId, boOrder);
+            OrderManager.AddOrder( boOrder);
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -205,8 +205,8 @@ internal class OrderImplementation : BlApi.IOrder
                     DeliveryId = d.Id,
                     OrderId = d.Id,
                     OrderType = (BO.OrderType)  
-                            OrderManager.GetOrderDetails(AdminManager.ManagerID, d.Id).OrderType ,
-                    AddressOfDelivery = OrderManager.GetOrderDetails(AdminManager.ManagerID, d.Id).FullAddressOfTheOrder,
+                            OrderManager.GetOrderDetails( d.Id).OrderType ,
+                    AddressOfDelivery = OrderManager.GetOrderDetails( d.Id).FullAddressOfTheOrder,
                     DeliveryType = (BO.DeliveryType)d.DeliveryType,
                     ActualDistance = d.ActualDistance ?? 0,
                     TotalHandlingTime = (TimeSpan)( d.DeliveryEndTime - d.DeliveryStartTime),
@@ -271,7 +271,8 @@ internal class OrderImplementation : BlApi.IOrder
             var dal = AdminManager.GetDal();
 
             //  שליפת השליח
-            DO.Courier courier = dal.Courier.Read(courierId);
+            DO.Courier courier =CourierManager.Read(courierId)??
+                 throw new BO.BlDoesNotExistException($"Courier {courierId} not found"); 
 
             //  כל ההזמנות שאין להן משלוח פעיל
             var openOrders = dal.Order.ReadAll()
@@ -367,7 +368,7 @@ internal class OrderImplementation : BlApi.IOrder
         if (!AdminManager.IsValidManagerId(applicantId))
             throw new BO.BlUnauthorizedAccessException("Only admin can view order list.");
 
-        return OrderManager.GetOrderListInternal(
+        return OrderManager.GetOrderList(
             applicantId,
             filterOrdersBy,
             type,
@@ -442,7 +443,7 @@ internal class OrderImplementation : BlApi.IOrder
 
         try
         {
-            OrderManager.UpdateOrderDetails(boOrder);
+            OrderManager.UpdateOrder(boOrder);
         }
         catch (DO.DalDoesNotExistException ex)
         {

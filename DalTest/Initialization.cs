@@ -263,11 +263,11 @@ public static class Initialization
                 OrderType = (OrderType)s_random.Next(Enum.GetValues<OrderType>().Length),
                 OrderNote = " ",
                 CustomerAddress = customerAddresses[i],
-                Latitude = double.Parse( Latitudes[i]),
-                Longitude = double.Parse(Longitudes[i]),  
+                Latitude = double.Parse(Latitudes[i]),
+                Longitude = double.Parse(Longitudes[i]),
                 CustomerFullName = customerFullNames[i],
                 CustomerPhone = "05" + Random.Shared.Next(0, 10) + Random.Shared.Next(1000000, 9999999),
-                OrderDate = DateTime.Now.AddDays(-s_random.Next(-650,0)),
+                OrderDate = s_dal.Config.Clock.AddDays(-s_random.Next(-650, 0)).AddHours(-s_random.Next(-23, 0)).AddMinutes(-s_random.Next(-59, 0)),
                 OrderProperties = (OrderProperties)s_random.Next(Enum.GetValues<OrderProperties>().Length)
             };
             s_dal!.Order.Create(order);
@@ -284,25 +284,31 @@ public static class Initialization
         {
             Order order = orders[s_random.Next(orders.Count)];
             Courier courier = couriers[s_random.Next(couriers.Count)];
-           // Order order = orders[i%10];
-            //Courier courier = couriers[i%10];
 
+            DateTime startDate = order.OrderDate.AddDays(s_random.Next(0, 10)).AddHours(s_random.Next(0, 60));
+            if(startDate > s_dal.Config.Clock ) startDate = order.OrderDate.AddDays(0);
+
+            DateTime? endDate = startDate.AddDays(s_random.Next(0, 10)).AddHours(s_random.Next(0, 60));
+            if (endDate > s_dal.Config.Clock) endDate = null;
+
+            DO.DeliveryTermintionType dtyp= (DeliveryTermintionType)s_random.Next(Enum.GetValues<DO.DeliveryTermintionType>().Length);
+            if (endDate is null)
+                dtyp = DO.DeliveryTermintionType.None;
             Delivery delivery = new()
             {
                 Id = 0,
                 OrderId = order.Id,
                 CourierId = courier.Id,
                 DeliveryType = (DeliveryType)s_random.Next(Enum.GetValues<DeliveryType>().Length),
-                DeliveryStartTime = DateTime.Now.AddDays(s_random.Next(-500, 0)),
-                ActualDistance = null,
-                DeliveryTermintionType = (DeliveryTermintionType)s_random.Next(Enum.GetValues<DeliveryTermintionType>().Length),
-                DeliveryEndTime = null
+                DeliveryStartTime = startDate,
+                ActualDistance = 0,
+                DeliveryTermintionType =dtyp ,
+                DeliveryEndTime = endDate
             };
 
             s_dal!.Delivery.Create(delivery);
         }
     }
-    //public static void Do(IDal? dal) 
     public static void Do() // stage 4
     {
         // s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2

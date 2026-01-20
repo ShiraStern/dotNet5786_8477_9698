@@ -30,8 +30,14 @@ namespace Helpers
 
 
         internal static List<BO.DeliveryPerOrderInList>? GetDeliveryPerOrderList(int id)
-            => GetDoDeliveriesByOrderId(id).Select(static d => ConvertTODeliveryPerOrderInList(d)).ToList();
-        
+        {
+            
+                var deliveries= GetDoDeliveriesByOrderId(id) ??  null ;
+                if( deliveries == null || deliveries.Count == 0)
+                    return null;
+                return deliveries.Select(d => ConvertTODeliveryPerOrderInList(d)).ToList() ?? null;
+            
+        }
 
         internal static DO.Delivery? GetLastDelivery(IEnumerable<DeliveryPerOrderInList> list)
         {
