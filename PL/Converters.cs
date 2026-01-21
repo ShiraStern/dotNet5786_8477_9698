@@ -53,3 +53,4 @@ public class TimeSpanToDaysHoursConverter : IValueConverter
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => Binding.DoNothing;
 }
+

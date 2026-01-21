@@ -103,9 +103,11 @@ namespace Helpers
         /// This method is not permitted to delete orders and always throws a logical exception according to system requirements.
 
         #region Lists & Counts
+
+
         internal static IEnumerable<OrderInList> GetOrderList(
             int applicantId,
-            filterOrdersByProperty? filterBy,
+            object? filterBy,
             object? filterValue,
             sortOrdersByProperty? sortBy)
         {
@@ -121,6 +123,7 @@ namespace Helpers
 
                     filterOrdersByProperty.OrderType =>
                         orders.Where(o => o.OrderType == (BO.OrderType)filterValue),
+                    
 
                     _ => orders
                 };
@@ -171,12 +174,11 @@ namespace Helpers
                 deliveryPerOrderList = DeliveryManager.GetDeliveryPerOrderList(order.Id),
                 MaximumDeliveryDate = AdminManager.Now + AdminManager.MaxDeliveryDuration
             };
-
-            CalculateStatusAndTiming(bo);
-            return bo;
+            
+            return CalculateStatusAndTiming(bo) ;
         }
 
-        private static void CalculateStatusAndTiming(BO.Order order)
+        private static BO.Order CalculateStatusAndTiming(BO.Order order)
         {
             var deliveries = order.deliveryPerOrderList;
 
@@ -191,7 +193,7 @@ namespace Helpers
                     order.TimeLeftToCompleteOrder <= AdminManager.DelayRiskTime ? ScheduleStatus.InRisk :
                     ScheduleStatus.OnTime;
 
-                return;
+                return order;
             }
 
             BO.DeliveryPerOrderInList last = deliveries.Last();
@@ -201,7 +203,7 @@ namespace Helpers
                 order.OrderStatus = OrderStatus.InTreatment;
                 order.TimeLeftToCompleteOrder =
                     AdminManager.MaxDeliveryDuration - (AdminManager.Now - last.DeliveryStart);
-                return;
+                return order;
             }
 
             order.TimeLeftToCompleteOrder = TimeSpan.Zero;
@@ -218,6 +220,7 @@ namespace Helpers
                 last.DeliveryEndTime <= last.DeliveryStart + AdminManager.MaxDeliveryDuration
                 ? ScheduleStatus.OnTime
                 : ScheduleStatus.Late;
+            return order;
         }
 
         #endregion
@@ -350,10 +353,5 @@ namespace Helpers
                 $"Invalid status combination: OrderStatus={order.OrderStatus}, ScheduleStatus={order.ScheduleStatus}");
 
         }
-      
-
-       
-
-
     }
 }

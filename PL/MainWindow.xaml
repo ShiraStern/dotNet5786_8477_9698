@@ -273,7 +273,8 @@
                 <Border Grid.Column="0" Style="{StaticResource CardStyle}">
                     <StackPanel>
                         <TextBlock Text="הגדרות מערכת"
-                                   Style="{StaticResource SectionTitleTextBlockStyle}"/>
+                                   Style="{StaticResource SectionTitleTextBlockStyle}"
+                                   HorizontalAlignment="Center"/>
 
                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                             <Label Content="Max Range (km):"
@@ -295,7 +296,8 @@
                 <Border Grid.Column="1" Style="{StaticResource CardStyle}">
                     <StackPanel>
                         <TextBlock Text="ניהול מאגר נתונים"
-                                   Style="{StaticResource SectionTitleTextBlockStyle}"/>
+                                   Style="{StaticResource SectionTitleTextBlockStyle}"
+                                   HorizontalAlignment="Stretch"/>
 
                         <StackPanel>
                             <Button Content="Initialize DB"
@@ -312,7 +314,9 @@
                             <TextBlock Text="ניהול ישויות"
                                        Margin="0,12,0,4"
                                        Foreground="{StaticResource TextSoftBrush}"
-                                       FontWeight="SemiBold"/>
+                                       FontWeight="SemiBold"
+                                       Style="{StaticResource SectionTitleTextBlockStyle}"
+                                       HorizontalAlignment="Center"/>
 
                             <Button Content="Handle Courier"
                                     Click="btnHandleCourier"
@@ -335,7 +339,8 @@
 
                         <StackPanel Grid.Row="0">
                             <TextBlock Text="שעון מערכת"
-                                       Style="{StaticResource SectionTitleTextBlockStyle}"/>
+                                       Style="{StaticResource SectionTitleTextBlockStyle}"
+                                       HorizontalAlignment="Center"/>
 
                             <TextBlock Text="{Binding CurrentTime}"
                                        FontSize="20"

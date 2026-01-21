@@ -25,7 +25,8 @@
                    Text="רשימת הזמנות"
                    Style="{StaticResource SectionTitleTextBlockStyle}"
                    FontSize="20"
-                   Margin="0,0,0,10"/>
+                   Margin="0,0,0,10"
+                   HorizontalAlignment="Right"/>
 
         <!-- Card עיקרי -->
         <Border Grid.Row="1" Style="{StaticResource CardStyle}">
@@ -47,22 +48,24 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Content="Filter by status:"
+                    <Label Content="Filter by:"
                            VerticalAlignment="Center"
                            Margin="0,0,10,0"/>
 
                     <ComboBox Grid.Column="1"
                               MinWidth="180"
-                              SelectedValue="{Binding Path=filterOrdersByProp, Mode=TwoWay}"
-                              ItemsSource="{Binding Source={StaticResource OrederFilterCollectionKey}}"
-                              SelectionChanged="OrderFilterComboBox_SelectionChanged"/>
-                    
+                              SelectedValue="{Binding Path=filterOrderStatus, Mode=TwoWay}"
+                              ItemsSource="{Binding Source={StaticResource OrderStatusCollectionKey }}"
+                              SelectionChanged="OrderStatusFilterComboBox"/>
+
                     <ComboBox Grid.Column="2"
                               MinWidth="180"
-                              SelectedValue="{Binding Path=filterPropertyKeys, Mode=TwoWay}"
-                              Visibility="Visible"/>
+                              SelectedValue="{Binding Path=filterOrderOrderType, Mode=TwoWay}"
+                              Visibility="Collapsed"
+                              ItemsSource="{Binding Source={StaticResource OrderTypeCollectionKey}}"
+                              SelectionChanged="OrderTypeFilterComboBox"/>
 
-                 </Grid>
+                </Grid>
 
                 <!-- ORDERS LIST -->
                 <DataGrid x:Name="OrderListView"
