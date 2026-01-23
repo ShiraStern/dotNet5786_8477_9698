@@ -5,6 +5,7 @@ using DO;
 public interface IConfig
 {
     DateTime Clock { get; set; }
+
     string? CompanyAddress { get; set; }
     double? Latitude { get; set; }
     double? Longitude { get; set; }

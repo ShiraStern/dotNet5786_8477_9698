@@ -36,6 +36,8 @@ internal class OrderImplementation : BlApi.IOrder
         {
             // ה-ID נוצר אוטומטית ב-DAL
             OrderManager.AddOrder( boOrder);
+            OrderManager.Observers.NotifyItemUpdated(boOrder.ID);
+            OrderManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalAlreadyExistsException ex)
         {
