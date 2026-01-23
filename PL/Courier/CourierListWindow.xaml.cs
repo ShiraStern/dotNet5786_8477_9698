@@ -77,7 +77,7 @@ namespace PL.Courier
         private void AddCourier_Click(object sender, RoutedEventArgs e)
         {
            
-            new CourierWindow().Show();
+            new CourierWindow(UserContext.UserId).Show();
         }
 
         //private void EditCourier_Click(object sender, RoutedEventArgs e)

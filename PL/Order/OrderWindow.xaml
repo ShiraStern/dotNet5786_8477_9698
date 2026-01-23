@@ -157,7 +157,7 @@
                 <!-- EstimatedDeliveryTime -->
                 <Label Grid.Row="13" Grid.Column="0" Content="Estimated Delivery:" />
                 <DatePicker Grid.Row="13" Grid.Column="2"
-                            SelectedDate="{Binding CurrentOrder.EstimatedDeliveryTime, Mode=TwoWay, 
+                            SelectedDate="{Binding CurrentOrder.EstimatedDeliveryDate, Mode=TwoWay, 
                                     NotifyOnValidationError=true,  ValidatesOnExceptions=true}" 
                                     IsEnabled="False"/>
 

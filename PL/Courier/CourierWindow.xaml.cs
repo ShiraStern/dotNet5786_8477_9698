@@ -67,7 +67,7 @@ namespace PL.Courier
                 // מצב עדכון
                 IsAddMode = false;
 
-                CurrentCourier = s_bl.Courier.GetDetails(managerId, courierId);
+                CurrentCourier = s_bl.Courier.GetDetails(_applicantId, courierId);
                 ButtonText = "Update";
             }
 
