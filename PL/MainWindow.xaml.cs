@@ -27,7 +27,7 @@ namespace PL
         public MainWindow()
         {
             InitializeComponent();
-            UserContext.UserId=
+            UserContext.UserId= 216318477;
         }
         public DateTime CurrentTime //תכונת תלות  שמיצגת את ערכו של התאריך המוצג על המסך.
         {
