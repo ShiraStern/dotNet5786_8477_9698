@@ -52,7 +52,67 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Binding="{Binding DeliveryType}" Header="Delivery Type" Width="Auto"/>
+                <!-- Delivery Type עם קובייה וצבעים עדינים -->
+                <DataGridTemplateColumn Header="Delivery Type" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+
+                            <Border Width="95"
+                    Height="30"
+                    CornerRadius="6"
+                    Padding="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                                <TextBlock Text="{Binding DeliveryType}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           TextAlignment="Center"
+                           FontWeight="SemiBold"/>
+
+                                <Border.Style>
+                                    <Style TargetType="Border">
+
+                                        <!-- ברירת מחדל -->
+                                        <Setter Property="Background" Value="Gainsboro"/>
+                                        <Setter Property="BorderBrush" Value="LightGray"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+
+                                        <Style.Triggers>
+                                            <!-- None -->
+                                            <DataTrigger Binding="{Binding DeliveryType}" Value="None">
+                                                <Setter Property="Background" Value="#E3F2FD"/>
+                                                <!-- Light Blue Pastel -->
+                                            </DataTrigger>
+
+                                            <!-- Bicycle -->
+                                            <DataTrigger Binding="{Binding DeliveryType}" Value="Bicycle">
+                                                <Setter Property="Background" Value="#E8F5E9"/>
+                                                <!-- Soft Mint Green -->
+                                            </DataTrigger>
+
+                                            <!-- Motorcycle -->
+                                            <DataTrigger Binding="{Binding DeliveryType}" Value="Motorcycle">
+                                                <Setter Property="Background" Value="#F3E5F5"/>
+                                                <!-- Soft Lavender -->
+                                            </DataTrigger>
+
+                                            <!-- Car -->
+                                            <DataTrigger Binding="{Binding DeliveryType}" Value="Car">
+                                                <Setter Property="Background" Value="#FFF3E0"/>
+                                                <!-- Soft Peach -->
+                                            </DataTrigger>
+
+                                        </Style.Triggers>
+
+                                    </Style>
+                                </Border.Style>
+
+                            </Border>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <DataGridTextColumn Binding="{Binding EmploymentStartDate, StringFormat={}{0:dd/MM/yyyy}}" Header="Start Date" Width="Auto"/>
 
