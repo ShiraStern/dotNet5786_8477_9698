@@ -150,7 +150,7 @@
                        Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
                 <DatePicker Grid.Row="12" Grid.Column="2"
-                            SelectedDate="{Binding CurrentOrder.OrderOpeningTime, Mode=TwoWay, 
+                            SelectedDate="{Binding CurrentOrder.OrderOpenDate, Mode=TwoWay, 
                                 NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
                             Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
@@ -164,7 +164,7 @@
                 <!-- MaximumDeliveryTime -->
                 <Label Grid.Row="14" Grid.Column="0" Content="Maximum Delivery:"/>
                 <DatePicker Grid.Row="14" Grid.Column="2"
-                            SelectedDate="{Binding CurrentOrder.MaximumDeliveryTime, Mode=TwoWay, 
+                            SelectedDate="{Binding CurrentOrder.MaximumDeliveryDate, Mode=TwoWay, 
                             NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
                             IsEnabled="False"/>
 
