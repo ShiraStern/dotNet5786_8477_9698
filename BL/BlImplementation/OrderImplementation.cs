@@ -148,7 +148,7 @@ internal class OrderImplementation : BlApi.IOrder
         try
         {
             // DO/order from dal
-            DO.Delivery? delivery = AdminManager.GetDal().Delivery.Read(deliveryId);
+            DO.Delivery? delivery = DeliveryManager.Read(deliveryId);
 
             
             if (delivery.OrderId != orderId || delivery.CourierId != courierId)
@@ -163,7 +163,7 @@ internal class OrderImplementation : BlApi.IOrder
             };
 
             // saving to dal
-            AdminManager.GetDal().Delivery.Update(updatedDelivery);
+            DeliveryManager .Update(updatedDelivery);
         }
         catch (DalDoesNotExistException ex)
         {
@@ -284,44 +284,16 @@ internal class OrderImplementation : BlApi.IOrder
 
         try
         {
-            var dal = AdminManager.GetDal();
-
             //  שליפת השליח
-            DO.Courier courier =CourierManager.Read(courierId)??
-                 throw new BO.BlDoesNotExistException($"Courier {courierId} not found"); 
+            DO.Courier courier = CourierManager.Read(courierId) ??
+                 throw new BO.BlDoesNotExistException($"Courier {courierId} not found");
+
 
             //  כל ההזמנות שאין להן משלוח פעיל
-            var openOrders = dal.Order.ReadAll()
-                .Where(o =>
-                    !dal.Delivery.ReadAll()
-                        .Any(d => d.OrderId == o.Id && d.DeliveryEndTime == null));
 
             //  המרה ל-OpenOrderInList
-            var result = openOrders.Select(o =>
-            {
-                BO.Order boOrder = OrderManager.ConvertToOrder(o);
-
-                return new OpenOrderInList
-                {
-                    courierId = courierId,
-                    OrderId = o.Id,
-                    OrderType = (BO.OrderType)o.OrderType,
-                    DeliveryType = (BO.DeliveryType)courier.DeliveryType,
-                    CustomerAddress = o.CustomerAddress,
-
-                    AirDistance = 0,       
-                    actualDistance = 0,
-
-                    EstimatedDeliveryTime =
-                    boOrder.EstimatedDeliveryDate != null
-                        ? boOrder.EstimatedDeliveryDate.Value - DateTime.Now
-                        : null,
-                    ScheduleStatus = boOrder.ScheduleStatus,
-                    deliveryTimeLeft = boOrder.TimeLeftToCompleteOrder,
-                    MaximumDeliveryTime = boOrder.MaximumDeliveryDate
-                };
-            });
-
+            var result = OrderManager.ReadAll().Select(x => OrderManager.ConvertToOpenOrderInList(x));
+              
             // 5. סינון לפי סוג הזמנה
             if (filterOrderByType != null)
             {
@@ -395,16 +367,12 @@ internal class OrderImplementation : BlApi.IOrder
 
         try
         {
-            var dal = AdminManager.GetDal();
 
             // 2. בדיקה שההזמנה קיימת
-            DO.Order order = dal.Order.Read(orderId);
+            BO.Order order = OrderManager.GetOrderDetails(orderId);
 
             // 3. בדיקה שאין משלוח פעיל להזמנה (כלומר הזמנה פתוחה)
-            bool hasActiveDelivery = dal.Delivery.ReadAll()
-                .Any(d => d.OrderId == orderId && d.DeliveryEndTime == null);
-
-            if (hasActiveDelivery)
+            if (DeliveryManager.GetLastDelivery(orderId) is null)
                 throw new BlInvalidStatusException(
                     "The order is already being handled.");
 
@@ -421,7 +389,7 @@ internal class OrderImplementation : BlApi.IOrder
             };
 
             // 5. שמירה ב-DAL
-            dal.Delivery.Create(newDelivery);
+           DeliveryManager.Create(newDelivery);
         }
         catch (DalDoesNotExistException ex)
         {

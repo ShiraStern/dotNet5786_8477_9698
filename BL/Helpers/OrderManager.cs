@@ -79,12 +79,19 @@ namespace Helpers
             try
             {
                 s_dal.Order.Delete(orderId);
+                Observers.NotifyItemUpdated(orderId);//stage 5
+                Observers.NotifyListUpdated();//stage 5
             }
             catch(DalDoesNotExistException)
             {
                 throw new BlDoesNotExistException($"Order {orderId} does not exist");
             }
         }
+        internal static IEnumerable<DO.Order> ReadAll()
+        {
+            return s_dal.Order.ReadAll();
+        }
+
 
         /// <summary>
         /// Cancels the specified order if it is in a cancellable state.    
@@ -274,7 +281,7 @@ namespace Helpers
 
 
 
-        #region Conversion
+        #region Conversion & Calculation
 
         internal static BO.Order ConvertToOrder(DO.Order order)
         {
@@ -332,20 +339,8 @@ namespace Helpers
                     deliveryPerOrderList = DeliveryManager.GetList_DeliveryPerOrderInList(order.Id),
                     EstimatedDeliveryDate = Calc_EstimatedDeliveryDate(currentDelivery),
                     MaximumDeliveryDate = maxDeliveryDate,
-                    OrderStatus =
-                    (BO.DeliveryTerminationType)currentDelivery.DeliveryTermintionType switch
-                    {
-                        BO.DeliveryTerminationType.Cancelled => OrderStatus.Cancelled,
-                        BO.DeliveryTerminationType.RefusedToAccept => OrderStatus.Refused,
-                        BO.DeliveryTerminationType.DeliveredSeccessfully => OrderStatus.Delivered,
-                        BO.DeliveryTerminationType.None => OrderStatus.Open,
-                        BO.DeliveryTerminationType.FailedToDeliver => OrderStatus.Open,
-                        _ => throw new BlInvalidStatusException("Unknown delivery termination type")
-                    },
-                    ScheduleStatus =
-                    maxDeliveryDate < s_dal.Config.Clock ? ScheduleStatus.Late
-                    : maxDeliveryDate - s_dal.Config.DelayRiskTime < s_dal.Config.Clock ?
-                        ScheduleStatus.InRisk : ScheduleStatus.OnTime,
+                    OrderStatus = Calc_OrderStatus(currentDelivery),
+                    ScheduleStatus = Calc_ScheduleStatus(maxDeliveryDate),
                     TimeLeftToCompleteOrder = maxDeliveryDate >= s_dal.Config.Clock ?
                     maxDeliveryDate - s_dal.Config.Clock : TimeSpan.Zero,
 
@@ -356,20 +351,48 @@ namespace Helpers
         }
 
 
+        internal static BO.OpenOrderInList ConvertToOpenOrderInList(DO.Order order)
+        {
+            // כנראה הפונקציה הזו לא עובדת!!!!!
+            BO.Order bo;
+            var currentDelivery = DeliveryManager.GetLastDelivery(order.Id) ?? null;
+            var currentCourier = CourierManager.Read(order.Id) ?? null;
+            var maxDeliveryDate = order.OrderDate + s_dal.Config.MaxDeliveryDuration;
+           
+                return new BO.OpenOrderInList
+                {
+                    courierId = currentDelivery.OrderId,
+                    OrderId = order.Id,
+                    OrderType =(BO.OrderType) order.OrderType,
+                    OrderProperties = (BO.OrderProperties)order.OrderProperties,
+                    CustomerAddress = order.CustomerAddress,
+                    AirDistance = CalculateAirDistance(currentDelivery),
+                    actualDistance = CalculateActualDistance(currentDelivery),
+                    EstimatedDeliveryTime =s_dal.Config.Clock- Calc_EstimatedDeliveryDate(currentDelivery) ,
+                    ScheduleStatus = Calc_ScheduleStatus(maxDeliveryDate),
+                    deliveryTimeLeft = maxDeliveryDate >= s_dal.Config.Clock ?
+                    maxDeliveryDate - s_dal.Config.Clock : TimeSpan.Zero,
+                    MaximumDeliveryTime = maxDeliveryDate
+                };
+            
+        }
+         #endregion
 
+        #region Calculation
         internal static double CalculateAirDistance(DO.Delivery delivery)
         {
-            throw new Exception("Not implemented yet");
+            //throw new Exception("Not implemented yet");
+            return 0;
         }
         internal static double CalculateAirDistance(double Latitude, double Longitude)
         {
-            throw new Exception("Not implemented yet");
+            //throw new Exception("Not implemented yet");
+            return 0;
         }
         internal static double CalculateActualDistance(DO.Delivery delivery)
         {
             throw new Exception("Not implemented yet");
         }
-
         internal static DateTime? Calc_EstimatedDeliveryDate(DO.Delivery delivery)
         {
             BO.DeliveryType type = (BO.DeliveryType)delivery.DeliveryType;
@@ -390,10 +413,33 @@ namespace Helpers
             };
         }
 
+        internal static BO.OrderStatus Calc_OrderStatus(DO.Delivery delivery)
+        {
+            return (BO.DeliveryTerminationType)delivery.DeliveryTermintionType switch
+            {
+                BO.DeliveryTerminationType.Cancelled => OrderStatus.Cancelled,
+                BO.DeliveryTerminationType.RefusedToAccept => OrderStatus.Refused,
+                BO.DeliveryTerminationType.DeliveredSeccessfully => OrderStatus.Delivered,
+                BO.DeliveryTerminationType.None => OrderStatus.Open,
+                BO.DeliveryTerminationType.FailedToDeliver => OrderStatus.Open,
+                BO.DeliveryTerminationType.CustomerNotHome => OrderStatus.Open,
+                _ => throw new BlInvalidStatusException("Unknown delivery termination type")
+            };
+            
+        }
+        internal static BO.ScheduleStatus Calc_ScheduleStatus(DateTime maxDeliveryDate)
+        {
+            return maxDeliveryDate < s_dal.Config.Clock ? ScheduleStatus.Late
+                    : maxDeliveryDate - s_dal.Config.DelayRiskTime > s_dal.Config.Clock ?
+                        ScheduleStatus.InRisk : ScheduleStatus.OnTime;
+           
+            
+        }
+
         /// This method is not permitted to delete orders and always throws a logical exception according to system requirements.
 
 
-
+        
         #endregion
     }
 }

@@ -11,10 +11,10 @@ internal static class AdminManager //stage 4
     #region Stage 4-7
     private static readonly DalApi.IDal s_dal = DalApi.Factory.Get; //stage 4
 
-    internal static DalApi.IDal GetDal() //stage 4
-    {
-        return s_dal;
-    }
+    //internal static DalApi.IDal GetDal() //stage 4
+    //{
+    //    return s_dal;
+    //}
     /// <summary>
     /// Property for providing current application's clock value for any BL class that may need it
     /// </summary>
@@ -28,6 +28,7 @@ internal static class AdminManager //stage 4
     internal static double AvgBicycleSpeed { get => s_dal.Config.AvgBicycleSpeed; } //stage 4
     internal static TimeSpan MaxDeliveryDuration { get => s_dal.Config.MaxDeliveryDuration; } //stage 4
     internal static TimeSpan DelayRiskTime { get => s_dal.Config.DelayRiskTime; } //stage 4
+    internal static TimeSpan InactivityThreshold { get => s_dal.Config.InactivityThreshold; } //stage 4
 
     internal static event Action? ConfigUpdatedObservers; //stage 5 - for config update observers
     internal static event Action? ClockUpdatedObservers; //stage 5 - for clock update observers
@@ -102,6 +103,22 @@ internal static class AdminManager //stage 4
             s_dal.Config.ManagerPassword = configuration.ManagerPassword;
             configChanged = true;
         }
+        if (s_dal.Config.CompanyAddress != configuration.CompanyAddress)
+        {
+            s_dal.Config.CompanyAddress = configuration.CompanyAddress;
+            configChanged = true;
+        }
+        if (s_dal.Config.Latitude != configuration.Latitude)
+        {
+            s_dal.Config.Latitude = configuration.Latitude;
+            configChanged = true;
+        }
+        if (s_dal.Config.Longitude != configuration.Longitude)
+        {
+            s_dal.Config.Longitude = configuration.Longitude;
+            configChanged = true;
+        }
+        
 
         //Calling all the observers of configuration update
         if (configChanged) // stage 5

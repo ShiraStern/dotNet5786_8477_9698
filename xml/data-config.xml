@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-  <NextOrderId>1050</NextOrderId>
+  <NextOrderId>1051</NextOrderId>
   <NextDeliveryId>130</NextDeliveryId>
-  <Clock>22/01/2026 11:25:09</Clock>
+  <Clock>23/01/2026 09:45:15</Clock>
   <ManagerID>216318477</ManagerID>
   <ManagerPassword>1111</ManagerPassword>
   <CompanyAddress>בית הדפוס 9 ירושלים</CompanyAddress>
@@ -13,7 +13,7 @@
   <MaxRange>290</MaxRange>
   <AvgCarSpeed>50</AvgCarSpeed>
   <AvgMotorcycleSpeed>60</AvgMotorcycleSpeed>
-  <AvgDroneSpeed>20</AvgDroneSpeed>
+  <AvgBicycleSpeed>25</AvgBicycleSpeed>
   <AvgWalkingSpeed>6</AvgWalkingSpeed>
   <MaxDeliveryDuration>30</MaxDeliveryDuration>
   <DelayRiskTime>25</DelayRiskTime>

@@ -24,10 +24,39 @@ namespace Helpers
         /// <param name="orderId">The unique identifier of the order for which to retrieve deliveries.</param>
         /// <returns>A list of <see cref="DO.Delivery"/> objects that are linked to the specified order.  Returns an empty list
         /// if no deliveries are found for the given order identifier.</returns>
+
+        internal static void Create(DO.Delivery doDelivery)
+        {
+            s_dal.Delivery.Create(doDelivery);
+            Observers.NotifyListUpdated();
+        }
+        internal static void Delete(int delivryID)
+        {
+            s_dal.Delivery.Delete(delivryID);
+            Observers.NotifyItemUpdated(delivryID);
+            Observers.NotifyListUpdated();
+        }
+        internal static void Update(DO.Delivery doDelivery)
+        {
+            s_dal.Delivery.Update(doDelivery);
+            Observers.NotifyItemUpdated(doDelivery.Id);
+            Observers.NotifyListUpdated();
+        }
+        internal static DO.Delivery? Read(int delivryID)
+        {
+            return s_dal.Delivery.Read(delivryID) ?? null;
+        }
+
         internal static List<DO.Delivery>? GetList_DoDeliveriesByOrderId(int orderId) // אנחנו צריכות להחזיר DO דליברי  לפי ה ORDER.ID
         {
             return s_dal.Delivery.ReadAll().Where(c => c.OrderId == orderId).ToList();
         }
+        /// <summary>
+        /// Retrieves the most recent delivery associated with the specified order.
+        /// </summary>
+        /// <param name="orderID">The unique identifier of the order for which to retrieve the last delivery.</param>
+        /// <returns>The most recent <see cref="DO.Delivery"/> for the specified order, or <see langword="null"/> if no
+        /// deliveries are found for the order.</returns>
         internal static DO.Delivery? GetLastDelivery(int orderID)
         {
             var x = GetList_DoDeliveriesByOrderId(orderID);
