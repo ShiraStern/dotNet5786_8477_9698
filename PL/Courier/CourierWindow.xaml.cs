@@ -10,6 +10,8 @@ namespace PL.Courier
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         int _applicantId = UserContext.UserId;
 
+        private bool IsAddMode;   //  מצב המסך: true = הוספה, false = עדכון
+
         public string ButtonText { get; set; }
 
         // Dependency Property עבור כל האובייקט
@@ -45,35 +47,36 @@ namespace PL.Courier
             if (CurrentCourier!.ID != 0)
                 s_bl.Courier.AddObserver(CurrentCourier.ID, RefreshCourier);
         }
-
-        public CourierWindow(int courierId = 0)
+        public CourierWindow(int userId, int courierId = 0)
         {
             InitializeComponent();
-
+            _applicantId = userId;
             if (courierId == 0)
             {
                 // מצב הוספה
+                IsAddMode = true;
+
                 CurrentCourier = new BO.Courier
                 {
                     ID = 0
-                    // ערכי ברירת מחדל נוספים אם צריך
                 };
                 ButtonText = "Add";
             }
             else
             {
                 // מצב עדכון
-                CurrentCourier = s_bl.Courier.GetDetails(_applicantId, courierId);
+                IsAddMode = false;
+
+                CurrentCourier = s_bl.Courier.GetDetails(managerId, courierId);
                 ButtonText = "Update";
             }
 
             DataContext = this;
 
             this.Loaded += CourierWindow_Loaded;
-
             this.Closing += CourierWindow_Closing;
-
         }
+
 
 
         private void RefreshCourier()
@@ -106,7 +109,7 @@ namespace PL.Courier
                     return;
                 }
 
-                if (CurrentCourier.ID == 0)
+                if (IsAddMode)
                 {
                     // הוספה
                     s_bl.Courier.AddCourier(_applicantId, CurrentCourier);

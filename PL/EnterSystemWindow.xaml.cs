@@ -9,16 +9,16 @@ namespace PL
 
         // -------- Dependency Properties --------
 
-        public int CourierId
+        public string CourierId
         {
-            get => (int)GetValue(CourierIdProperty);
+            get => (string)GetValue(CourierIdProperty);
             set => SetValue(CourierIdProperty, value);
         }
         private bool _isPasswordVisible = false;/////////////
         public static readonly DependencyProperty CourierIdProperty =
             DependencyProperty.Register(
                 "CourierId",
-                typeof(int),
+                typeof(string),
                 typeof(EnterSystemWindow));
 
         public string Password
@@ -52,10 +52,13 @@ namespace PL
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CourierId <= 0 || string.IsNullOrWhiteSpace(Password))
+            // בדיקה והמרה ל-int
+            if (!int.TryParse(CourierId, out int id) ||
+                id <= 0 ||
+                string.IsNullOrWhiteSpace(Password))
             {
                 MessageBox.Show(
-                    "Please enter ID and password",
+                    "Please enter valid ID and password",
                     "Missing data",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
@@ -65,12 +68,12 @@ namespace PL
             try
             {
                 // קריאה אחת בלבד ל-BL
-                string role = s_bl.Courier.Login(CourierId.ToString(), Password);
+                string role = s_bl.Courier.Login(id.ToString(), Password);
 
                 switch (role)
                 {
                     case "Courier":
-                        new PL.Courier.CourierWindow(CourierId).Show();
+                        new PL.Courier.CourierWindow(id).Show(); // משתמשים ב-int
                         break;
 
                     case "Manager":
@@ -83,7 +86,7 @@ namespace PL
                         if (result == MessageBoxResult.Yes)
                             new MainWindow().Show();
                         else
-                            new PL.Courier.CourierWindow(CourierId).Show();
+                            new PL.Courier.CourierWindow(id).Show();
                         break;
 
                     default:
@@ -94,7 +97,7 @@ namespace PL
                             MessageBoxImage.Error);
                         return;
                 }
-                UserContext.UserId = CourierId;
+                UserContext.UserId = id;
 
                 this.Close();
             }
@@ -107,5 +110,6 @@ namespace PL
                     MessageBoxImage.Error);
             }
         }
+
     }
 }
