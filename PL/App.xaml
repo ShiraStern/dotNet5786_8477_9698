@@ -100,8 +100,7 @@
 
             <local:CourierActivityCollection x:Key="CourierActivityCollectionKey"/>
             <local:OrderStatusCollectionForOrder x:Key="OrderStatusCollectionKey"/>
-            <local:DeliveryTypeCollection x:Key="DeliveryTypeCollectionKey"/>
-            <local:OrederFilterCollection x:Key="OrederFilterCollectionKey"/>
+            <local:OrderTypeCollection x:Key="OrderTypeCollectionKey"/>
             <local:OrderPropertiesCollection x:Key="OrderPropertiesCollectionKey"/>
 
         </ResourceDictionary>

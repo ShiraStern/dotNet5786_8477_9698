@@ -40,7 +40,8 @@ public enum OrderStatus
     InTreatment,    // שויכה לשליח (בטיפול)
     Delivered,      // סופקה בהצלחה
     Refused,        // הלקוח סירב לקבל
-    Cancelled       // בוטלה
+    Cancelled,       // בוטלה
+    All
 }
 
 /// <summary>

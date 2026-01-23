@@ -95,6 +95,8 @@ namespace PL
             Mouse.OverrideCursor = Cursors.Wait;
             s_bl.Admin.InitializeDB();
             Mouse.OverrideCursor = null;
+            MessageBox.Show("Database initialization completed successfully!");
+
         }
         private void Button_ResetDB(object sender, RoutedEventArgs e)
         {
@@ -116,6 +118,7 @@ namespace PL
             Mouse.OverrideCursor = Cursors.Wait;
             s_bl.Admin.ResetDB();
             Mouse.OverrideCursor = null;
+            MessageBox.Show("Database reset completed successfully!");                                  
         }
 
 

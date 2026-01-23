@@ -20,6 +20,7 @@ internal class OrderImplementation : BlApi.IOrder
    /// <exception cref="BlArgumentNullException">Thrown if <paramref name="boOrder"/> is <see langword="null"/>.</exception>
    /// <exception cref="BlAlreadyExistsException">Thrown if an order with the same identifier already exists in the system.</exception>
    /// <exception cref="BlDataAccessException">Thrown if a data access error occurs while adding the order.</exception>
+
     public void AddOrder(int applicantId, BO.Order boOrder) //done
     {
         // הרשאה – מסך ניהולי
@@ -34,7 +35,7 @@ internal class OrderImplementation : BlApi.IOrder
         try
         {
             // ה-ID נוצר אוטומטית ב-DAL
-            OrderManager.AddOrder(applicantId, boOrder);
+            OrderManager.AddOrder( boOrder);
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -72,6 +73,21 @@ internal class OrderImplementation : BlApi.IOrder
             throw new BlDoesNotExistException("Failed to delete order.", ex);
         }
     }
+
+    public IEnumerable<OrderInList> GetOrderList(int applicantId,     //done
+       filterOrdersByProperty? filterOrdersBy = null, object? type = null, sortOrdersByProperty? sortOrdersBy = null)
+    {
+        if (!AdminManager.IsValidManagerId(applicantId))
+            throw new BO.BlUnauthorizedAccessException("Only admin can view order list.");
+
+        return OrderManager.GetOrderList(
+            applicantId,
+            filterOrdersBy,
+            type,
+            sortOrdersBy
+        );
+    }
+
 
 
     /// <summary>
@@ -194,7 +210,7 @@ internal class OrderImplementation : BlApi.IOrder
         {
            
             // כל המשלוחים הסגורים של השליח
-            var closedDeliveries = DeliveryManager.GetDelivriesPerCourier(courierId)
+            var closedDeliveries = DeliveryManager.GetList_DelivriesPerCourier(courierId)
                     .Where(d => d.DeliveryEndTime is not null);
 
             ////  חיבור להזמנה
@@ -205,8 +221,8 @@ internal class OrderImplementation : BlApi.IOrder
                     DeliveryId = d.Id,
                     OrderId = d.Id,
                     OrderType = (BO.OrderType)  
-                            OrderManager.GetOrderDetails(AdminManager.ManagerID, d.Id).OrderType ,
-                    AddressOfDelivery = OrderManager.GetOrderDetails(AdminManager.ManagerID, d.Id).FullAddressOfTheOrder,
+                            OrderManager.GetOrderDetails( d.Id).OrderType ,
+                    AddressOfDelivery = OrderManager.GetOrderDetails( d.Id).FullAddressOfTheOrder,
                     DeliveryType = (BO.DeliveryType)d.DeliveryType,
                     ActualDistance = d.ActualDistance ?? 0,
                     TotalHandlingTime = (TimeSpan)( d.DeliveryEndTime - d.DeliveryStartTime),
@@ -271,7 +287,8 @@ internal class OrderImplementation : BlApi.IOrder
             var dal = AdminManager.GetDal();
 
             //  שליפת השליח
-            DO.Courier courier = dal.Courier.Read(courierId);
+            DO.Courier courier =CourierManager.Read(courierId)??
+                 throw new BO.BlDoesNotExistException($"Courier {courierId} not found"); 
 
             //  כל ההזמנות שאין להן משלוח פעיל
             var openOrders = dal.Order.ReadAll()
@@ -296,8 +313,8 @@ internal class OrderImplementation : BlApi.IOrder
                     actualDistance = 0,
 
                     EstimatedDeliveryTime =
-                    boOrder.EstimatedDeliveryTime != null
-                        ? boOrder.EstimatedDeliveryTime.Value - DateTime.Now
+                    boOrder.EstimatedDeliveryDate != null
+                        ? boOrder.EstimatedDeliveryDate.Value - DateTime.Now
                         : null,
                     ScheduleStatus = boOrder.ScheduleStatus,
                     deliveryTimeLeft = boOrder.TimeLeftToCompleteOrder,
@@ -361,20 +378,7 @@ internal class OrderImplementation : BlApi.IOrder
     }   
 
 
-    public IEnumerable<OrderInList> GetOrderList(int applicantId,     //done
-        filterOrdersByProperty? filterOrdersBy = null, object? type = null, sortOrdersByProperty? sortOrdersBy = null)
-    {
-        if (!AdminManager.IsValidManagerId(applicantId))
-            throw new BO.BlUnauthorizedAccessException("Only admin can view order list.");
-
-        return OrderManager.GetOrderListInternal(
-            applicantId,
-            filterOrdersBy,
-            type,
-            sortOrdersBy
-        );
-    }
-
+   
 
     public IEnumerable<int> GetOrdersStatusCounts(int applicantId)//מתודת בקשת סיכום כמויות הזמנות  done
     {
@@ -442,7 +446,7 @@ internal class OrderImplementation : BlApi.IOrder
 
         try
         {
-            OrderManager.UpdateOrderDetails(boOrder);
+            OrderManager.UpdateOrder(boOrder);
         }
         catch (DO.DalDoesNotExistException ex)
         {

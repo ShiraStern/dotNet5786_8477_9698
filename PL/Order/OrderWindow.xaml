@@ -186,7 +186,8 @@
                 <Label Grid.Row="17" Grid.Column="0" Content="Time Left:"/>
                 <TextBox Grid.Row="17" Grid.Column="2"
                          Text="{Binding CurrentOrder.TimeLeftToCompleteOrder, Mode=TwoWay, 
-                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true,
+                    Converter={StaticResource TimeSpanToDaysHoursConverterKey}}"/>
 
                 <!-- כפתור שמירה -->
                 <StackPanel Grid.Row="19" Grid.ColumnSpan="3"

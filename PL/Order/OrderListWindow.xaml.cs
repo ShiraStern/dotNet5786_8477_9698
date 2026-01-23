@@ -3,10 +3,12 @@ using PL.Courier;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Controls.Ribbon;
 using System.Windows.Input;
 
 namespace PL.Order
@@ -17,13 +19,12 @@ namespace PL.Order
     public partial class OrderListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        int managerId = s_bl.Admin.GetConfig().ManagerID;
-
+        int _applicantId = UserContext.UserId;
         public BO.OrderInList selectedOrder { get; set; }
 
+        public BO.OrderType? filterOrderType { get; set; } = null;
+        public BO.OrderStatus? filterOrderStatus { get; set; }=null;
 
-        public BO.filterOrdersByProperty filterOrdersByProp { get; set; } = BO.filterOrdersByProperty.All;
-        public object filterPropertyKeys { get; set; }
 
         public IEnumerable<BO.OrderInList> OrderInList
         {
@@ -35,17 +36,39 @@ namespace PL.Order
             DependencyProperty.Register("OrderInList", typeof(IEnumerable<BO.OrderInList>),
                 typeof(OrderListWindow), new PropertyMetadata(null));
 
-       
+
 
         public OrderListWindow()
         {
-            InitializeComponent();
+            try
+            {
+                
+                InitializeComponent();
+                OrderInList = s_bl.Order.GetOrderList(managerId);
+
+            }
+            catch(BlDoesNotExistException)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                "Failed to load data." ,
+                " Would you like to try again?",
+                MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.OK)
+                {
+                    s_bl.Admin.InitializeDB(); // retry logic
+                }
+                this.Close();
+            }
         }
 
 
         private void queryOrderList()
         {
-            OrderInList = s_bl.Order.GetOrderList(managerId, filterOrdersByProp)!;
+            if (filterOrderType is not null)
+                OrderInList = s_bl.Order.GetOrderList(managerId, filterOrdersByProperty.OrderType, filterOrderType);
+            if (filterOrderStatus is not null)
+                OrderInList = s_bl.Order.GetOrderList(managerId, filterOrdersByProperty.OrderStatus, filterOrderStatus);
         }
 
 
@@ -59,12 +82,6 @@ namespace PL.Order
 
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.Order.RemoveObserver(courseListObserver);
-
-
-        private void OrderFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            queryOrderList();
-        }
 
         private void AddOrder_Click(object sender, RoutedEventArgs e)
         {
@@ -124,6 +141,17 @@ namespace PL.Order
             }
         }
 
+        private void OrderTypeFilterComboBox(object sender, SelectionChangedEventArgs e)
+        {
+            filterOrderStatus = null;
+            queryOrderList();
+        }
+
+        private void OrderStatusFilterComboBox(object sender, SelectionChangedEventArgs e)
+        {
+            filterOrderType = null;
+            queryOrderList();
+        }
     }
 
 }

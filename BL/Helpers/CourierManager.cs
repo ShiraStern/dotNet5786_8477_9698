@@ -26,6 +26,27 @@ internal static class CourierManager
         }
 
     }
+    internal static void Create(DO.Courier doCourier)
+    {
+        s_dal.Courier.Create(doCourier);
+        Observers.NotifyListUpdated();
+    }
+    internal static void Delete(int courierId)
+    {
+        s_dal.Courier.Delete(courierId);
+        Observers.NotifyItemUpdated(courierId);
+        Observers.NotifyListUpdated();
+    }
+    internal static void Update(DO.Courier doCourier)
+    {
+        s_dal.Courier.Update(doCourier);
+        Observers.NotifyItemUpdated(doCourier.Id);
+        Observers.NotifyListUpdated();
+    }
+    internal static DO.Courier? Read(int courierId)
+    { 
+            return s_dal.Courier.Read(courierId)?? null ;
+    }
 
     internal static bool IsValidCourierId(int applicantId)
     { return s_dal.Courier.ReadAll().Any(c => c.Id == applicantId); }
@@ -77,23 +98,7 @@ internal static class CourierManager
         return dalCourier;
     }
 
-    internal static void Create(DO.Courier doCourier)
-    {
-        s_dal.Courier.Create(doCourier);
-        Observers.NotifyListUpdated();
-    }
-    internal static void Delete(int courierId)
-    {
-        s_dal.Courier.Delete(courierId);
-        Observers.NotifyItemUpdated(courierId);
-        Observers.NotifyListUpdated();
-    }
-    internal static void Update(DO.Courier doCourier)
-    {
-        s_dal.Courier.Update(doCourier);
-        Observers.NotifyItemUpdated(doCourier.Id);
-        Observers.NotifyListUpdated();
-    }
+   
 
 
     internal static int? GetNumberOfDeliveriesInProcess(int id)
