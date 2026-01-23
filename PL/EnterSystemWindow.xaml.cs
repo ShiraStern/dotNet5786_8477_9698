@@ -97,7 +97,7 @@ namespace PL
                             MessageBoxImage.Error);
                         return;
                 }
-                UserContext.UserId = CourierId;
+                UserContext.UserId = id;
 
                 this.Close();
             }
