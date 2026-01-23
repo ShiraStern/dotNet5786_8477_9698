@@ -58,10 +58,8 @@ namespace PL.Order
         }
 
         private void RefreshOrder()
-        {
-            int id = CurrentOrder!.ID;
-            CurrentOrder = s_bl.Order.GetDetails(_applicantId, id);
-        }
+            =>CurrentOrder = s_bl.Order.GetDetails(_applicantId, CurrentOrder!.ID);
+        
 
         private void OrderWindow_Loaded(object sender, RoutedEventArgs e)
         {
