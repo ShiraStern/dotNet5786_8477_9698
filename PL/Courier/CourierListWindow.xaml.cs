@@ -26,7 +26,7 @@ namespace PL.Courier
     public partial class CourierListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        int managerId = s_bl.Admin.GetConfig().ManagerID;
+        int _applicantId = UserContext.UserId;
         public BO.FilterCouriersByProperty FilterCouriers { get; set; } = BO.FilterCouriersByProperty.All;
 
         public BO.CourierInList? selectedCourier { get; set; }
@@ -59,7 +59,7 @@ namespace PL.Courier
 
             int managerId = s_bl.Admin.GetConfig().ManagerID;
 
-            CourierInList = s_bl.Courier.GetCourierList(managerId,true, FilterCouriers)!;//GetCourierList הוא מקבל שלוש פרמטרים ? ככה זה אמור להיות ? כי במקבילה באורר זה לא ככה שם הו אמקבל רק 2 פרמרטרים לבדוק אם זה נכון שבהגדרה של 
+            CourierInList = s_bl.Courier.GetCourierList(UserContext.UserId /*_applicantId*/, true, FilterCouriers)!;//GetCourierList הוא מקבל שלוש פרמטרים ? ככה זה אמור להיות ? כי במקבילה באורר זה לא ככה שם הו אמקבל רק 2 פרמרטרים לבדוק אם זה נכון שבהגדרה של 
         }
         private void courseListObserver()
             => queryCourierList();
@@ -90,7 +90,7 @@ namespace PL.Courier
         //        return;
         //    }
 
-        //    var fullCourier = s_bl.courier.GetDetails(managerId, selected.ID);
+        //    var fullCourier = s_bl.courier.GetDetails(_applicantId, selected.ID);
 
         //    new CourierWindow(selectedCourier.ID).Show();
         //}

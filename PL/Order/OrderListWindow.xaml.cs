@@ -19,8 +19,7 @@ namespace PL.Order
     public partial class OrderListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        int managerId = s_bl.Admin.GetConfig().ManagerID;
-
+        int _applicantId = UserContext.UserId;
         public BO.OrderInList selectedOrder { get; set; }
 
         public BO.OrderType? filterOrderType { get; set; } = null;

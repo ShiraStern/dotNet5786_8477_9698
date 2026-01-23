@@ -8,9 +8,7 @@ namespace PL.Courier
     public partial class CourierWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        int managerId = s_bl.Admin.GetConfig().ManagerID;
-
-        private int _applicantId;
+        int _applicantId = UserContext.UserId;
 
         public string ButtonText { get; set; }
 
