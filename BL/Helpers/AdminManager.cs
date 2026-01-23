@@ -11,11 +11,6 @@ internal static class AdminManager //stage 4
     #region Stage 4-7
     private static readonly DalApi.IDal s_dal = DalApi.Factory.Get; //stage 4
 
-    //internal static DalApi.IDal GetDal() //stage 4
-    //{
-    //    return s_dal;
-    //}
-    /// <summary>
     /// Property for providing current application's clock value for any BL class that may need it
     /// </summary>
     ///  None, // walking
