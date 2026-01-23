@@ -37,14 +37,14 @@ namespace PL.Order
                 typeof(OrderListWindow), new PropertyMetadata(null));
 
 
-
+        
         public OrderListWindow()
         {
             try
             {
                 
                 InitializeComponent();
-                OrderInList = s_bl.Order.GetOrderList(managerId);
+                OrderInList = s_bl.Order.GetOrderList(_applicantId);
 
             }
             catch(BlDoesNotExistException)
@@ -66,22 +66,22 @@ namespace PL.Order
         private void queryOrderList()
         {
             if (filterOrderType is not null)
-                OrderInList = s_bl.Order.GetOrderList(managerId, filterOrdersByProperty.OrderType, filterOrderType);
+                OrderInList = s_bl.Order.GetOrderList(_applicantId, filterOrdersByProperty.OrderType, filterOrderType);
             if (filterOrderStatus is not null)
-                OrderInList = s_bl.Order.GetOrderList(managerId, filterOrdersByProperty.OrderStatus, filterOrderStatus);
+                OrderInList = s_bl.Order.GetOrderList(_applicantId, filterOrdersByProperty.OrderStatus, filterOrderStatus);
         }
 
 
-        private void courseListObserver()
+        private void OrderListObserver()
             => queryOrderList();
 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-            => s_bl.Order.AddObserver(courseListObserver);
+            => s_bl.Order.AddObserver(OrderListObserver);
 
 
         private void Window_Closed(object sender, EventArgs e)
-            => s_bl.Order.RemoveObserver(courseListObserver);
+            => s_bl.Order.RemoveObserver(OrderListObserver);
 
         private void AddOrder_Click(object sender, RoutedEventArgs e)
         {
@@ -130,8 +130,9 @@ namespace PL.Order
             {
                 try
                 {
-                    s_bl.Order.Delete(managerId, order.OrderId);
-                    queryOrderList(); // רענון הרשימה
+                    s_bl.Order.Delete(_applicantId, order.OrderId);
+                    
+                    //queryOrderList(); // רענון הרשימה
                     MessageBox.Show("Order deleted successfully!");
                 }
                 catch (Exception ex)

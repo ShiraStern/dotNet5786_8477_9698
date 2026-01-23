@@ -1,223 +1,223 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfOrder>
   <Courier>
-    <Id>234003312</Id>
+    <Id>379992691</Id>
     <FullName>David Cohen</FullName>
-    <Phone>052-3593060</Phone>
+    <Phone>052-6671958</Phone>
     <Email>DavidCohen@gmail.com</Email>
-    <Password>114655</Password>
-    <Active>true</Active>
-    <MaxDistance>253</MaxDistance>
+    <Password>116254</Password>
+    <Active>false</Active>
+    <MaxDistance>139</MaxDistance>
     <DeliveryType>Motorcycle</DeliveryType>
-    <EmploymentStartDate>2024-01-22T11:25:09</EmploymentStartDate>
+    <EmploymentStartDate>2022-01-23T09:45:15</EmploymentStartDate>
   </Courier>
   <Courier>
-    <Id>366055733</Id>
+    <Id>302107712</Id>
     <FullName>Yael Levi</FullName>
-    <Phone>057-1543988</Phone>
+    <Phone>050-3379234</Phone>
     <Email>YaelLevi@gmail.com</Email>
-    <Password>98710</Password>
-    <Active>false</Active>
-    <MaxDistance>268</MaxDistance>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <EmploymentStartDate>2021-01-22T11:25:09</EmploymentStartDate>
+    <Password>95039</Password>
+    <Active>true</Active>
+    <MaxDistance>288</MaxDistance>
+    <DeliveryType>None</DeliveryType>
+    <EmploymentStartDate>2025-01-23T09:45:15</EmploymentStartDate>
   </Courier>
   <Courier>
-    <Id>217500640</Id>
+    <Id>217277883</Id>
     <FullName>Avi Mizrahi</FullName>
-    <Phone>058-1965943</Phone>
+    <Phone>056-9022448</Phone>
     <Email>AviMizrahi@gmail.com</Email>
-    <Password>119944</Password>
-    <Active>true</Active>
-    <MaxDistance>286</MaxDistance>
-    <DeliveryType>None</DeliveryType>
-    <EmploymentStartDate>2020-01-22T11:25:09</EmploymentStartDate>
+    <Password>114465</Password>
+    <Active>false</Active>
+    <MaxDistance>252</MaxDistance>
+    <DeliveryType>Car</DeliveryType>
+    <EmploymentStartDate>2023-01-23T09:45:15</EmploymentStartDate>
   </Courier>
   <Courier>
-    <Id>284472395</Id>
+    <Id>217219263</Id>
     <FullName>Noa Rosen</FullName>
-    <Phone>055-9390572</Phone>
+    <Phone>053-2316780</Phone>
     <Email>NoaRosen@gmail.com</Email>
-    <Password>91514</Password>
+    <Password>91325</Password>
     <Active>true</Active>
-    <MaxDistance>119</MaxDistance>
+    <MaxDistance>115</MaxDistance>
     <DeliveryType>Car</DeliveryType>
-    <EmploymentStartDate>2020-01-22T11:25:09</EmploymentStartDate>
+    <EmploymentStartDate>2024-01-23T09:45:15</EmploymentStartDate>
   </Courier>
   <Courier>
-    <Id>371442087</Id>
+    <Id>389711535</Id>
     <FullName>Eli Ben-David</FullName>
-    <Phone>053-2923403</Phone>
+    <Phone>050-7404583</Phone>
     <Email>EliBen-David@gmail.com</Email>
-    <Password>137590</Password>
+    <Password>138589</Password>
     <Active>true</Active>
-    <MaxDistance>230</MaxDistance>
-    <DeliveryType>Car</DeliveryType>
-    <EmploymentStartDate>2020-01-22T11:25:09</EmploymentStartDate>
+    <MaxDistance>126</MaxDistance>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <EmploymentStartDate>2018-01-23T09:45:15</EmploymentStartDate>
   </Courier>
   <Courier>
-    <Id>296043060</Id>
+    <Id>398611146</Id>
     <FullName>Dana Shapiro</FullName>
-    <Phone>056-5779753</Phone>
+    <Phone>055-2563212</Phone>
     <Email>DanaShapiro@gmail.com</Email>
-    <Password>129511</Password>
+    <Password>127540</Password>
     <Active>false</Active>
-    <MaxDistance>196</MaxDistance>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <EmploymentStartDate>2026-01-22T11:25:09</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>213019805</Id>
-    <FullName>Yossi Azulay</FullName>
-    <Phone>051-8565074</Phone>
-    <Email>YossiAzulay@gmail.com</Email>
-    <Password>126347</Password>
-    <Active>true</Active>
-    <MaxDistance>202</MaxDistance>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <EmploymentStartDate>2019-01-22T11:25:09</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>229816510</Id>
-    <FullName>Tamar Katz</FullName>
-    <Phone>058-4381412</Phone>
-    <Email>TamarKatz@gmail.com</Email>
-    <Password>108963</Password>
-    <Active>false</Active>
-    <MaxDistance>89</MaxDistance>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <EmploymentStartDate>2021-01-22T11:25:09</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>304815974</Id>
-    <FullName>Itay Goldstein</FullName>
-    <Phone>050-8414690</Phone>
-    <Email>ItayGoldstein@gmail.com</Email>
-    <Password>143191</Password>
-    <Active>false</Active>
-    <MaxDistance>183</MaxDistance>
-    <DeliveryType>Car</DeliveryType>
-    <EmploymentStartDate>2018-01-22T11:25:09</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>227767402</Id>
-    <FullName>Lior Peretz</FullName>
-    <Phone>054-5610133</Phone>
-    <Email>LiorPeretz@gmail.com</Email>
-    <Password>111438</Password>
-    <Active>false</Active>
-    <MaxDistance>216</MaxDistance>
-    <DeliveryType>Car</DeliveryType>
-    <EmploymentStartDate>2025-01-22T11:25:09</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>366588442</Id>
-    <FullName>Roni Bar</FullName>
-    <Phone>051-8648456</Phone>
-    <Email>RoniBar@gmail.com</Email>
-    <Password>82198</Password>
-    <Active>false</Active>
-    <MaxDistance>145</MaxDistance>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <EmploymentStartDate>2026-01-22T11:25:09</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>207673087</Id>
-    <FullName>Shiran Malka</FullName>
-    <Phone>055-4585846</Phone>
-    <Email>ShiranMalka@gmail.com</Email>
-    <Password>125192</Password>
-    <Active>false</Active>
-    <MaxDistance>280</MaxDistance>
+    <MaxDistance>150</MaxDistance>
     <DeliveryType>None</DeliveryType>
-    <EmploymentStartDate>2025-01-22T11:25:09</EmploymentStartDate>
+    <EmploymentStartDate>2022-01-23T09:45:15</EmploymentStartDate>
   </Courier>
   <Courier>
-    <Id>314547310</Id>
-    <FullName>Nadav Friedman</FullName>
-    <Phone>055-8583502</Phone>
-    <Email>NadavFriedman@gmail.com</Email>
-    <Password>142545</Password>
-    <Active>false</Active>
-    <MaxDistance>91</MaxDistance>
-    <DeliveryType>Car</DeliveryType>
-    <EmploymentStartDate>2020-01-22T11:25:09</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>287101200</Id>
-    <FullName>Gal Cohen</FullName>
-    <Phone>051-2581719</Phone>
-    <Email>GalCohen@gmail.com</Email>
-    <Password>95598</Password>
+    <Id>307560091</Id>
+    <FullName>Yossi Azulay</FullName>
+    <Phone>057-3594438</Phone>
+    <Email>YossiAzulay@gmail.com</Email>
+    <Password>128075</Password>
     <Active>true</Active>
-    <MaxDistance>287</MaxDistance>
+    <MaxDistance>165</MaxDistance>
     <DeliveryType>Bicycle</DeliveryType>
-    <EmploymentStartDate>2023-01-22T11:25:09</EmploymentStartDate>
+    <EmploymentStartDate>2017-01-23T09:45:15</EmploymentStartDate>
   </Courier>
   <Courier>
-    <Id>222654292</Id>
-    <FullName>Ori Hadad</FullName>
-    <Phone>058-1779476</Phone>
-    <Email>OriHadad@gmail.com</Email>
-    <Password>94131</Password>
+    <Id>370029890</Id>
+    <FullName>Tamar Katz</FullName>
+    <Phone>058-2596265</Phone>
+    <Email>TamarKatz@gmail.com</Email>
+    <Password>108665</Password>
+    <Active>false</Active>
+    <MaxDistance>46</MaxDistance>
+    <DeliveryType>Bicycle</DeliveryType>
+    <EmploymentStartDate>2024-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>297090705</Id>
+    <FullName>Itay Goldstein</FullName>
+    <Phone>057-1099062</Phone>
+    <Email>ItayGoldstein@gmail.com</Email>
+    <Password>144544</Password>
     <Active>true</Active>
+    <MaxDistance>229</MaxDistance>
+    <DeliveryType>Bicycle</DeliveryType>
+    <EmploymentStartDate>2026-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>389019975</Id>
+    <FullName>Lior Peretz</FullName>
+    <Phone>051-2940241</Phone>
+    <Email>LiorPeretz@gmail.com</Email>
+    <Password>115426</Password>
+    <Active>true</Active>
+    <MaxDistance>170</MaxDistance>
+    <DeliveryType>Car</DeliveryType>
+    <EmploymentStartDate>2018-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>246257118</Id>
+    <FullName>Roni Bar</FullName>
+    <Phone>050-6024662</Phone>
+    <Email>RoniBar@gmail.com</Email>
+    <Password>81641</Password>
+    <Active>false</Active>
+    <MaxDistance>286</MaxDistance>
+    <DeliveryType>Bicycle</DeliveryType>
+    <EmploymentStartDate>2024-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>231222553</Id>
+    <FullName>Shiran Malka</FullName>
+    <Phone>051-8443831</Phone>
+    <Email>ShiranMalka@gmail.com</Email>
+    <Password>127170</Password>
+    <Active>true</Active>
+    <MaxDistance>210</MaxDistance>
+    <DeliveryType>None</DeliveryType>
+    <EmploymentStartDate>2021-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>391785225</Id>
+    <FullName>Nadav Friedman</FullName>
+    <Phone>052-2694564</Phone>
+    <Email>NadavFriedman@gmail.com</Email>
+    <Password>146462</Password>
+    <Active>false</Active>
+    <MaxDistance>256</MaxDistance>
+    <DeliveryType>Bicycle</DeliveryType>
+    <EmploymentStartDate>2026-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>286829022</Id>
+    <FullName>Gal Cohen</FullName>
+    <Phone>052-4069035</Phone>
+    <Email>GalCohen@gmail.com</Email>
+    <Password>95600</Password>
+    <Active>true</Active>
+    <MaxDistance>166</MaxDistance>
+    <DeliveryType>Car</DeliveryType>
+    <EmploymentStartDate>2026-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>222287200</Id>
+    <FullName>Ori Hadad</FullName>
+    <Phone>058-5225949</Phone>
+    <Email>OriHadad@gmail.com</Email>
+    <Password>93719</Password>
+    <Active>false</Active>
+    <MaxDistance>242</MaxDistance>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <EmploymentStartDate>2017-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>244881728</Id>
+    <FullName>Maya Regev</FullName>
+    <Phone>058-6713788</Phone>
+    <Email>MayaRegev@gmail.com</Email>
+    <Password>104737</Password>
+    <Active>false</Active>
+    <MaxDistance>225</MaxDistance>
+    <DeliveryType>Car</DeliveryType>
+    <EmploymentStartDate>2026-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>262714463</Id>
+    <FullName>Yonatan Amir</FullName>
+    <Phone>050-4492251</Phone>
+    <Email>YonatanAmir@gmail.com</Email>
+    <Password>126789</Password>
+    <Active>true</Active>
+    <MaxDistance>273</MaxDistance>
+    <DeliveryType>Car</DeliveryType>
+    <EmploymentStartDate>2022-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>223695770</Id>
+    <FullName>Eden Sharon</FullName>
+    <Phone>050-5288874</Phone>
+    <Email>EdenSharon@gmail.com</Email>
+    <Password>115637</Password>
+    <Active>true</Active>
+    <MaxDistance>128</MaxDistance>
+    <DeliveryType>Car</DeliveryType>
+    <EmploymentStartDate>2020-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>271298100</Id>
+    <FullName>Alon Biton</FullName>
+    <Phone>050-2808562</Phone>
+    <Email>AlonBiton@gmail.com</Email>
+    <Password>103471</Password>
+    <Active>false</Active>
     <MaxDistance>120</MaxDistance>
     <DeliveryType>Car</DeliveryType>
-    <EmploymentStartDate>2018-01-22T11:25:09</EmploymentStartDate>
+    <EmploymentStartDate>2023-01-23T09:45:15</EmploymentStartDate>
   </Courier>
   <Courier>
-    <Id>202352795</Id>
-    <FullName>Maya Regev</FullName>
-    <Phone>057-3072285</Phone>
-    <Email>MayaRegev@gmail.com</Email>
-    <Password>109180</Password>
-    <Active>false</Active>
-    <MaxDistance>272</MaxDistance>
-    <DeliveryType>None</DeliveryType>
-    <EmploymentStartDate>2017-01-22T11:25:09</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>287024376</Id>
-    <FullName>Yonatan Amir</FullName>
-    <Phone>057-1847771</Phone>
-    <Email>YonatanAmir@gmail.com</Email>
-    <Password>124235</Password>
-    <Active>false</Active>
-    <MaxDistance>99</MaxDistance>
-    <DeliveryType>None</DeliveryType>
-    <EmploymentStartDate>2026-01-22T11:25:09</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>336339249</Id>
-    <FullName>Eden Sharon</FullName>
-    <Phone>053-3649100</Phone>
-    <Email>EdenSharon@gmail.com</Email>
-    <Password>117706</Password>
-    <Active>false</Active>
-    <MaxDistance>191</MaxDistance>
-    <DeliveryType>Bicycle</DeliveryType>
-    <EmploymentStartDate>2023-01-22T11:25:09</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>295159916</Id>
-    <FullName>Alon Biton</FullName>
-    <Phone>051-7050773</Phone>
-    <Email>AlonBiton@gmail.com</Email>
-    <Password>104458</Password>
-    <Active>false</Active>
-    <MaxDistance>262</MaxDistance>
-    <DeliveryType>Bicycle</DeliveryType>
-    <EmploymentStartDate>2018-01-22T11:25:09</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>263408505</Id>
+    <Id>279093435</Id>
     <FullName>Hila Segal</FullName>
-    <Phone>058-5261147</Phone>
+    <Phone>051-6867949</Phone>
     <Email>HilaSegal@gmail.com</Email>
-    <Password>107503</Password>
+    <Password>103098</Password>
     <Active>true</Active>
-    <MaxDistance>245</MaxDistance>
+    <MaxDistance>187</MaxDistance>
     <DeliveryType>Bicycle</DeliveryType>
-    <EmploymentStartDate>2024-01-22T11:25:09</EmploymentStartDate>
+    <EmploymentStartDate>2024-01-23T09:45:15</EmploymentStartDate>
   </Courier>
 </ArrayOfOrder>

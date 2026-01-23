@@ -114,11 +114,15 @@ namespace PL.Order
 
                 this.Close();
                 RefreshOrder();
+             
+               
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
+
     }
 }

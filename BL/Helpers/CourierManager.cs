@@ -17,12 +17,12 @@ internal static class CourierManager
         var list = s_dal.Courier.ReadAll().ToList();
         foreach (var doCoureir in list)
         {
-            ////if courier  is not active more than inactivitySpanTime 30 days
-            ////then courier should be automatically updated to 'not active'
-            //if (AdminManager.Now.Year - doStudent.RegistrationDate?.Year >= s_dal.Config.MaxRange)
-            //{
-            //    s_dal.Student.Update(doStudent with { IsActive = false });
-            //}
+            //if courier  is not active more than inactivitySpanTime 30 days
+            //then courier should be automatically updated to 'not active'
+            if (AdminManager.Now - doCoureir.EmploymentStartDate >= s_dal.Config.InactivityThreshold)
+            {
+                s_dal.Courier.Update(doCoureir with { Active = false });
+            }
         }
 
     }

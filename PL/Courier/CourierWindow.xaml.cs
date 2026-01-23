@@ -82,7 +82,7 @@ namespace PL.Courier
         private void RefreshCourier()
         {
             int id = CurrentCourier!.ID;
-            CurrentCourier = s_bl.Courier.GetDetails(managerId, id);
+            CurrentCourier = s_bl.Courier.GetDetails(_applicantId, id);
         }
 
 
