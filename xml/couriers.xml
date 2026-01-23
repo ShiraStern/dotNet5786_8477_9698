@@ -220,4 +220,15 @@
     <DeliveryType>Bicycle</DeliveryType>
     <EmploymentStartDate>2024-01-23T09:45:15</EmploymentStartDate>
   </Courier>
+  <Courier>
+    <Id>216169698</Id>
+    <FullName>Shulamit Ram</FullName>
+    <Phone>0535461257</Phone>
+    <Email>shulamit20243@gmail.com</Email>
+    <Password>1234</Password>
+    <Active>true</Active>
+    <MaxDistance>123</MaxDistance>
+    <DeliveryType>Car</DeliveryType>
+    <EmploymentStartDate>0001-01-01T00:00:00</EmploymentStartDate>
+  </Courier>
 </ArrayOfOrder>

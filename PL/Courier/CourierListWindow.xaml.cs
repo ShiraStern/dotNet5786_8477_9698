@@ -102,7 +102,7 @@ namespace PL.Courier
                 MessageBox.Show("Please select a courier first.");
                 return;
             }
-            new CourierWindow(selectedCourier.ID).Show();
+            new CourierWindow(UserContext.UserId, selectedCourier.ID).Show();
         }
         private void DeleteCourier_Click(object sender, RoutedEventArgs e)
         {
