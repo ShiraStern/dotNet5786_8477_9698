@@ -8,7 +8,7 @@ namespace PL.Courier
     public partial class CourierWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        int _applicantId = UserContext.UserId;
+        int _applicantId ;
 
         private bool IsAddMode;   //  מצב המסך: true = הוספה, false = עדכון
 

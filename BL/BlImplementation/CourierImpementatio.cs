@@ -164,8 +164,9 @@ internal class CourierImpementation : ICourier
 
     public void UpdateDetails(int applicantId, BO.Courier boCourier)
     {
-        // authorization
-        if (!AdminManager.IsValidManagerId(applicantId)  || !CourierManager.IsValidCourierId(applicantId))
+ 
+            // authorization
+            if (!AdminManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
             throw new UnauthorizedAccessException("Only admin or coureir can update courier's ditails.");
 
         // basic null check
