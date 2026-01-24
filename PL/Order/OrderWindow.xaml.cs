@@ -96,7 +96,6 @@ namespace PL.Order
                     MessageBox.Show("Address is required.");
                     return;
                 }
-                tool
 
                 if (CurrentOrder.ID == 0 )
                 {

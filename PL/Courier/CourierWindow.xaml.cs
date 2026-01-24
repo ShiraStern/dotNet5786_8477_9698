@@ -92,6 +92,10 @@ namespace PL.Courier
                     MessageBox.Show("Email is required.");
                     return;
                 }
+                Tools.ValidateFullName(CurrentCourier.FullName);
+                Tools.ValidateIdNumber(CurrentCourier.ID);
+
+
 
                 if (IsAddMode)
                 {

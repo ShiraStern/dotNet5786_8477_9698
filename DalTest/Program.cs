@@ -539,11 +539,11 @@ internal class Program
         Console.WriteLine($"Current Additional Properties: {order.OrderProperties}. Enter new properties (or press Enter to keep current):");
         OrderProperties newProperties = (OrderProperties)(int.Parse( Console.ReadLine()));
 
-        // אם הוזן ערך (אפילו ריק כדי לאפס ל-null), מעדכנים
-        if (newProperties != null)
-        {
-            order = order with { OrderProperties = newProperties };
-        }
+        //// אם הוזן ערך (אפילו ריק כדי לאפס ל-null), מעדכנים
+        //if (newProperties != null)
+        //{
+        //    order = order with { OrderProperties = newProperties };
+        //}
 
 
         // קריאה לעדכון במערכת
