@@ -13,18 +13,6 @@
     <OrderDate>2024-10-10T23:50:59</OrderDate>
   </Order>
   <Order>
-    <Id>1004</Id>
-    <OrderType>Small</OrderType>
-    <OrderNote />
-    <CustomerAddress>סוקולוב 56 רמת גן</CustomerAddress>
-    <Latitude>34.8187769</Latitude>
-    <Longitude>32.0940739</Longitude>
-    <CustomerFullName>Noam Ben-David</CustomerFullName>
-    <CustomerPhone>0579488940</CustomerPhone>
-    <OrderProperties>None</OrderProperties>
-    <OrderDate>2025-11-17T22:25:59</OrderDate>
-  </Order>
-  <Order>
     <Id>1005</Id>
     <OrderType>Medium</OrderType>
     <OrderNote />
@@ -649,30 +637,6 @@
     <OrderDate>2026-01-24T18:51:59</OrderDate>
   </Order>
   <Order>
-    <Id>1056</Id>
-    <OrderType>Small</OrderType>
-    <OrderNote />
-    <CustomerAddress>CHACING2</CustomerAddress>
-    <Latitude>0</Latitude>
-    <Longitude>0</Longitude>
-    <CustomerFullName>JJJJJJ</CustomerFullName>
-    <CustomerPhone>0512368594</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-24T18:51:59</OrderDate>
-  </Order>
-  <Order>
-    <Id>1057</Id>
-    <OrderType>Large</OrderType>
-    <OrderNote />
-    <CustomerAddress>CHECK 10</CustomerAddress>
-    <Latitude>0</Latitude>
-    <Longitude>0</Longitude>
-    <CustomerFullName>KLKL</CustomerFullName>
-    <CustomerPhone>0541287456</CustomerPhone>
-    <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-02-03T00:00:00</OrderDate>
-  </Order>
-  <Order>
     <Id>1023</Id>
     <OrderType>Small</OrderType>
     <OrderNote />
@@ -695,5 +659,41 @@
     <CustomerPhone>0505681045</CustomerPhone>
     <OrderProperties>None</OrderProperties>
     <OrderDate>2024-09-05T18:48:59</OrderDate>
+  </Order>
+  <Order>
+    <Id>1004</Id>
+    <OrderType>Small</OrderType>
+    <OrderNote />
+    <CustomerAddress>סוקולוב 56 רמת גן</CustomerAddress>
+    <Latitude>34.8187769</Latitude>
+    <Longitude>32.0940739</Longitude>
+    <CustomerFullName>Noam Ben-David</CustomerFullName>
+    <CustomerPhone>5252</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2025-11-17T22:25:59</OrderDate>
+  </Order>
+  <Order>
+    <Id>1056</Id>
+    <OrderType>Small</OrderType>
+    <OrderNote />
+    <CustomerAddress>CHACING2</CustomerAddress>
+    <Latitude>0</Latitude>
+    <Longitude>0</Longitude>
+    <CustomerFullName>JJJJJJ</CustomerFullName>
+    <CustomerPhone>1212</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-24T18:51:59</OrderDate>
+  </Order>
+  <Order>
+    <Id>1057</Id>
+    <OrderType>Large</OrderType>
+    <OrderNote />
+    <CustomerAddress>CHECK 10</CustomerAddress>
+    <Latitude>0</Latitude>
+    <Longitude>0</Longitude>
+    <CustomerFullName>KLKL</CustomerFullName>
+    <CustomerPhone>0541287456</CustomerPhone>
+    <OrderProperties>Weighty</OrderProperties>
+    <OrderDate>2026-02-27T00:00:00</OrderDate>
   </Order>
 </ArrayOfOrder>
