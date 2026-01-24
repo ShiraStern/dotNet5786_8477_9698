@@ -75,7 +75,7 @@ namespace PL.Order
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
-            bool validitionFlag = false;
+           
             try
             {
                 // בדיקות בסיסיות
@@ -97,11 +97,14 @@ namespace PL.Order
                     return;
                 }
 
-                PL.Tools.IsValid
-                PL.Tools.IsValidPhone(CurrentOrder.OrderersPhoneNumber);
-                PL.Tools.IsValidAddress(CurrentOrder.FullAddressOfTheOrder);
-
-
+                if( ! (PL.Tools.ValidateFullName(CurrentOrder.FullNameOfTheInviter) &&
+                      PL.Tools.IsValidPhone(CurrentOrder.OrderersPhoneNumber) &&
+                      PL.Tools.IsValidAddress(CurrentOrder.FullAddressOfTheOrder)
+                      )  )
+                {
+                    return;
+                }
+                
 
 
                 if (CurrentOrder.ID == 0 )

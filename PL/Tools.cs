@@ -20,15 +20,23 @@ internal class Tools
 
     public static bool IsValidAddress(string address)
     {
+        if (string.IsNullOrWhiteSpace(address))
+            return false;
+        if (Regex.IsMatch(address.Trim(),
+            @"^(?=.*[A-Za-zא-ת])(?=.*\d)[A-Za-zא-ת0-9\s.,'""/\-]{5,100}$"))
+            return true;
+        MessageBox.Show("Phone number is not valid.");
+        return false;
+    }
+
 
 
         // בדיקת שם מלא בעברית או באנגלית + הודעה פנימית
-        public static void ValidateFullName(string name)
+        public static bool ValidateFullName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 MessageBox.Show("Full name is required.");
-                throw new Exception();
             }
 
             // עברית או אנגלית, לפחות שני שמות
@@ -37,11 +45,12 @@ internal class Tools
             if (!Regex.IsMatch(name.Trim(), pattern))
             {
                 MessageBox.Show("Invalid full name. Please enter first and last name in Hebrew or English.");
-                throw new Exception();
-            }
+                return false;
         }
+            return true;
+    }
         // בדיקת תעודת זהות (מקבלת int וממירה ל-string בפנים)
-        public static void ValidateIdNumber(int id)
+        public static bool ValidateIdNumber(int id)
         {
             // המרה ל-string
             string idStr = id.ToString();
@@ -52,31 +61,10 @@ internal class Tools
             if (!Regex.IsMatch(idStr, pattern))
             {
                 MessageBox.Show("Invalid ID number.");
-                throw new Exception();
-            }
+                return false;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        if (string.IsNullOrWhiteSpace(address))
-            return false;
-        if (Regex.IsMatch(address.Trim(),
-            @"^(?=.*[A-Za-zא-ת])(?=.*\d)[A-Za-zא-ת0-9\s.,'""/\-]{5,100}$"))
-            return true;
-        MessageBox.Show("Phone number is not valid.");
-        return false;
+            return true;    
     }
 
+  
 }
