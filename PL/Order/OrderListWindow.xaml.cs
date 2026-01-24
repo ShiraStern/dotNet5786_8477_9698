@@ -45,6 +45,7 @@ namespace PL.Order
                 
                 InitializeComponent();
                 OrderInList = s_bl.Order.GetOrderList(_applicantId);
+               
 
             }
             catch(BlDoesNotExistException)
@@ -60,6 +61,8 @@ namespace PL.Order
                 }
                 this.Close();
             }
+            this.Loaded += Window_Loaded; // single subscription
+            this.Closing += Window_Closed;
         }
 
 
@@ -69,6 +72,7 @@ namespace PL.Order
                 OrderInList = s_bl.Order.GetOrderList(_applicantId, filterOrdersByProperty.OrderType, filterOrderType);
             if (filterOrderStatus is not null)
                 OrderInList = s_bl.Order.GetOrderList(_applicantId, filterOrdersByProperty.OrderStatus, filterOrderStatus);
+             OrderInList = s_bl.Order.GetOrderList(_applicantId);
         }
 
 

@@ -268,7 +268,7 @@ public static class Initialization
                 Longitude = double.Parse(Longitudes[i]),
                 CustomerFullName = customerFullNames[i],
                 CustomerPhone = "05" + Random.Shared.Next(0, 10) + Random.Shared.Next(1000000, 9999999),
-                OrderDate = s_dal.Config.Clock.AddDays(-1*s_random.Next(650)).AddHours(-s_random.Next(-23, 0)).AddMinutes(-s_random.Next(-59, 0)),
+                OrderDate = s_dal.Config.Clock.AddDays(-1*s_random.Next(30)).AddHours(-s_random.Next(-23, 0)).AddMinutes(-s_random.Next(-59, 0)),
                 OrderProperties = (OrderProperties)s_random.Next(Enum.GetValues<OrderProperties>().Length)
             };
             s_dal!.Order.Create(order);

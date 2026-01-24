@@ -48,28 +48,23 @@ namespace PL.Courier
             InitializeComponent();
         }
 
-        private void queryCourierList()
-        {
-            //int managetID = s_bl.Admin.GetConfig().ManagerID;
-            //CourierInList = (FilterCouriers == BO.FilterCouriersByProperty.All) ?
-            //    s_bl?.Courier!.GetCourierList(managetID, null, FilterCouriersByProperty.All)!
-            //    : FilterCouriers == BO.FilterCouriersByProperty.IsActive ?
-            //    s_bl?.Courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsActive)! :
-            //    s_bl?.Courier!.GetCourierList(managetID, null, BO.FilterCouriersByProperty.IsNotActive)!;
-
-            int managerId = s_bl.Admin.GetConfig().ManagerID;
-
-            CourierInList = s_bl.Courier.GetCourierList(UserContext.UserId /*_applicantId*/, true, FilterCouriers)!;//GetCourierList הוא מקבל שלוש פרמטרים ? ככה זה אמור להיות ? כי במקבילה באורר זה לא ככה שם הו אמקבל רק 2 פרמרטרים לבדוק אם זה נכון שבהגדרה של 
-        }
-        private void courseListObserver()
-            => queryCourierList();
- 
+       
         private void Window_Loaded(object sender, RoutedEventArgs e)
-            => s_bl.Courier.AddObserver(courseListObserver);
+            =>s_bl.Courier.AddObserver(courseListObserver);
+      
 
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.Courier.RemoveObserver(courseListObserver);
 
+        private void queryCourierList()
+        {
+            int managerId = s_bl.Admin.GetConfig().ManagerID;
+
+            CourierInList = s_bl.Courier.GetCourierList(UserContext.UserId /*_applicantId*/, true, FilterCouriers)!;
+        }
+        private void courseListObserver()
+            => queryCourierList();
+ 
         private void CourierFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             queryCourierList();
@@ -80,20 +75,6 @@ namespace PL.Courier
             new CourierWindow(UserContext.UserId).Show();
         }
 
-        //private void EditCourier_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var selected = CourierListView.SelectedItem as BO.CourierInList;
-
-        //    if (selected == null)
-        //    {
-        //        MessageBox.Show("Please select a courier first.");
-        //        return;
-        //    }
-
-        //    var fullCourier = s_bl.courier.GetDetails(_applicantId, selected.ID);
-
-        //    new CourierWindow(selectedCourier.ID).Show();
-        //}
 
         private void selectCourier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -104,6 +85,7 @@ namespace PL.Courier
             }
             new CourierWindow(UserContext.UserId, selectedCourier.ID).Show();
         }
+
         private void DeleteCourier_Click(object sender, RoutedEventArgs e)
         {
             var courier = ((FrameworkElement)sender).DataContext as BO.CourierInList;
