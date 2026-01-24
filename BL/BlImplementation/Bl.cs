@@ -6,9 +6,9 @@ namespace BlImplementation;
 internal class Bl : BlApi.IBl
 
 {
-    public ICourier Courier => new CourierImpementation();
+    public ICourier Courier { get; } = new CourierImpementation();
 
-    public IOrder Order => new OrderImplementation();
+    public IOrder Order { get; } = new OrderImplementation();
 
-    public IAdmin Admin => new AdminImplementation();
+    public IAdmin Admin { get; } = new AdminImplementation();
 }
