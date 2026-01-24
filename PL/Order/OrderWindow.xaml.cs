@@ -96,7 +96,10 @@ namespace PL.Order
                     MessageBox.Show("Address is required.");
                     return;
                 }
-                tool
+
+                PL.Tools.IsValidPhone(CurrentOrder.OrderersPhoneNumber);
+
+
 
                 if (CurrentOrder.ID == 0 )
                 {
