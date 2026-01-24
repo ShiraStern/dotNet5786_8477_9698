@@ -6,9 +6,17 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace PL
+namespace PL;
+
+internal class Tools
 {
-    internal class Tools
+    public static void IsValidPhone(string phone)
+    {
+        if (Regex.IsMatch(phone, @"^05([ -]?)\d{8}$"))
+        MessageBox.Show("Phone number is not valid.");
+    }
+
+    public bool IsValidAddress(string address)
     {
 
 
@@ -61,4 +69,5 @@ namespace PL
 
 
     }
+
 }

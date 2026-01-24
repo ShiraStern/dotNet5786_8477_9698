@@ -97,6 +97,10 @@ namespace PL.Order
                     return;
                 }
 
+                PL.Tools.IsValidPhone(CurrentOrder.OrderersPhoneNumber);
+
+
+
                 if (CurrentOrder.ID == 0 )
                 {
 

@@ -7,6 +7,118 @@
         mc:Ignorable="d"
         Title="CourierMainWindow" Height="450" Width="800">
     <Grid>
-        
-    </Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#FFEFF7FF" Offset="0"/>
+                <GradientStop Color="#FFFFFFFF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!-- שכבת איורים מעודנת -->
+        <Ellipse Width="450" Height="350"
+          Fill="#40CDEAFE"
+          HorizontalAlignment="Left"
+          VerticalAlignment="Top"
+          Margin="-40,-61,0,0"/>
+
+        <Ellipse Width="300" Height="240"
+          Fill="#30AED9C7"
+          HorizontalAlignment="Right"
+          VerticalAlignment="Bottom"
+          Margin="0,0,-27,-20"/>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- פס עליון פסטלי אחיד -->
+            <Border Grid.Row="0"
+             Height="55"
+             Background="{StaticResource PrimaryLightBrush}"
+             Padding="20,10">
+                <DockPanel LastChildFill="True">
+                    <TextBlock Text="מערכת ניהול משלוחים"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Foreground="{StaticResource TextMainBrush}"
+                        DockPanel.Dock="Right"
+                        Margin="0,0,10,0"/>
+                    <TextBlock Text="Panel מנהל"
+                        Foreground="{StaticResource TextSoftBrush}"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        DockPanel.Dock="Right"/>
+                </DockPanel>
+            </Border>
+
+            <!-- גוף המסך -->
+            <Grid Grid.Row="1" Margin="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- כרטיס: תצורת מערכת -->
+                <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="הגדרות מערכת"
+                            Style="{StaticResource SectionTitleTextBlockStyle}"
+                            HorizontalAlignment="Center"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Label Content="Max Range (km):"
+                            VerticalAlignment="Center"
+                            Width="130"/>
+                            <TextBox Width="80"
+                              Text="{Binding Configuration.MaxRange, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                            <Button Content="Save Configuration"
+                             Click="btnSaveConfig_Click"
+                             HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- כרטיס: ניהול בסיס נתונים ושליטה ביישויות -->
+                <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="ניהול מאגר נתונים"
+                            Style="{StaticResource SectionTitleTextBlockStyle}"
+                            HorizontalAlignment="Stretch"/>
+
+                        <StackPanel>
+                            <Button Content="Initialize DB"
+                             Click="Button_InitializeDB"
+                             HorizontalAlignment="Stretch"/>
+
+                            <Button Content="Reset DB"
+                             Click="Button_ResetDB"
+                             HorizontalAlignment="Stretch"
+                             Margin="6,4,6,16"/>
+
+                            <Separator/>
+
+                            <TextBlock Text="ניהול ישויות"
+                                Margin="0,12,0,4"
+                                Foreground="{StaticResource TextSoftBrush}"
+                                FontWeight="SemiBold"
+                                Style="{StaticResource SectionTitleTextBlockStyle}"
+                                HorizontalAlignment="Center"/>
+
+                            <Button Content="Handle Courier"
+                             Click="btnHandleCourier"
+                             HorizontalAlignment="Stretch"/>
+
+                            <Button Content="Handle Orders"
+                             Click="btnHandleOrders"
+                             HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
 </Window>
