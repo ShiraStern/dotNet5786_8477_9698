@@ -1,17 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfOrder>
   <Courier>
-    <Id>379992691</Id>
-    <FullName>David Cohen</FullName>
-    <Phone>052-6671958</Phone>
-    <Email>DavidCohen@gmail.com</Email>
-    <Password>116254</Password>
-    <Active>false</Active>
-    <MaxDistance>139</MaxDistance>
-    <DeliveryType>Motorcycle</DeliveryType>
-    <EmploymentStartDate>2022-01-23T09:45:15</EmploymentStartDate>
-  </Courier>
-  <Courier>
     <Id>302107712</Id>
     <FullName>Yael Levi</FullName>
     <Phone>050-3379234</Phone>
@@ -252,5 +241,27 @@
     <MaxDistance>123</MaxDistance>
     <DeliveryType>Motorcycle</DeliveryType>
     <EmploymentStartDate>2026-01-23T16:03:08.1524033+02:00</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>379992691</Id>
+    <FullName>David Cohen</FullName>
+    <Phone>123</Phone>
+    <Email>DavidCohen@gmail.com</Email>
+    <Password>1234</Password>
+    <Active>false</Active>
+    <MaxDistance>139</MaxDistance>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <EmploymentStartDate>2022-01-23T09:45:15</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>123</Id>
+    <FullName>asd</FullName>
+    <Phone>123</Phone>
+    <Email>asd</Email>
+    <Password>123</Password>
+    <Active>true</Active>
+    <MaxDistance>123</MaxDistance>
+    <DeliveryType>Car</DeliveryType>
+    <EmploymentStartDate>2026-01-24T21:03:55.2896196+02:00</EmploymentStartDate>
   </Courier>
 </ArrayOfOrder>

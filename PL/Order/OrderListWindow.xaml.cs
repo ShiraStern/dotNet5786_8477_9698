@@ -63,12 +63,26 @@ namespace PL.Order
         }
 
 
+        //private void queryOrderList()
+        //{
+        //    if (filterOrderType is not null)
+        //        OrderInList = s_bl.Order.GetOrderList(_applicantId, filterOrdersByProperty.OrderType, filterOrderType);
+        //    if (filterOrderStatus is not null)
+        //        OrderInList = s_bl.Order.GetOrderList(_applicantId, filterOrdersByProperty.OrderStatus, filterOrderStatus);
+        //}
         private void queryOrderList()
         {
             if (filterOrderType is not null)
-                OrderInList = s_bl.Order.GetOrderList(_applicantId, filterOrdersByProperty.OrderType, filterOrderType);
-            if (filterOrderStatus is not null)
-                OrderInList = s_bl.Order.GetOrderList(_applicantId, filterOrdersByProperty.OrderStatus, filterOrderStatus);
+            {
+                OrderInList = s_bl.Order.GetOrderList(_applicantId,filterOrdersByProperty.OrderType,filterOrderType);
+            }
+            else if (filterOrderStatus is not null)
+            { OrderInList = s_bl.Order.GetOrderList(_applicantId,  filterOrdersByProperty.OrderStatus, filterOrderStatus);
+            }
+            else
+            {
+                OrderInList = s_bl.Order.GetOrderList(_applicantId);
+            }
         }
 
 

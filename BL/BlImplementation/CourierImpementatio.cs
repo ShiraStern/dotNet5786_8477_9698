@@ -26,7 +26,7 @@ internal class CourierImpementation : ICourier
             // create DO and persist via DAL
             var doCourier = CourierManager.ConvertToCourier(boCourier);
             CourierManager.Create(doCourier);
-            CourierManager.Observers.NotifyItemUpdated();
+            CourierManager.Observers.NotifyItemUpdated(boCourier.ID);
             CourierManager.Observers.NotifyListUpdated();
 
         }
