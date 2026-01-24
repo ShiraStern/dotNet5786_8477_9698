@@ -21,6 +21,19 @@ namespace Helpers
         {
             if (boOrder == null)
                 throw new BlArgumentNullException(nameof(boOrder));
+            // חישוב קואורדינטות רק בעת הוספת הזמנה
+            if ((boOrder.Latitude == 0 || boOrder.Longitude == 0) &&
+                !string.IsNullOrWhiteSpace(boOrder.FullAddressOfTheOrder))
+            {
+                if (!Tools.IsValidAddress(boOrder.FullAddressOfTheOrder))
+                    throw new BO.BlDoesNotExistException("Invalid order address");
+
+                var (lat, lon) =
+                    Tools.GetCoordinates(boOrder.FullAddressOfTheOrder);
+
+                boOrder.Latitude = lat;
+                boOrder.Longitude = lon;
+            }
 
             DO.Order doOrder = new DO.Order(
                 Id: boOrder.ID,
@@ -379,19 +392,46 @@ namespace Helpers
                 };
             
         }
-         #endregion
+        #endregion
 
         #region Calculation
+
         internal static double CalculateAirDistance(DO.Delivery delivery)
         {
-            //throw new Exception("Not implemented yet");
-            return 0;
+            if (delivery == null)
+                throw new BO.BlArgumentNullException("Delivery is null");
+
+            var config = AdminManager.GetConfig();
+            if (config == null || config.Latitude == null || config.Longitude == null)
+                return 0;
+
+            DO.Order doOrder = s_dal.Order.Read(delivery.OrderId)
+                ?? throw new BO.BlDoesNotExistException($"Order {delivery.OrderId} does not exist");
+
+            return Tools.CalculateAirDistance(
+                config.Latitude.Value,
+                config.Longitude.Value,
+               doOrder.Latitude,
+               doOrder.Longitude
+
+                );
         }
-        internal static double CalculateAirDistance(double Latitude, double Longitude)
+
+
+        internal static double CalculateAirDistance(double latitude, double longitude)
         {
-            //throw new Exception("Not implemented yet");
-            return 0;
+            var config = AdminManager.GetConfig();
+            if (config == null || config.Latitude == null || config.Longitude == null)
+                return 0;
+
+            return Tools.CalculateAirDistance(
+                config.Latitude.Value,
+                config.Longitude.Value,
+                latitude,
+                longitude);
         }
+
+
         internal static double CalculateActualDistance(DO.Delivery delivery)
         {
             throw new Exception("Not implemented yet");

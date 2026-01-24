@@ -14,9 +14,9 @@ namespace BO
         public string? FullAddressOfTheOrder { get; set; }        // הופך ל-set כדי לאפשר שינוי כתובת בהזמנה
 
 
-        public double Latitude { get; init; }        // נשאר init, כיוון שזו כתובת קבועה
+        public double Latitude { get; set; }        // להתייעץ עם שירה
 
-        public double Longitude { get; init; }
+        public double Longitude { get; set; }
 
         public double AirDistance { get; set; }
 
