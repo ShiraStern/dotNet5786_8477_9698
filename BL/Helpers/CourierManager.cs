@@ -29,6 +29,7 @@ internal static class CourierManager
     internal static void Create(DO.Courier doCourier)
     {
         s_dal.Courier.Create(doCourier);
+        Observers.NotifyItemUpdated(doCourier.Id);
         Observers.NotifyListUpdated();
     }
     internal static void Delete(int courierId)

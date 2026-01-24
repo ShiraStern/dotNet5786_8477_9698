@@ -28,20 +28,7 @@ namespace PL.Courier
                 typeof(CourierWindow),
                 new PropertyMetadata(null));
 
-        //public CourierWindow(int applicantId, BO.Courier courier)
-        //{
-        //    InitializeComponent();
-
-        //    _applicantId = applicantId;
-
-        //    // הכנסת השליח לתוך ה־DependencyProperty
-        //    CurrentCourier = courier;
-
-        //    // קביעת טקסט הכפתור לפי מצב המסך
-        //    ButtonText = courier.ID == 0 ? "Add" : "Update";
-
-        //    DataContext = this;
-        //}
+        
         private void CourierWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (!IsAddMode)
@@ -57,16 +44,13 @@ namespace PL.Courier
                 IsAddMode = true;
 
                 CurrentCourier = new BO.Courier
-                {
-                    ID = 0
-                };
+                { ID = 0};
                 ButtonText = "Add";
             }
             else
             {
                 // מצב עדכון
                 IsAddMode = false;
-
                 CurrentCourier = s_bl.Courier.GetDetails(_applicantId, courierId);
                 ButtonText = "Update";
             }

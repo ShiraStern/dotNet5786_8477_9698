@@ -45,6 +45,7 @@ namespace PL.Order
                 
                 InitializeComponent();
                 OrderInList = s_bl.Order.GetOrderList(_applicantId);
+               
 
             }
             catch(BlDoesNotExistException)
@@ -60,6 +61,8 @@ namespace PL.Order
                 }
                 this.Close();
             }
+            this.Loaded += Window_Loaded; // single subscription
+            this.Closing += Window_Closed;
         }
 
 

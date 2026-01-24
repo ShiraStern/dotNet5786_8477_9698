@@ -55,6 +55,7 @@ namespace PL.Order
 
             this.Loaded += OrderWindow_Loaded; // single subscription
             this.Closing += OrderWindow_Closing;
+          
         }
 
         private void RefreshOrder()
@@ -63,17 +64,18 @@ namespace PL.Order
 
         private void OrderWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (CurrentOrder!.ID != 0)
+            //if (CurrentOrder!.ID != 0)
                 s_bl.Order.AddObserver(CurrentOrder.ID, RefreshOrder);
         }
         private void OrderWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (CurrentOrder!.ID != 0)
-                s_bl.Order.RemoveObserver(CurrentOrder.ID, RefreshOrder);
+            //if (CurrentOrder!.ID != 0)
+            s_bl.Order.RemoveObserver(CurrentOrder.ID, RefreshOrder);
         }
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
+            
             try
             {
                 // בדיקות בסיסיות
@@ -94,9 +96,11 @@ namespace PL.Order
                     MessageBox.Show("Address is required.");
                     return;
                 }
+                tool
 
                 if (CurrentOrder.ID == 0 )
                 {
+
                     // הוספת הזמנה חדשה
                     BlApi.Factory.Get().Order.AddOrder(_applicantId, CurrentOrder);
 
@@ -109,9 +113,7 @@ namespace PL.Order
 
                     MessageBox.Show("Order updated successfully!");
                 }
-
                 this.Close();
-                RefreshOrder();
              
                
             }

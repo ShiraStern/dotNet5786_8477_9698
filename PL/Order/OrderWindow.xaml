@@ -79,10 +79,12 @@
                            FontSize="20"/>
 
                 <!-- ID -->
-                <Label Grid.Row="2" Grid.Column="0" Content="Order ID:"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="Order ID:"
+                        Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
                 <Label Grid.Row="2" Grid.Column="2"
                          Content="{Binding CurrentOrder.ID, Mode=TwoWay, 
-                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
+                       Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
                           
 
                 <!-- OrderType -->
@@ -108,24 +110,27 @@
                          Text="{Binding CurrentOrder.FullAddressOfTheOrder, Mode=TwoWay, 
                             NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
 
-                <!-- Latitude -->
+                <!-- Latitude --><!--
                 <Label Grid.Row="6" Grid.Column="0" Content="Latitude:" Visibility="Collapsed"/>
                 <TextBox Grid.Row="6" Grid.Column="2"
                          Text="{Binding CurrentOrder.Latitude}"
                          IsReadOnly="True"
                          Visibility="Collapsed"/>
 
-                <!-- Longitude -->
+                --><!-- Longitude --><!--
                 <Label Grid.Row="7" Grid.Column="0" Content="Longitude:" Visibility="Collapsed"/>
                 <TextBox Grid.Row="7" Grid.Column="2"
                          Text="{Binding CurrentOrder.Longitude}"
                          IsReadOnly="True"
-                         Visibility="Collapsed"/>
+                         Visibility="Collapsed"/>-->
 
                 <!-- AirDistance -->
-                <Label Grid.Row="8" Grid.Column="0" Content="Air Distance:" Visibility="Collapsed"/>
+                <Label Grid.Row="8" Grid.Column="0" Content="Air Distance:" 
+                        Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
                 <TextBox Grid.Row="8" Grid.Column="2"
-                         Text="{Binding CurrentOrder.AirDistance}" Visibility="Collapsed"/>
+                         Text="{Binding CurrentOrder.AirDistance}" 
+                        Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"
+                        IsReadOnly="True"/>
 
                 <!-- FullNameOfTheInviter -->
                 <Label Grid.Row="9" Grid.Column="0" Content="Inviter Name:"/>
@@ -146,48 +151,64 @@
 
                 <!-- OrderOpeningTime -->
                 <Label Grid.Row="12" Grid.Column="0"
-                       Content="Opening Time:"
-                       Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+                       Content="Opening Time"
+                        Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
                 <DatePicker Grid.Row="12" Grid.Column="2"
                             SelectedDate="{Binding CurrentOrder.OrderOpenDate, Mode=TwoWay, 
                                 NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
-                            Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+                             Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"
+                            />
 
                 <!-- EstimatedDeliveryTime -->
-                <Label Grid.Row="13" Grid.Column="0" Content="Estimated Delivery:" />
+                <Label Grid.Row="13" Grid.Column="0" Content="Estimated Delivery:" 
+                        Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
                 <DatePicker Grid.Row="13" Grid.Column="2"
                             SelectedDate="{Binding CurrentOrder.EstimatedDeliveryDate, Mode=TwoWay, 
                                     NotifyOnValidationError=true,  ValidatesOnExceptions=true}" 
-                                    IsEnabled="False"/>
+                                    IsEnabled="False"
+                             Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"
+                           />
 
                 <!-- MaximumDeliveryTime -->
-                <Label Grid.Row="14" Grid.Column="0" Content="Maximum Delivery:"/>
+                <Label Grid.Row="14" Grid.Column="0" Content="Maximum Delivery:"
+                        Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
                 <DatePicker Grid.Row="14" Grid.Column="2"
                             SelectedDate="{Binding CurrentOrder.MaximumDeliveryDate, Mode=TwoWay, 
                             NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
-                            IsEnabled="False"/>
+                            IsEnabled="False"
+                             Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
                 <!-- OrderStatus -->
-                <Label Grid.Row="15" Grid.Column="0" Content="Order Status:"/>
+                <Label Grid.Row="15" Grid.Column="0" Content="Order Status:"
+                        Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
                 <ComboBox Grid.Row="15" Grid.Column="2"
                           ItemsSource="{Binding Source={StaticResource OrderStatusCollectionKey}}"
                           SelectedItem="{Binding CurrentOrder.OrderStatus, Mode=TwoWay, 
-                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
+                          IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}"
+                           Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
                 <!-- ScheduleStatus -->
-                <Label Grid.Row="16" Grid.Column="0" Content="Schedule Status:"/>
+                <Label Grid.Row="16" Grid.Column="0" Content="Schedule Status:"
+                       Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
                 <ComboBox Grid.Row="16" Grid.Column="2"
                           ItemsSource="{Binding Source={StaticResource ScheduleStatusList}}"
                           SelectedItem="{Binding CurrentOrder.ScheduleStatus, Mode=TwoWay, 
-                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
+                            NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
+                          IsReadOnly="True"
+                          IsEditable="False"
+                          Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
                 <!-- TimeLeftToCompleteOrder -->
-                <Label Grid.Row="17" Grid.Column="0" Content="Time Left:"/>
+                <Label Grid.Row="17" Grid.Column="0" Content="Time Left:"
+                        Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
                 <TextBox Grid.Row="17" Grid.Column="2"
                          Text="{Binding CurrentOrder.TimeLeftToCompleteOrder, Mode=TwoWay, 
                             NotifyOnValidationError=true,  ValidatesOnExceptions=true,
-                    Converter={StaticResource TimeSpanToDaysHoursConverterKey}}"/>
+                    Converter={StaticResource TimeSpanToDaysHoursConverterKey}}"
+                         IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}"
+                         Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
                 <!-- כפתור שמירה -->
                 <StackPanel Grid.Row="19" Grid.ColumnSpan="3"

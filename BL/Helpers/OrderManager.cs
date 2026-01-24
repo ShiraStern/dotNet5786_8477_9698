@@ -37,6 +37,9 @@ namespace Helpers
             try
             {
                 s_dal.Order.Create(doOrder);
+                
+                Observers.NotifyListUpdated(); //stage 5
+                
             }
             catch (DO.DalXMLFileLoadCreateException ex)
             {
@@ -49,7 +52,7 @@ namespace Helpers
                 string context = $"Order already exists '{doOrder.Id}'.";
                 throw new BlAlreadyExistsException(context, ex);
             }
-            Observers.NotifyListUpdated(); //stage 5
+            
 
         }
         internal static void UpdateOrder(BO.Order boOrder)// פונקציית עזר לפונקצייה UpdateDetails
@@ -353,7 +356,7 @@ namespace Helpers
 
         internal static BO.OpenOrderInList ConvertToOpenOrderInList(DO.Order order)
         {
-            // כנראה הפונקציה הזו לא עובדת!!!!!
+            // !!!!!
             BO.Order bo;
             var currentDelivery = DeliveryManager.GetLastDelivery(order.Id) ?? null;
             var currentCourier = CourierManager.Read(order.Id) ?? null;
