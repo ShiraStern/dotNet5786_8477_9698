@@ -220,4 +220,26 @@
     <DeliveryType>Bicycle</DeliveryType>
     <EmploymentStartDate>2025-01-24T18:51:59</EmploymentStartDate>
   </Courier>
+  <Courier>
+    <Id>123456789</Id>
+    <FullName>Shula</FullName>
+    <Phone>0546906435</Phone>
+    <Email>shularuya@gmail.com</Email>
+    <Password>1234</Password>
+    <Active>true</Active>
+    <MaxDistance>123</MaxDistance>
+    <DeliveryType>Car</DeliveryType>
+    <EmploymentStartDate>2026-01-23T14:36:25.7903953+02:00</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>40330631</Id>
+    <FullName>lea</FullName>
+    <Phone>0535461257</Phone>
+    <Email>asdf@fgjj/com</Email>
+    <Password>1234</Password>
+    <Active>true</Active>
+    <MaxDistance>123</MaxDistance>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <EmploymentStartDate>2026-01-23T16:03:08.1524033+02:00</EmploymentStartDate>
+  </Courier>
 </ArrayOfOrder>

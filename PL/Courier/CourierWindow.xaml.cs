@@ -31,6 +31,7 @@ namespace PL.Courier
         
         private void CourierWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!IsAddMode)
                 s_bl.Courier.AddObserver(CurrentCourier.ID, RefreshCourier);
         }
         public CourierWindow(int userId, int courierId = 0)
@@ -95,6 +96,7 @@ namespace PL.Courier
                 if (IsAddMode)
                 {
                     // הוספה
+                    CurrentCourier.EmploymentStartDate = DateTime.Now;
                     s_bl.Courier.AddCourier(_applicantId, CurrentCourier);
                     MessageBox.Show("Courier added successfully!");
                 }
