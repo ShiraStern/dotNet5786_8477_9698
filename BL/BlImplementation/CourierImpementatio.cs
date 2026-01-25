@@ -12,6 +12,8 @@ internal class CourierImpementation : ICourier
 {
     public void AddCourier(int applicantId, BO.Courier boCourier)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
+
         // authorization
         if (!AdminManager.IsValidManagerId(applicantId))
             throw new BO.BlUnauthorizedAccessException("Only admin can add a courier.");
@@ -38,6 +40,8 @@ internal class CourierImpementation : ICourier
 
     public void Delete(int applicantId, int id)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
+
         if (!AdminManager.IsValidManagerId(applicantId))
             throw new BlUnauthorizedAccessException("Only admin can delete a courier.");
         try
@@ -163,9 +167,10 @@ internal class CourierImpementation : ICourier
 
     public void UpdateDetails(int applicantId, BO.Courier boCourier)
     {
- 
-            // authorization
-            if (!AdminManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
+        AdminManager.ThrowOnSimulatorIsRunning();
+
+        // authorization
+        if (!AdminManager.IsValidManagerId(applicantId) && !CourierManager.IsValidCourierId(applicantId))
             throw new UnauthorizedAccessException("Only admin or coureir can update courier's ditails.");
 
         // basic null check
@@ -195,5 +200,6 @@ internal class CourierImpementation : ICourier
         CourierManager.Observers.RemoveListObserver(listObserver); //stage 5
     public void RemoveObserver(int id, Action observer) =>
         CourierManager.Observers.RemoveObserver(id, observer); //stage 5
+   
 
 }

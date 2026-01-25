@@ -23,6 +23,8 @@ internal class OrderImplementation : BlApi.IOrder
 
     public async Task AddOrderAsync(int applicantId, BO.Order boOrder)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
+
         // הרשאה – מסך ניהולי
         if (!AdminManager.IsValidManagerId(applicantId))
             throw new BlUnauthorizedAccessException("Only admin can add an order.");
@@ -58,6 +60,8 @@ internal class OrderImplementation : BlApi.IOrder
    /// <exception cref="BlDoesNotExistException">Thrown if the specified order does not exist or cannot be deleted.</exception>
     public void Delete(int applicantId, int orderId) 
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
+
         if (!AdminManager.IsValidManagerId(applicantId))
             throw new BlUnauthorizedAccessException("Only admin can delete a order.");
         try
@@ -100,6 +104,8 @@ internal class OrderImplementation : BlApi.IOrder
     /// <exception cref="BO.BlDataAccessException">Thrown if a data access error occurs while attempting to cancel the order.</exception>
     public void CancelOrder(int applicantId, int orderId) //done
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
+
         if (!AdminManager.IsValidManagerId(applicantId))
             throw new BO.BlUnauthorizedAccessException("Only admin can cancel orders.");
 
@@ -138,6 +144,8 @@ internal class OrderImplementation : BlApi.IOrder
     /// <exception cref="BlDataAccessException">Thrown if an error occurs while accessing the data layer.</exception>
     public void EndOrderHandle(int applicantId, int courierId, int orderId, int deliveryId)// done
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
+
         // the applicant must be the courier himself
         if (applicantId != courierId)
             throw new BlUnauthorizedAccessException(
@@ -358,6 +366,8 @@ internal class OrderImplementation : BlApi.IOrder
 
     public void HandleOrder(int applicantId, int courierId, int orderId)// done
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
+
         // 1. בדיקת הרשאה – רק השליח עצמו יכול לבחור הזמנה
         if (applicantId != courierId)
             throw new BlUnauthorizedAccessException(
@@ -404,6 +414,8 @@ internal class OrderImplementation : BlApi.IOrder
 
     public void UpdateDetails(int applicantId, BO.Order boOrder)  //done
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
+
         if (!AdminManager.IsValidManagerId(applicantId))
             throw new BO.BlUnauthorizedAccessException("Only admin can update an order.");
 

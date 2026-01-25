@@ -38,7 +38,7 @@ internal static class AdminManager //stage 4
     {
         var oldClock = AdminManager.Now; //stage 4
         s_dal.Config.Clock = newClock; //stage 4
-        
+
         //Add calls here to any logic method that should be called periodically,
         //after each clock update
         //for example, Periodic students' updates:
@@ -46,13 +46,12 @@ internal static class AdminManager //stage 4
         // - (students become not active after 5 years etc.)
 
         //TO_DO: //stage 4
-        CourierManager.PeriodicCourierUpdates(oldClock, newClock); //stage 4. to be removed in stage 7 and replaced as below
+        //CourierManager.PeriodicCourierUpdates(oldClock, newClock); //stage 4. to be removed in stage 7 and replaced as below
         //...
+        _ = Task.Run(() =>
+    CourierManager.PeriodicCourierUpdates(oldClock, newClock)
+);
 
-        //TO_DO: //stage 7
-        //if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
-        //    _periodicTask = Task.Run(() => StudentManager.PeriodicStudentsUpdates(oldClock, newClock));
-        //...
 
         //Calling all the observers of clock update
         ClockUpdatedObservers?.Invoke(); //prepared for stage 5
@@ -122,6 +121,8 @@ internal static class AdminManager //stage 4
 
     internal static void ResetDB() //stage 4-7
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
+
         lock (BlMutex) //stage 7
         {
             s_dal.ResetDB(); //stage 4
@@ -132,6 +133,8 @@ internal static class AdminManager //stage 4
 
     internal static void InitializeDB() //stage 4-7
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
+
         lock (BlMutex) //stage 7
         {
             //stage 4
@@ -165,9 +168,11 @@ internal static class AdminManager //stage 4
     [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                 
     public static void ThrowOnSimulatorIsRunning()
     {
-        //if (s_thread is not null)
-        //    throw new BO.BLTemporaryNotAvailableException("Cannot perform the operation since Simulator is running");
+        if (s_thread is not null)
+            throw new BO.BlUnauthorizedAccessException(
+                "Cannot perform the operation while Simulator is running");
     }
+
 
     [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                 
     internal static void Start(int interval)
@@ -201,13 +206,13 @@ internal static class AdminManager //stage 4
         {
             UpdateClock(Now.AddMinutes(s_interval));
 
-            //TO_DO: //stage 7
-            //Add calls here to any logic simulation that was required in stage 7
-            //for example: course registration simulation
-            //if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
-            //    _simulateTask = Task.Run(() => CourierManager.SimulateCourseRegistrationAndGrade());
+            if (_simulateTask is null || _simulateTask.IsCompleted)
+            {
+                _simulateTask = Task.Run(() =>
+                    CourierManager.SimulateAsync()
+                );
+            }
 
-            //etc...
 
             try
             {

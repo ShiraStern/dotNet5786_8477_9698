@@ -485,7 +485,30 @@ namespace Helpers
         /// This method is not permitted to delete orders and always throws a logical exception according to system requirements.
 
 
-        
+
         #endregion
+        internal static void HandleOrderInternal(int courierId, int orderId)
+        {
+            // בדיקה שההזמנה קיימת
+            BO.Order order = GetOrderDetails(orderId);
+
+            // בדיקה שאין משלוח פעיל
+            if (DeliveryManager.GetLastDelivery(orderId) != null)
+                throw new BlInvalidStatusException("Order is already being handled.");
+
+            DO.Delivery newDelivery = new DO.Delivery
+            {
+                Id = 0,
+                OrderId = orderId,
+                CourierId = courierId,
+                DeliveryStartTime = DateTime.Now,
+                DeliveryEndTime = null,
+                DeliveryTermintionType = DO.DeliveryTermintionType.None,
+                ActualDistance = null
+            };
+
+            s_dal.Delivery.Create(newDelivery);
+        }
+
     }
 }
