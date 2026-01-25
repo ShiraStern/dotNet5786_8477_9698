@@ -1,5 +1,6 @@
 ﻿using BO;
 using PL.Courier;
+using PL.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace PL
         public  BO.OrderInProgress? OrderInProgress { get; set; } 
         public CourierMainWindow()
         {
-            CurrentCourier = s_bl.Courier.GetDetails(UserContext.UserId, UserContext.UserId);
+            CurrentCourier = s_bl.Courier.GetDetails(PL.Tools.UserContext.UserId, PL.Tools.UserContext.UserId);
             CourierName = CurrentCourier.FullName;
             OrderInProgress=CurrentCourier.OrderInProgress;
             DataContext = this;
@@ -57,14 +58,14 @@ namespace PL
         }
 
         private void RefreshCoureirObserver()
-           => CurrentCourier = s_bl.Courier.GetDetails(UserContext.UserId, CurrentCourier.ID);
+           => CurrentCourier = s_bl.Courier.GetDetails(PL.Tools.UserContext.UserId, CurrentCourier.ID);
 
         private void RefreshOrderObserver()
         {
             OrderInProgress =
             OrderInProgress is not null ?
                  s_bl.Order.GetOrderInProgress(
-               OrderInProgress.DeliveryId, s_bl.Order.GetDetails(UserContext.UserId, OrderInProgress.orderId)) 
+               OrderInProgress.DeliveryId, s_bl.Order.GetDetails(PL.Tools.UserContext.UserId, OrderInProgress.orderId)) 
                : null;
            
         }
@@ -73,6 +74,11 @@ namespace PL
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void Button_OpenOrderListWindow(object sender, RoutedEventArgs e)
+        {
+          new OpenOrderListWindow().Show();  
         }
     }
 }

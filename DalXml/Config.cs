@@ -34,7 +34,7 @@ internal class Config
     internal static string ManagerPassword
     {
         get => XMLTools.GetConfigStringVal(s_data_config_xml, "ManagerPassword");
-        set => XMLTools.SetConfigStringVal(s_data_config_xml, "ManagerPassword", value="m1234");
+        set => XMLTools.SetConfigStringVal(s_data_config_xml, "ManagerPassword", value="1234");
     }
     internal static string? CompanyAddress 
     {

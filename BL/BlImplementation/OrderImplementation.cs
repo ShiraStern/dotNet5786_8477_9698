@@ -358,6 +358,10 @@ internal class OrderImplementation : BlApi.IOrder
         return OrderManager.GetOrdersStatusCountsInternal(applicantId);
     }
 
+    public IEnumerable<BO.OpenOrderInList> GetList_OpenOrderInList()
+    {
+        return OrderManager.ReadAll().Select(x=> OrderManager.ConvertToOpenOrderInList(x));  
+    }
 
     public void HandleOrder(int applicantId, int courierId, int orderId)// done
     {
