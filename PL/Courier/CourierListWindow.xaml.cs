@@ -17,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Courier
 {
@@ -41,6 +42,19 @@ namespace PL.Courier
             DependencyProperty.Register("CourierInList", typeof(IEnumerable<BO.CourierInList> ), 
                 typeof(CourierListWindow), new PropertyMetadata(null));
 
+        private volatile DispatcherOperation? _courierListOperation = null;
+
+        private void courierListObserver()
+        {
+            if (_courierListOperation is null ||
+                _courierListOperation.Status == DispatcherOperationStatus.Completed)
+            {
+                _courierListOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryCourierList();
+                });
+            }
+        }
 
 
         public CourierListWindow()
@@ -49,21 +63,24 @@ namespace PL.Courier
             s_bl.Courier.AddObserver(courseListObserver);
         }
 
-       
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
-            =>s_bl.Courier.AddObserver(courseListObserver);
-      
+        {
+            s_bl.Courier.AddObserver(courierListObserver);
+            queryCourierList(); 
+        }
+
 
         private void Window_Closed(object sender, EventArgs e)
-            => s_bl.Courier.RemoveObserver(courseListObserver);
+            => s_bl.Courier.RemoveObserver(courierListObserver);
 
         private void queryCourierList()
         {
             //int managerId = s_bl.Admin.GetConfig().ManagerID;
             CourierInList = s_bl.Courier.GetCourierList(UserContext.UserId /*_applicantId*/, true, FilterCouriers)!;
         }
-        private void courseListObserver()
-            => queryCourierList();
+        //private void courseListObserver()
+        //    => queryCourierList();
  
         private void CourierFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -75,6 +92,7 @@ namespace PL.Courier
             new CourierWindow(UserContext.UserId).Show();
         }
 
+        
 
         private void selectCourier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -105,7 +123,6 @@ namespace PL.Courier
 
                     MessageBox.Show("Courier deleted successfully!");
 
-                    queryCourierList(); // רענון הרשימה 
                 }
                 catch (BlInvalidStatusException ex)
                 {

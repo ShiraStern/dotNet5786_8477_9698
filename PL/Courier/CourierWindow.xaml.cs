@@ -65,10 +65,12 @@ namespace PL.Courier
 
         private void RefreshCourier()
         {
-            int id = CurrentCourier!.ID;
-            CurrentCourier = s_bl.Courier.GetDetails(_applicantId, id);
+            Dispatcher.BeginInvoke(() =>
+            {
+                int id = CurrentCourier!.ID;
+                CurrentCourier = s_bl.Courier.GetDetails(_applicantId, id);
+            });
         }
-
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
@@ -95,26 +97,21 @@ namespace PL.Courier
                 //Tools.ValidateFullName(CurrentCourier.FullName);
                 //Tools.ValidateIdNumber(CurrentCourier.ID);
 
-                if (!(PL.Tools.ValidateFullName(CurrentCourier.FullName) &&
-                     PL.Tools.IsValidPhone(CurrentCourier.PhoneNember) &&
-                    PL.Tools.IsValidEmail(CurrentCourier.Email))
-                     )
-              
-                    return;
 
-                    if (IsAddMode)
-                    {
-                        // הוספה
-                        CurrentCourier.EmploymentStartDate = DateTime.Now;
-                        s_bl.Courier.AddCourier(_applicantId, CurrentCourier);
-                        MessageBox.Show("Courier added successfully!");
-                    }
-                    else
-                    {
-                        // עדכון
-                        BlApi.Factory.Get().Courier.UpdateDetails(_applicantId, CurrentCourier);
-                        MessageBox.Show("Courier updated successfully!");
-                    }
+
+                if (IsAddMode)
+                {
+                    // הוספה
+                    CurrentCourier.EmploymentStartDate = DateTime.Now;
+                    s_bl.Courier.AddCourier(_applicantId, CurrentCourier);
+                    MessageBox.Show("Courier added successfully!");
+                }
+                else
+                {
+                    // עדכון
+                    s_bl.Courier.UpdateDetails(_applicantId, CurrentCourier);
+                    MessageBox.Show("Courier updated successfully!");
+                }
 
                     this.Close();
                 

@@ -1,4 +1,5 @@
 ﻿using BO;
+using System.Threading.Tasks;
 
 namespace BlApi;
 public interface IOrder : IObservable //stage 5 ממשק הרחבת
@@ -10,7 +11,7 @@ public interface IOrder : IObservable //stage 5 ממשק הרחבת
     void UpdateDetails(int applicantId, BO.Order boOrder);
     void CancelOrder(int applicantId, int orderId);
     void Delete(int applicantId, int id);
-    void AddOrder(int applicantId, BO.Order boOrder);
+    Task AddOrderAsync(int applicantId, BO.Order boOrder);
     void EndOrderHandle(int applicantId,int courierId, int orderId, int deliveryId);
     void HandleOrder(int applicantId, int courierId, int orderId);
     IEnumerable<BO.ClosedDeliveryInList> GetClosedDeliveriesPerCourier(int applicantId, int courierId, BO.OrderType? filterOrderByType = null, sortClosedDeliveriesByProperty? byProperty = null);

@@ -2,6 +2,7 @@
 using BO;
 using DalApi;
 using DO;
+using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,25 @@ namespace Helpers
 
 
         #region Create / Update / Delete
-        internal static void AddOrder( BO.Order boOrder)
+        internal static async Task AddOrderAsync(BO.Order boOrder)
         {
             if (boOrder == null)
                 throw new BlArgumentNullException(nameof(boOrder));
+            // חישוב קואורדינטות רק בעת הוספת הזמנה
+            if ((boOrder.Latitude == 0 || boOrder.Longitude == 0) &&
+                !string.IsNullOrWhiteSpace(boOrder.FullAddressOfTheOrder))
+            {
+                bool isValid =
+                    await Tools.IsValidAddressAsync(boOrder.FullAddressOfTheOrder);
+
+                if (!isValid)
+                    throw new BO.BlDoesNotExistException("Invalid order address");
+
+                var (lat, lon) =  await Tools.GetCoordinatesAsync(boOrder.FullAddressOfTheOrder);
+
+                boOrder.Latitude = lat;
+                boOrder.Longitude = lon;
+            }
 
             DO.Order doOrder = new DO.Order(
                 Id: boOrder.ID,
@@ -386,8 +402,12 @@ namespace Helpers
                 };
             
         }
+         #endregion
 
         internal static BO.OrderInProgress ConvertToOrderInProgress(DO.Delivery delivery, BO.Order order)
+        #region Calculation
+
+        internal static double CalculateAirDistance(DO.Delivery delivery)
         {
             var courier = CourierManager.Read(delivery.CourierId)
                 ?? throw new BlDoesNotExistException($"courier with id:{delivery.CourierId} doed no exist");
@@ -419,20 +439,38 @@ namespace Helpers
 
 
 
-        }
-        #endregion
+            if (delivery == null)
+                throw new BO.BlArgumentNullException("Delivery is null");
 
-        #region Calculation
-        //internal static double CalculateAirDistance(DO.Delivery delivery)
-        //{
-        //    //throw new Exception("Not implemented yet");
-        //    return 0;
-        //}
-        //internal static double CalculateAirDistance(double Latitude, double Longitude)
-        //{
-        //    //throw new Exception("Not implemented yet");
-        //    return 0;
-        //}
+            var config = AdminManager.GetConfig();
+            if (config == null || config.Latitude == null || config.Longitude == null)
+                return 0;
+
+            DO.Order doOrder = s_dal.Order.Read(delivery.OrderId)
+                ?? throw new BO.BlDoesNotExistException($"Order {delivery.OrderId} does not exist");
+
+            return Tools.CalculateAirDistance(
+                config.Latitude.Value,
+                config.Longitude.Value,
+               doOrder.Latitude,
+               doOrder.Longitude
+
+                );
+        }
+
+
+        internal static double CalculateAirDistance(double latitude, double longitude)
+        {
+            var config = AdminManager.GetConfig();
+            if (config == null || config.Latitude == null || config.Longitude == null)
+                return 0;
+
+            return Tools.CalculateAirDistance(
+                config.Latitude.Value,
+                config.Longitude.Value,
+                latitude,
+                longitude);
+        }
         internal static double CalculateActualDistance(DO.Delivery delivery)
         {
             throw new Exception("Not implemented yet");

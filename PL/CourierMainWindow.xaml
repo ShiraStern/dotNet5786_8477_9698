@@ -9,6 +9,7 @@
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
     <Grid>
+
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="#FFEFF7FF" Offset="0"/>
@@ -39,12 +40,13 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- פס עליון פסטלי אחיד -->
             <Border Grid.Row="0"
-             Height="55"
-             Background="{StaticResource PrimaryLightBrush}"
-             Padding="20,10">
+                    Height="55"
+                    Background="{StaticResource PrimaryLightBrush}"
+                    Padding="20,10">
+
                 <DockPanel LastChildFill="True">
+
                     <TextBlock Text="מערכת ניהול משלוחים"
                         FontSize="22"
                         FontWeight="Bold"
@@ -62,8 +64,8 @@
                 </DockPanel>
             </Border>
 
-            <!-- גוף המסך -->
             <Grid Grid.Row="1" Margin="20">
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.3*"/>
                     <ColumnDefinition Width="2*"/>
@@ -212,6 +214,7 @@ NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
                             <Button Content="Handle Courier"
                             HorizontalAlignment="Stretch"/>
                         </StackPanel>
+
                     </StackPanel>
 
 

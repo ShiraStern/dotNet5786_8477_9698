@@ -10,18 +10,18 @@ using System.Collections.Generic;
 internal class OrderImplementation : BlApi.IOrder
 {
 
-   /// <summary>
-   /// Adds a new order for the specified applicant.
-   /// </summary>
-   /// <param name="applicantId">The unique identifier of the applicant for whom the order is being added. Must correspond to a valid
-   /// administrator.</param>
-   /// <param name="boOrder">The order to add. Cannot be <see langword="null"/>.</param>
-   /// <exception cref="BlUnauthorizedAccessException">Thrown if <paramref name="applicantId"/> does not correspond to a valid administrator.</exception>
-   /// <exception cref="BlArgumentNullException">Thrown if <paramref name="boOrder"/> is <see langword="null"/>.</exception>
-   /// <exception cref="BlAlreadyExistsException">Thrown if an order with the same identifier already exists in the system.</exception>
-   /// <exception cref="BlDataAccessException">Thrown if a data access error occurs while adding the order.</exception>
+    /// <summary>
+    /// Adds a new order for the specified applicant.
+    /// </summary>
+    /// <param name="applicantId">The unique identifier of the applicant for whom the order is being added. Must correspond to a valid
+    /// administrator.</param>
+    /// <param name="boOrder">The order to add. Cannot be <see langword="null"/>.</param>
+    /// <exception cref="BlUnauthorizedAccessException">Thrown if <paramref name="applicantId"/> does not correspond to a valid administrator.</exception>
+    /// <exception cref="BlArgumentNullException">Thrown if <paramref name="boOrder"/> is <see langword="null"/>.</exception>
+    /// <exception cref="BlAlreadyExistsException">Thrown if an order with the same identifier already exists in the system.</exception>
+    /// <exception cref="BlDataAccessException">Thrown if a data access error occurs while adding the order.</exception>
 
-    public void AddOrder(int applicantId, BO.Order boOrder) //done
+    public async Task AddOrderAsync(int applicantId, BO.Order boOrder)
     {
         // הרשאה – מסך ניהולי
         if (!AdminManager.IsValidManagerId(applicantId))
@@ -33,7 +33,7 @@ internal class OrderImplementation : BlApi.IOrder
         try
         {
             // ה-ID נוצר אוטומטית ב-DAL
-            OrderManager.AddOrder( boOrder);
+            await OrderManager.AddOrderAsync(boOrder);
         }
         catch (DO.DalAlreadyExistsException ex)
         {
