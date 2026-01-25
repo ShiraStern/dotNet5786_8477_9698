@@ -60,7 +60,7 @@ namespace PL.Courier
         public CourierListWindow()
         {
             InitializeComponent();
-            s_bl.Courier.AddObserver(courseListObserver);
+            s_bl.Courier.AddObserver(courierListObserver);
         }
 
 

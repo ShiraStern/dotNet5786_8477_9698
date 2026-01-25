@@ -132,7 +132,14 @@ namespace PL
 
         private void btnHandleCourier(object sender, RoutedEventArgs e)
         {
+            try
+            {
             new CourierListWindow().Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         //מטודות התצפית על השעון והקונפיגורציה

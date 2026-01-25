@@ -59,9 +59,13 @@ namespace Helpers
         /// deliveries are found for the order.</returns>
         internal static DO.Delivery? GetLastDelivery(int orderID)
         {
-            var x = GetList_DoDeliveriesByOrderId(orderID).OrderBy(d=> d.DeliveryStartTime);
-            return x is null ? null : 
-                x.LastOrDefault(d=> d.DeliveryTermintionType== DeliveryTermintionType.DeliveredSeccessfully)?? x.Last();
+            var x = GetList_DoDeliveriesByOrderId(orderID);
+            if (x is null|| x.Count() == 0)
+                // no deliveries for this order
+                return null;
+            return x.OrderBy(d => d.DeliveryStartTime)
+                  .LastOrDefault(d => d.DeliveryTermintionType == DeliveryTermintionType.DeliveredSeccessfully)
+                  ?? x.Last();
         }
 
         /// <summary>

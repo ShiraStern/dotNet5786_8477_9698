@@ -326,7 +326,7 @@ namespace Helpers
                     FullAddressOfTheOrder = order.CustomerAddress,
                     Latitude = order.Latitude,
                     Longitude = order.Longitude,
-                    AirDistance = order.dis,
+                    AirDistance = 0,
                     FullNameOfTheInviter = order.CustomerFullName,
                     OrderersPhoneNumber = order.CustomerPhone,
                     OrderProperties = (BO.OrderProperties)order.OrderProperties,
@@ -405,12 +405,9 @@ namespace Helpers
          #endregion
 
         internal static BO.OrderInProgress ConvertToOrderInProgress(DO.Delivery delivery, BO.Order order)
-        #region Calculation
-
-        internal static double CalculateAirDistance(DO.Delivery delivery)
         {
             var courier = CourierManager.Read(delivery.CourierId)
-                ?? throw new BlDoesNotExistException($"courier with id:{delivery.CourierId} doed no exist");
+               ?? throw new BlDoesNotExistException($"courier with id:{delivery.CourierId} doed no exist");
             return new BO.OrderInProgress
             {
 
@@ -439,6 +436,21 @@ namespace Helpers
 
 
 
+            if (delivery == null)
+                throw new BO.BlArgumentNullException("Delivery is null");
+
+           
+        }
+
+
+
+
+
+        #region Calculation
+
+
+        internal static double CalculateAirDistance(DO.Delivery delivery)
+        {
             if (delivery == null)
                 throw new BO.BlArgumentNullException("Delivery is null");
 
@@ -471,6 +483,8 @@ namespace Helpers
                 latitude,
                 longitude);
         }
+
+
         internal static double CalculateActualDistance(DO.Delivery delivery)
         {
             throw new Exception("Not implemented yet");
