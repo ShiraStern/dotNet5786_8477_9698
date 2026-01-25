@@ -65,10 +65,12 @@ namespace PL.Courier
 
         private void RefreshCourier()
         {
-            int id = CurrentCourier!.ID;
-            CurrentCourier = s_bl.Courier.GetDetails(_applicantId, id);
+            Dispatcher.BeginInvoke(() =>
+            {
+                int id = CurrentCourier!.ID;
+                CurrentCourier = s_bl.Courier.GetDetails(_applicantId, id);
+            });
         }
-
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
@@ -107,7 +109,7 @@ namespace PL.Courier
                 else
                 {
                     // עדכון
-                    BlApi.Factory.Get().Courier.UpdateDetails(_applicantId, CurrentCourier);
+                    s_bl.Courier.UpdateDetails(_applicantId, CurrentCourier);
                     MessageBox.Show("Courier updated successfully!");
                 }
 

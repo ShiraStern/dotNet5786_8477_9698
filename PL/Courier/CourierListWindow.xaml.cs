@@ -92,6 +92,7 @@ namespace PL.Courier
             new CourierWindow(UserContext.UserId).Show();
         }
 
+        
 
         private void selectCourier_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -122,7 +123,6 @@ namespace PL.Courier
 
                     MessageBox.Show("Courier deleted successfully!");
 
-                    queryCourierList(); // רענון הרשימה 
                 }
                 catch (Exception ex)
                 {

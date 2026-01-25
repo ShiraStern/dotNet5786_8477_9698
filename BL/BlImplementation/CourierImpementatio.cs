@@ -26,7 +26,7 @@ internal class CourierImpementation : ICourier
             // create DO and persist via DAL
             var doCourier = CourierManager.ConvertToCourier(boCourier);
             CourierManager.Create(doCourier);
-
+            
         }
         catch (DalAlreadyExistsException ex)
         {
@@ -44,8 +44,7 @@ internal class CourierImpementation : ICourier
         {
             // delete courier via DAL   
             CourierManager.Delete(id);
-            CourierManager.Observers.NotifyItemUpdated(id);
-            CourierManager.Observers.NotifyListUpdated();//////!!!!!!!!!!1
+           
             
         }
         catch (DalDoesNotExistException ex)
