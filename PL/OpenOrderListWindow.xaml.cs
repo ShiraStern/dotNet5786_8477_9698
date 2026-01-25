@@ -106,21 +106,6 @@ namespace PL.Order
         }
 
 
-        //private void EditOrder_Click(object sender, RoutedEventArgs e)
-        //{
-        //    // שליפת פריט נבחר
-        //    var selected = OrderListView.SelectedItem as BO.OrderInList;
-
-        //    if (selected == null)
-        //    {
-        //        MessageBox.Show("Please select an order first.");
-        //        return;
-        //    }
-
-        //    // פתיחת החלון במצב 'עדכון'
-        //    new OrderWindow().Show();
-        //}
-
         private void selectOrder_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
