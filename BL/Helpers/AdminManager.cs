@@ -70,6 +70,15 @@ internal static class AdminManager //stage 4
         Clock = Now,
         CompanyAddress = s_dal.Config.CompanyAddress,
         Latitude = s_dal.Config.Latitude,
+        Longitude = s_dal.Config.Longitude,
+        MaxDeliveryDuration= s_dal.Config.MaxDeliveryDuration,
+        AvgBicycleSpeed= s_dal.Config.AvgBicycleSpeed,
+        AvgMotorcycleSpeed= s_dal.Config.AvgMotorcycleSpeed,
+        AvgCarSpeed= s_dal.Config.AvgCarSpeed,
+        AvgWalkingSpeed= s_dal.Config.AvgWalkingSpeed,
+        DelayRiskTime= s_dal.Config.DelayRiskTime,
+         InactivityThreshold= s_dal.Config.InactivityThreshold,
+
     };
 
     /// <summary>
@@ -110,6 +119,11 @@ internal static class AdminManager //stage 4
         if (s_dal.Config.Longitude != configuration.Longitude)
         {
             s_dal.Config.Longitude = configuration.Longitude;
+            configChanged = true;
+        }
+        if (s_dal.Config.MaxDeliveryDuration != configuration.MaxDeliveryDuration)
+        {
+            s_dal.Config.MaxDeliveryDuration = configuration.MaxDeliveryDuration;
             configChanged = true;
         }
         

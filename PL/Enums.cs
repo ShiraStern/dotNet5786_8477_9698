@@ -36,15 +36,6 @@ internal class OrderStatusCollectionForOrder : IEnumerable
     public IEnumerator GetEnumerator() => statuses.GetEnumerator();
 }
 
-
-//internal class OrederFilterCollection : IEnumerable
-//{
-//    static readonly IEnumerable<BO.filterOrdersByProperty> order_filter =
-//        (Enum.GetValues(typeof(BO.filterOrdersByProperty)) as IEnumerable<BO.filterOrdersByProperty>)!;
-
-//    public IEnumerator GetEnumerator() => order_filter.GetEnumerator();
-//}
-
 internal class ScheduleStatusCollection : IEnumerable
 {
     static readonly IEnumerable<BO.ScheduleStatus> schedules =
@@ -69,6 +60,13 @@ internal class DeliveryTypeCollection : IEnumerable
         (Enum.GetValues(typeof(BO.DeliveryType)) as IEnumerable<BO.DeliveryType>)!;
 
     public IEnumerator GetEnumerator() => deliveries.GetEnumerator();
+}
+internal class DeliveryTerminationCollection : IEnumerable
+{
+    static readonly IEnumerable<BO.DeliveryTerminationType> types =
+        (Enum.GetValues(typeof(BO.DeliveryTerminationType)) as IEnumerable<BO.DeliveryTerminationType>)!;
+
+    public IEnumerator GetEnumerator() => types.GetEnumerator();
 }
 
 

@@ -253,53 +253,56 @@ namespace Helpers
             // the count is currently calculated logically
             return new List<int> { s_dal.Order.ReadAll().Count() };
         }
-        internal static IEnumerable<int> GetOrdersStatusCountsInternal(int applicantId)//פונקצית עזר לפונקציה GetOrdersStatusCounts 
+        internal static int[] GetOrdersStatusCountsInternal(int applicantId)//פונקצית עזר לפונקציה GetOrdersStatusCounts 
         {
-            int[] result = new int[9];
+            int[] summary = new int[Enum.GetValues(typeof(OrderStatus)).Length];
 
-            IEnumerable<DO.Order> doOrders = s_dal.Order.ReadAll();
-
-            IEnumerable<BO.Order> ordersOfApplicant = doOrders
+           
+            var result = s_dal.Order.ReadAll()
                 .Select(o => ConvertToOrder(o))
-                .Where(o => o.ID == applicantId);
+                .GroupBy(o => o.OrderStatus)
+                .Select(g => new
+                {
+                    Status = g.Key,
+                    Count = g.Count()
+                })
+                .ToList();
 
-            var groupedByStatus = ordersOfApplicant
-                .GroupBy(o => GetStatusIndex(o));
 
-            foreach (var group in groupedByStatus)
+            foreach (var item in result)
             {
-                result[group.Key] = group.Count();
+                summary[(int)item.Status] = item.Count;
             }
+             return summary;
 
-            return result;
         }
 
-        private static int GetStatusIndex(BO.Order order)//פונקצית עזר לפונקציה GetOrdersStatusCounts היא מחזירה את האינדקס שבו צריך להיות ההזמנה על פי הסטטוס הזמנה והסטטוס זמן
-        {
-            // סטטוסים פעילים – תלויי זמן
-            if (order.OrderStatus == OrderStatus.Open)
-            {
-                if (order.ScheduleStatus == ScheduleStatus.OnTime) return 0;
-                if (order.ScheduleStatus == ScheduleStatus.InRisk) return 1;
-                if (order.ScheduleStatus == ScheduleStatus.Late) return 2;
-            }
+        //private static int GetStatusIndex(BO.Order order)//פונקצית עזר לפונקציה GetOrdersStatusCounts היא מחזירה את האינדקס שבו צריך להיות ההזמנה על פי הסטטוס הזמנה והסטטוס זמן
+        //{
+        //    // סטטוסים פעילים – תלויי זמן
+        //    if (order.OrderStatus == OrderStatus.Open)
+        //    {
+        //        if (order.ScheduleStatus == ScheduleStatus.OnTime) return 0;
+        //        if (order.ScheduleStatus == ScheduleStatus.InRisk) return 1;
+        //        if (order.ScheduleStatus == ScheduleStatus.Late) return 2;
+        //    }
 
-            if (order.OrderStatus == OrderStatus.InTreatment)
-            {
-                if (order.ScheduleStatus == ScheduleStatus.OnTime) return 3;
-                if (order.ScheduleStatus == ScheduleStatus.InRisk) return 4;
-                if (order.ScheduleStatus == ScheduleStatus.Late) return 5;
-            }
+        //    if (order.OrderStatus == OrderStatus.InTreatment)
+        //    {
+        //        if (order.ScheduleStatus == ScheduleStatus.OnTime) return 3;
+        //        if (order.ScheduleStatus == ScheduleStatus.InRisk) return 4;
+        //        if (order.ScheduleStatus == ScheduleStatus.Late) return 5;
+        //    }
 
-            // סטטוסים סופיים – לא תלויי זמן
-            if (order.OrderStatus == OrderStatus.Delivered) return 6;
-            if (order.OrderStatus == OrderStatus.Refused) return 7;
-            if (order.OrderStatus == OrderStatus.Cancelled) return 8;
+        //    // סטטוסים סופיים – לא תלויי זמן
+        //    if (order.OrderStatus == OrderStatus.Delivered) return 6;
+        //    if (order.OrderStatus == OrderStatus.Refused) return 7;
+        //    if (order.OrderStatus == OrderStatus.Cancelled) return 8;
 
-            throw new BO.BlInvalidStatusException(   //זריקת חריגה במידה ויש סטטוס לא מזוהה וערך לא תקין
-                $"Invalid status combination: OrderStatus={order.OrderStatus}, ScheduleStatus={order.ScheduleStatus}");
+        //    throw new BO.BlInvalidStatusException(   //זריקת חריגה במידה ויש סטטוס לא מזוהה וערך לא תקין
+        //        $"Invalid status combination: OrderStatus={order.OrderStatus}, ScheduleStatus={order.ScheduleStatus}");
 
-        }
+        //}
 
 
 
@@ -362,7 +365,7 @@ namespace Helpers
                     OrderersPhoneNumber = order.CustomerPhone,
                     OrderProperties = (BO.OrderProperties)order.OrderProperties,
                     OrderOpenDate = order.OrderDate,
-                    deliveryPerOrderList = DeliveryManager.GetList_DeliveryPerOrderInList(order.Id),
+                    deliveryPerOrderList = DeliveryManager.GetList_DeliveryPerOrderInList(order.Id)!.ToList(),
                     EstimatedDeliveryDate = Calc_EstimatedDeliveryDate(currentDelivery),
                     MaximumDeliveryDate = maxDeliveryDate,
                     OrderStatus = Calc_OrderStatus(currentDelivery),

@@ -29,7 +29,9 @@ namespace PL
             set => SetValue(CurrentCourierProperty, value);
         }
         
-      
+        public BO.DeliveryTerminationType deliveryTerminationSelectedItem { get; set; }
+
+
         public string CourierName { get; set; }
 
         public static readonly DependencyProperty CurrentCourierProperty =
@@ -46,10 +48,9 @@ namespace PL
             CourierName = CurrentCourier.FullName;
             OrderInProgress=CurrentCourier.OrderInProgress;
             DataContext = this;
-            s_bl.Courier.AddObserver(RefreshCoureirObserver);
-            s_bl.Order.AddObserver(RefreshOrderObserver);
             InitializeComponent();
-          
+            this.Loaded += Window_Loaded;
+            this.Closing += Window_Closed;
         }
 
         private void viewAndUpdateDetails(object sender, RoutedEventArgs e)
@@ -58,27 +59,42 @@ namespace PL
         }
 
         private void RefreshCoureirObserver()
-           => CurrentCourier = s_bl.Courier.GetDetails(PL.Tools.UserContext.UserId, CurrentCourier.ID);
-
+        { 
+            CurrentCourier = s_bl.Courier.GetDetails(PL.Tools.UserContext.UserId, CurrentCourier.ID);
+            OrderInProgress = CurrentCourier.OrderInProgress;
+        }
         private void RefreshOrderObserver()
-        {
-            OrderInProgress =
-            OrderInProgress is not null ?
-                 s_bl.Order.GetOrderInProgress(
-               OrderInProgress.DeliveryId, s_bl.Order.GetDetails(PL.Tools.UserContext.UserId, OrderInProgress.orderId)) 
-               : null;
-           
-        }
-          
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
+            =>OrderInProgress = CurrentCourier.OrderInProgress;
+      
+        
 
         private void Button_OpenOrderListWindow(object sender, RoutedEventArgs e)
         {
           new OpenOrderListWindow().Show();  
+        }
+
+        private void Window_Loaded(object sender, EventArgs e)
+        {
+            s_bl.Courier.AddObserver(PL.Tools.UserContext.UserId, RefreshCoureirObserver);
+            if (CurrentCourier.OrderInProgress is not null)
+                s_bl.Order.AddObserver(CurrentCourier.OrderInProgress!.orderId, RefreshOrderObserver);
+        }
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            s_bl.Courier.RemoveObserver(PL.Tools.UserContext.UserId, RefreshCoureirObserver);
+            s_bl.Order.RemoveObserver(PL.Tools.UserContext.UserId, RefreshOrderObserver);
+        }
+
+        private void Button_EndOrderHandle(object sender, RoutedEventArgs e)
+        {
+            s_bl.Order.EndOrderHandle(PL.Tools.UserContext.UserId, PL.Tools.UserContext.UserId,
+             OrderInProgress!.orderId, OrderInProgress!.DeliveryId, (DO.DeliveryTermintionType)deliveryTerminationSelectedItem);
+        
+        }
+
+        private void Button_OrderSelection(object sender, RoutedEventArgs e)
+        {
+            new OpenOrderListWindow().Show();
         }
     }
 }

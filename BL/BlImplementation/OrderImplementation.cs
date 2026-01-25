@@ -142,7 +142,8 @@ internal class OrderImplementation : BlApi.IOrder
     /// <exception cref="BlUnauthorizedAccessException">Thrown if the applicant is not the assigned courier, or if the courier is not authorized to end this delivery.</exception>
     /// <exception cref="BlDoesNotExistException">Thrown if the specified delivery does not exist.</exception>
     /// <exception cref="BlDataAccessException">Thrown if an error occurs while accessing the data layer.</exception>
-    public void EndOrderHandle(int applicantId, int courierId, int orderId, int deliveryId)// done
+    public void EndOrderHandle(int applicantId, int courierId, int orderId, int deliveryId,
+        DO.DeliveryTermintionType termintionType)// done
     {
         AdminManager.ThrowOnSimulatorIsRunning();
 
@@ -165,7 +166,7 @@ internal class OrderImplementation : BlApi.IOrder
             DO.Delivery updatedDelivery = delivery with
             {
                 DeliveryEndTime = DateTime.Now,
-                DeliveryTermintionType = DO.DeliveryTermintionType.DeliveredSeccessfully
+                DeliveryTermintionType = termintionType
             };
 
             // saving to dal
@@ -336,7 +337,7 @@ internal class OrderImplementation : BlApi.IOrder
 
     public BO.Order GetDetails(int applicantId, int orderId) //done
     {
-        if (!AdminManager.IsValidManagerId(applicantId))
+        if (!AdminManager.IsValidManagerId(applicantId)&& !CourierManager.IsValidCourierId(applicantId))
             throw new BO.BlUnauthorizedAccessException("Only admin can view order details.");
 
         try
@@ -361,7 +362,7 @@ internal class OrderImplementation : BlApi.IOrder
        return OrderManager.ConvertToOrderInProgress(DeliveryManager.Read(deliveryID), order);
     }
 
-    public IEnumerable<int> GetOrdersStatusCounts(int applicantId)//מתודת בקשת סיכום כמויות הזמנות  done
+    public int[] GetOrdersStatusCounts(int applicantId)//מתודת בקשת סיכום כמויות הזמנות  done
     {
         return OrderManager.GetOrdersStatusCountsInternal(applicantId);
     }

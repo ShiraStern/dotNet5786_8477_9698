@@ -23,18 +23,18 @@ namespace PL.Order
         public BO.OrderInList selectedOrder { get; set; }
 
         public BO.OrderType? filterOrderType { get; set; } = null;
-        public BO.OrderStatus? filterOrderStatus { get; set; }=null;
+        public BO.OrderStatus? filterOrderProperties { get; set; }=null;
 
 
-        public IEnumerable<BO.OrderInList> OrderInList
+        public IEnumerable<BO.OpenOrderInList> OrderInList
         {
-            get { return (IEnumerable<BO.OrderInList>)GetValue(OrderInListProperty); }
+            get { return (IEnumerable<BO.OpenOrderInList>)GetValue(OrderInListProperty); }
             set { SetValue(OrderInListProperty, value); }
         }
 
         public static readonly DependencyProperty OrderInListProperty =
-            DependencyProperty.Register("OrderInList", typeof(IEnumerable<BO.OrderInList>),
-                typeof(OrderListWindow), new PropertyMetadata(null));
+            DependencyProperty.Register("OrderInList", typeof(IEnumerable<BO.OpenOrderInList>),
+                typeof(OpenOrderListWindow), new PropertyMetadata(null));
 
 
         
@@ -42,11 +42,8 @@ namespace PL.Order
         {
             try
             {
-                
-                InitializeComponent();
-               // OrderInList = s_bl.Order.GetList_OpenOrderInList();
-               
-
+                 InitializeComponent();
+                OrderInList = s_bl.Order.GetList_OpenOrderInList();
             }
             catch(BlDoesNotExistException)
             {
@@ -66,25 +63,20 @@ namespace PL.Order
         }
 
 
-        //private void queryOrderList()
-        //{
-        //    if (filterOrderType is not null)
-        //        OrderInList = s_bl.Order.GetOrderList(_applicantId, filterOrdersByProperty.OrderType, filterOrderType);
-        //    if (filterOrderStatus is not null)
-        //        OrderInList = s_bl.Order.GetOrderList(_applicantId, filterOrdersByProperty.OrderStatus, filterOrderStatus);
-        //}
+       
         private void queryOrderList()
         {
             if (filterOrderType is not null)
             {
-                OrderInList = s_bl.Order.GetOrderList(_applicantId,filterOrdersByProperty.OrderType,filterOrderType);
+                OrderInList = s_bl.Order.GetList_OpenOrderInList().Where(x=> x.OrderType== filterOrderType);
             }
-            else if (filterOrderStatus is not null)
-            { OrderInList = s_bl.Order.GetOrderList(_applicantId,  filterOrdersByProperty.OrderStatus, filterOrderStatus);
+            else if (filterOrderProperties is not null)
+            {
+                OrderInList = s_bl.Order.GetList_OpenOrderInList().Where(x => x.OrderProperties == filterOrderProperties);
             }
             else
             {
-                OrderInList = s_bl.Order.GetOrderList(_applicantId);
+                OrderInList = s_bl.Order.GetList_OpenOrderInList();
             }
         }
 
@@ -100,11 +92,7 @@ namespace PL.Order
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.Order.RemoveObserver(OrderListObserver);
 
-        private void AddOrder_Click(object sender, RoutedEventArgs e)
-        {
-            new OrderWindow().Show();
-        }
-
+       
 
         private void selectOrder_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {

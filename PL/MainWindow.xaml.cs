@@ -1,4 +1,5 @@
-﻿using PL.Courier;
+﻿using BO;
+using PL.Courier;
 using PL.Order;
 using System.Reflection.Metadata;
 using System.Text;
@@ -22,12 +23,25 @@ namespace PL
     public partial class MainWindow : Window
     {
 
-       static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+        static int[] sums = s_bl.Order.GetOrdersStatusCounts(PL.Tools.UserContext.UserId);
+        public int Open { get; set; } = sums[(int)OrderStatus.Open];
+        public int InTreatment { get; set; } = sums[(int)OrderStatus.InTreatment];
+
+
+        public static int Closed { get; set; } =
+            sums[(int)OrderStatus.Delivered] + sums[(int)OrderStatus.Refused] + sums[(int)OrderStatus.Cancelled];
+
 
         public MainWindow()
         {
+            
             InitializeComponent();
             PL.Tools.UserContext.UserId= 216318477;
+            this.Loaded += Window_Loaded;
+            this.Closing += Window_Closed!;
+
         }
         public DateTime CurrentTime //תכונת תלות  שמיצגת את ערכו של התאריך המוצג על המסך.
         {
@@ -45,6 +59,7 @@ namespace PL
         private void btnSaveConfig_Click(object sender, RoutedEventArgs e)
         {
             s_bl.Admin.SetConfig(Configuration);
+            MessageBox.Show("Configuration saving completed successfully!");
         }
 
         public static readonly DependencyProperty ConfigurationProperty =
@@ -156,7 +171,6 @@ namespace PL
         {
             CurrentTime = s_bl.Admin.GetClock();
             Configuration = s_bl.Admin.GetConfig();
-
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
         }

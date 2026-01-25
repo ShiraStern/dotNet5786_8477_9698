@@ -2,7 +2,7 @@
 <config>
   <NextOrderId>1055</NextOrderId>
   <NextDeliveryId>130</NextDeliveryId>
-  <Clock>25/01/2026 09:13:59</Clock>
+  <Clock>27/06/2029 16:16:59</Clock>
   <ManagerID>216318477</ManagerID>
   <ManagerPassword>1111</ManagerPassword>
   <CompanyAddress>בית הדפוס 9 ירושלים</CompanyAddress>
@@ -15,7 +15,7 @@
   <AvgMotorcycleSpeed>60</AvgMotorcycleSpeed>
   <AvgBicycleSpeed>25</AvgBicycleSpeed>
   <AvgWalkingSpeed>6</AvgWalkingSpeed>
-  <MaxDeliveryDuration>30</MaxDeliveryDuration>
+  <MaxDeliveryDuration>30.00:00:00</MaxDeliveryDuration>
   <DelayRiskTime>25</DelayRiskTime>
   <InactivityThreshold>30</InactivityThreshold>
   <MIN_ID>200000000</MIN_ID>

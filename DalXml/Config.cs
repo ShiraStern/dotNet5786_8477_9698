@@ -54,32 +54,43 @@ internal class Config
     internal static double? MaxRange
     {
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "MaxRange");
-        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "MaxRange", value = 290);
+        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "MaxRange", value/* = 290*/);
     }  // in KM,only in Israel
     internal static double AvgCarSpeed
     {
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "AvgCarSpeed");
-        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgCarSpeed", value = 50);
+        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgCarSpeed", value);
     } // in KM/H
     internal static double AvgMotorcycleSpeed
     {
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "AvgMotorcycleSpeed");
-        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgMotorcycleSpeed", value = 60);
+        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgMotorcycleSpeed", value);
     } // in KM/H
     internal static double AvgBicycleSpeed
     {
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "AvgBicycleSpeed");
-        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgBicycleSpeed", value = 25);
+        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgBicycleSpeed", value);
     } // in KM/H
     internal static double AvgWalkingSpeed
     {
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "AvgWalkingSpeed");
-        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgWalkingSpeed", value =6);
+        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgWalkingSpeed", value);
     }// in KM/H
-    internal static TimeSpan MaxDeliveryDuration { get; set; } = TimeSpan.FromDays(30);
-    
-    internal static TimeSpan DelayRiskTime { get; set; } = TimeSpan.FromDays(25);
-    internal static TimeSpan InactivityThreshold { get; set; } = TimeSpan.FromDays(30);
+    internal static TimeSpan MaxDeliveryDuration /*{ get; set; } = TimeSpan.FromDays(30);*/
+    {
+        get => XMLTools.GetConfigTimeSpanVal(s_data_config_xml, "MaxDeliveryDuration");
+        set => XMLTools.SetConfigTimeSpanVal(s_data_config_xml, "MaxDeliveryDuration", value );
+    }
+    internal static TimeSpan DelayRiskTime
+        {
+        get => XMLTools.GetConfigTimeSpanVal(s_data_config_xml, "DelayRiskTime");
+        set => XMLTools.SetConfigTimeSpanVal(s_data_config_xml, "DelayRiskTime", value );
+    }
+    internal static TimeSpan InactivityThreshold
+    {
+        get => XMLTools.GetConfigTimeSpanVal(s_data_config_xml, "InactivityThreshold");
+        set => XMLTools.SetConfigTimeSpanVal(s_data_config_xml, "InactivityThreshold", value);
+    }
     public const int MIN_ID = 200000000;
     public const int MAX_ID = 400000000;
 

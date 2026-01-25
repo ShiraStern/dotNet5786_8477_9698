@@ -230,10 +230,10 @@ internal static class CourierManager
             s_dal.Delivery.Update(finished);
 
             // IMPORTANT FIX:
-            // you must notify by COURIER id for courier observers, not by OrderId.
-            if (delivery.CourierId is not null)
+            // notify by COURIER id for courier observers, not by OrderId.
+            if (delivery is not null)
             {
-                Observers.NotifyItemUpdated(delivery.CourierId.Value);
+                Observers.NotifyItemUpdated(delivery.CourierId);
             }
             Observers.NotifyListUpdated();
 
@@ -249,6 +249,14 @@ internal static class CourierManager
     }
 
 
-   
+    private static void SimulateTakeOrder()
+    {
+
+    }
+
+    private static void SimulateCancelOrder()
+    { 
+
+    }
 
 }
