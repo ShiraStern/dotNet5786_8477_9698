@@ -130,14 +130,17 @@ namespace Helpers
             BO.Order boOrder = ConvertToOrder(doOrder);
 
             //  בדיקת חוקיות
-            if (boOrder.OrderStatus != OrderStatus.Open &&
-                boOrder.OrderStatus != OrderStatus.InTreatment)
+            if (boOrder.OrderStatus == OrderStatus.Delivered
+                || boOrder.OrderStatus == OrderStatus.Refused
+                || boOrder.OrderStatus == OrderStatus.Cancelled)
+                
             {
                 throw new BO.BlInvalidStatusException(
                     $"Order {orderId} cannot be cancelled in status {boOrder.OrderStatus}");
+               
             }
 
-            DateTime now = DateTime.Now;
+            DateTime now = s_dal.Config.Clock;
 
             //  אם ההזמנה פתוחה – יצירת משלוח מדומה
             if (boOrder.OrderStatus == OrderStatus.Open)
@@ -154,25 +157,29 @@ namespace Helpers
                 };
 
                 s_dal.Delivery.Create(fakeDelivery);
-
+               
             }
 
             //  אם ההזמנה בטיפול – עדכון משלוח קיים
             if (boOrder.OrderStatus == OrderStatus.InTreatment)
             {
                 // מציאת המשלוח הפעיל
-                DO.Delivery delivery = s_dal.Delivery.ReadAll()
-                    .First(d => d.OrderId == orderId &&
-                                d.DeliveryEndTime == null);
-                DO.Delivery updatedDelivery = delivery with
+                DO.Delivery delivery = DeliveryManager.GetLastDelivery(orderId);
+                if (delivery != null)
                 {
-                    DeliveryEndTime = now,
-                    DeliveryTermintionType = DO.DeliveryTermintionType.Cancelled
-                };
 
-                s_dal.Delivery.Update(updatedDelivery);
 
+                    DO.Delivery updatedDelivery = delivery with
+                    {
+                        DeliveryEndTime = now,
+                        DeliveryTermintionType = DO.DeliveryTermintionType.Cancelled
+                    };
+
+                    s_dal.Delivery.Update(updatedDelivery);
+                }
             }
+            boOrder.OrderStatus = OrderStatus.Cancelled;
+            UpdateOrder(boOrder);
             Observers.NotifyItemUpdated(orderId);//stage 5
             Observers.NotifyListUpdated();//stage 5
 
@@ -300,7 +307,7 @@ namespace Helpers
 
 
 
-        #region Conversion & Calculation
+        #region Conversion
 
         internal static BO.Order ConvertToOrder(DO.Order order)
         {
@@ -319,7 +326,7 @@ namespace Helpers
                     FullAddressOfTheOrder = order.CustomerAddress,
                     Latitude = order.Latitude,
                     Longitude = order.Longitude,
-                    AirDistance = CalculateAirDistance(order.Latitude, order.Longitude),
+                    AirDistance = 0,
                     FullNameOfTheInviter = order.CustomerFullName,
                     OrderersPhoneNumber = order.CustomerPhone,
                     OrderProperties = (BO.OrderProperties)order.OrderProperties,
@@ -395,9 +402,52 @@ namespace Helpers
                 };
             
         }
-        #endregion
+         #endregion
+
+        internal static BO.OrderInProgress ConvertToOrderInProgress(DO.Delivery delivery, BO.Order order)
+        {
+            var courier = CourierManager.Read(delivery.CourierId)
+               ?? throw new BlDoesNotExistException($"courier with id:{delivery.CourierId} doed no exist");
+            return new BO.OrderInProgress
+            {
+
+                DeliveryId = delivery.Id,
+                orderId = order.ID,
+
+                orderType = order.OrderType,
+
+                description = order.VerbalDescription,
+                CustomerAddress = order.FullAddressOfTheOrder,
+
+                actualDistance = delivery.ActualDistance ?? 0,
+                AirDistance = order.AirDistance,
+                OrderCreation = order.OrderOpenDate,
+                DeliveryStart = delivery.DeliveryStartTime,
+                ExpectedDeliveryTime = order.EstimatedDeliveryDate ?? DateTime.MinValue,
+                MaximumDeliveryTime = order.MaximumDeliveryDate,
+                orderStatus = order.OrderStatus,
+                ScheduleStatus = BO.ScheduleStatus.OnTime,
+                deliveryTimeLeft = order.TimeLeftToCompleteOrder,
+
+                CourierFullName = courier.FullName,
+                CourierPhone = courier.Phone
+            };
+
+
+
+
+            if (delivery == null)
+                throw new BO.BlArgumentNullException("Delivery is null");
+
+           
+        }
+
+
+
+
 
         #region Calculation
+
 
         internal static double CalculateAirDistance(DO.Delivery delivery)
         {

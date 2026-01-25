@@ -16,5 +16,7 @@ public interface IOrder : IObservable //stage 5 ממשק הרחבת
     void HandleOrder(int applicantId, int courierId, int orderId);
     IEnumerable<BO.ClosedDeliveryInList> GetClosedDeliveriesPerCourier(int applicantId, int courierId, BO.OrderType? filterOrderByType = null, sortClosedDeliveriesByProperty? byProperty = null);
     IEnumerable<BO.OpenOrderInList> GetDeliveriesPerCourier(int applicantId, int courierId, BO.OrderType? filterOrderByType = null, sortClosedDeliveriesByProperty? byProperty = null);
+    public BO.OrderInProgress GetOrderInProgress(int deliveryID, BO.Order order);
 
+    IEnumerable<BO.OpenOrderInList> GetList_OpenOrderInList();
 }

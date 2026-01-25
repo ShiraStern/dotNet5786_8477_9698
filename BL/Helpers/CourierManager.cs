@@ -1,8 +1,11 @@
 ﻿using BO;
 using DalApi;
+using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Helpers;
@@ -75,6 +78,25 @@ internal static class CourierManager
     internal static IEnumerable<DO.Courier> ReadAll()
         => s_dal.Courier.ReadAll();
 
+   
+
+    internal static BO.OrderInProgress? GetOrderInProgres(int courierId)
+    {
+        
+        var delivery =
+            DeliveryManager.GetList_DelivriesPerCourier(courierId)!
+            .Where(x => x.DeliveryTermintionType != DO.DeliveryTermintionType.None
+            || x.DeliveryTermintionType != DO.DeliveryTermintionType.DeliveredSeccessfully).FirstOrDefault();
+        if (delivery is null)
+            return null;
+        var order= OrderManager.GetOrderDetails(delivery.OrderId);
+        return  OrderManager. ConvertToOrderInProgress(delivery, order);
+
+
+
+    }
+
+
     internal static DO.Courier ConvertToCourier(BO.Courier courier)
     {
         DO.Courier dalCourier = new()
@@ -88,6 +110,7 @@ internal static class CourierManager
             MaxDistance = courier.MaxDistance,
             DeliveryType = (DO.DeliveryType)courier.DeliveryType,
             EmploymentStartDate = courier.EmploymentStartDate
+
         };
         return dalCourier;
     }
@@ -104,7 +127,11 @@ internal static class CourierManager
             Active = courier.Active,
             MaxDistance = courier.MaxDistance,
             DeliveryType = (BO.DeliveryType)courier.DeliveryType,
-            EmploymentStartDate = courier.EmploymentStartDate
+            EmploymentStartDate = courier.EmploymentStartDate,
+            NumOfDeliveriesInTime = GetNumOfDeliveriesNotOnTime(courier.Id),
+            NumOfDeliveriesNotInTime = GetNumOfDeliveriesNotOnTime(courier.Id),
+            OrderInProgress = GetOrderInProgres(courier.Id)
+
         };
         return boCourier;
     }
@@ -159,40 +186,22 @@ internal static class CourierManager
         }
     }
 
-    private static void SimulateTakeOrder()
+
+    internal static BO.CourierInList ConvertToCourierInList(DO.Courier courier)
     {
-        try
+        int? orderID = GetOrderInProgres(courier.Id) is null 
+            ? null : GetOrderInProgres(courier.Id)!.orderId;
+        return new BO.CourierInList()
         {
-            // all open orders
-            var orders = OrderManager.ReadAll()
-                .Select(OrderManager.ConvertToOrder)
-                .Where(o => o.OrderStatus == BO.OrderStatus.Open)
-                .ToList();
-
-            if (!orders.Any())
-                return;
-
-            // all couriers
-            var couriers = s_dal.Courier.ReadAll().ToList();
-            if (!couriers.Any())
-                return;
-
-            Random rand = new();
-
-            var order = orders[rand.Next(orders.Count)];
-            var courier = couriers[rand.Next(couriers.Count)];
-
-            // courier takes order (this should update DAL via OrderManager)
-            OrderManager.HandleOrderInternal(courier.Id, order.ID);
-
-            // courier stats on screens are derived from deliveries/orders -> notify courier observers (stage 5)
-            Observers.NotifyItemUpdated(courier.Id);
-            Observers.NotifyListUpdated();
-        }
-        catch
-        {
-            // simulation ignores failures
-        }
+            ID = courier.Id,
+            FullName = courier.FullName,
+            Active = courier.Active,
+            DeliveryType = (BO.DeliveryType)courier.DeliveryType,
+            EmploymentStartDate = courier.EmploymentStartDate,
+            NumOfDeliveriesOnTime = CourierManager.GetNumOfDeliveriesOnTime(courier.Id),
+            NumOfDeliveriesNotOnTime = CourierManager.GetNumOfDeliveriesNotOnTime(courier.Id),
+            IdOfDeliveryInProcess = orderID
+         };
     }
 
     private static void SimulateFinishDelivery()
@@ -239,32 +248,7 @@ internal static class CourierManager
         }
     }
 
-    private static void SimulateCancelOrder()
-    {
-        try
-        {
-            // open orders
-            var openOrders = s_dal.Order.ReadAll()
-                .Select(o => OrderManager.ConvertToOrder(o))
-                .Where(o => o.OrderStatus == BO.OrderStatus.Open)
-                .ToList();
 
-            if (!openOrders.Any())
-                return;
+   
 
-            Random rand = new();
-            var order = openOrders[rand.Next(openOrders.Count)];
-
-            // cancel (should update via OrderManager)
-            OrderManager.CancelOrder(order.ID);
-
-            // cancellation can affect courier-related views if your logic links orders->couriers,
-            // safest to refresh courier list too (stage 5)
-            Observers.NotifyListUpdated();
-        }
-        catch
-        {
-            // simulation ignores failures
-        }
-    }
 }

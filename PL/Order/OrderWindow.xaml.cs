@@ -8,7 +8,7 @@ namespace PL.Order
     public partial class OrderWindow : Window
     {
         static readonly IBl s_bl = Factory.Get();
-        private int _applicantId = UserContext.UserId;
+        private int _applicantId = PL.Tools.UserContext.UserId;
        
         public BO.CourierInList selectedOrder { get; set; }
         public BO.OrderProperties OrderProperties { get; set; } = BO.OrderProperties.None;

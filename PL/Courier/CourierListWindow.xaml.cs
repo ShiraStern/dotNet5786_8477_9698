@@ -27,7 +27,7 @@ namespace PL.Courier
     public partial class CourierListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        int _applicantId = UserContext.UserId;
+        int _applicantId = PL.Tools.UserContext.UserId;
         public BO.FilterCouriersByProperty FilterCouriers { get; set; } = BO.FilterCouriersByProperty.All;
 
         public BO.CourierInList? selectedCourier { get; set; }
@@ -60,6 +60,7 @@ namespace PL.Courier
         public CourierListWindow()
         {
             InitializeComponent();
+            s_bl.Courier.AddObserver(courierListObserver);
         }
 
 
@@ -75,9 +76,8 @@ namespace PL.Courier
 
         private void queryCourierList()
         {
-            int managerId = s_bl.Admin.GetConfig().ManagerID;
-
-            CourierInList = s_bl.Courier.GetCourierList(UserContext.UserId /*_applicantId*/, true, FilterCouriers)!;
+            //int managerId = s_bl.Admin.GetConfig().ManagerID;
+            CourierInList = s_bl.Courier.GetCourierList(PL.Tools.UserContext.UserId /*_applicantId*/, true, FilterCouriers)!;
         }
         //private void courseListObserver()
         //    => queryCourierList();
@@ -89,7 +89,7 @@ namespace PL.Courier
         private void AddCourier_Click(object sender, RoutedEventArgs e)
         {
            
-            new CourierWindow(UserContext.UserId).Show();
+            new CourierWindow(PL.Tools. UserContext.UserId).Show();
         }
 
         
@@ -101,7 +101,7 @@ namespace PL.Courier
                 MessageBox.Show("Please select a courier first.");
                 return;
             }
-            new CourierWindow(UserContext.UserId, selectedCourier.ID).Show();
+            new CourierWindow(PL.Tools.UserContext.UserId, selectedCourier.ID).Show();
         }
 
         private void DeleteCourier_Click(object sender, RoutedEventArgs e)
@@ -124,12 +124,17 @@ namespace PL.Courier
                     MessageBox.Show("Courier deleted successfully!");
 
                 }
+                catch (BlInvalidStatusException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+
             }
-        }
+            }
 
     }
 }

@@ -5,11 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="CourierMainWindow"
-        Height="450"
-        Width="800">
+        Title="CourierMainWindow" Height="630" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
-    <!--
     <Grid>
 
         <Grid.Background>
@@ -18,22 +16,24 @@
                 <GradientStop Color="#FFFFFFFF" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
+        <Ellipse Width="450" Height="350"
+         Fill="#40CDEAFE"
+         HorizontalAlignment="Left"
+         VerticalAlignment="Top"
+         Margin="-40,-61,0,0"/>
 
-        <Ellipse Width="450"
-                 Height="350"
-                 Fill="#40CDEAFE"
-                 HorizontalAlignment="Left"
-                 VerticalAlignment="Top"
-                 Margin="-40,-61,0,0"/>
+        <Ellipse Width="300" Height="240"
+         Fill="#30AED9C7"
+         HorizontalAlignment="Right"
+         VerticalAlignment="Bottom"
+         Margin="0,0,-27,-20"/>
 
-        <Ellipse Width="300"
-                 Height="240"
-                 Fill="#30AED9C7"
-                 HorizontalAlignment="Right"
-                 VerticalAlignment="Bottom"
-                 Margin="0,0,-27,-20"/>
+
+
+        <!-- שכבת איורים מעודנת -->
 
         <Grid>
+
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -48,17 +48,18 @@
                 <DockPanel LastChildFill="True">
 
                     <TextBlock Text="מערכת ניהול משלוחים"
-                               FontSize="22"
-                               FontWeight="Bold"
-                               Foreground="{StaticResource TextMainBrush}"
-                               DockPanel.Dock="Right"
-                               Margin="0,0,10,0"/>
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Foreground="{StaticResource TextMainBrush}"
+                        DockPanel.Dock="Right"
+                        Margin="0,0,10,0"/>
 
-                    <TextBlock Text="Panel מנהל"
-                               Foreground="{StaticResource TextSoftBrush}"
-                               VerticalAlignment="Center"
-                               FontSize="14"
-                               DockPanel.Dock="Right"/>
+                    <TextBlock 
+                        Foreground="{StaticResource TextSoftBrush}"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        DockPanel.Dock="Right"
+                        Text="{Binding CourierName, StringFormat= Courier:  {0}}" />
 
                 </DockPanel>
             </Border>
@@ -66,92 +67,166 @@
             <Grid Grid.Row="1" Margin="20">
 
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"/>
                     <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="0.3*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0"
-                        Style="{StaticResource CardStyle}">
-
-                    <StackPanel>
-
-                        <TextBlock Text="הגדרות מערכת"
-                                   Style="{StaticResource SectionTitleTextBlockStyle}"
-                                   HorizontalAlignment="Center"/>
-
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="0,10,0,0">
-
-                            <Label Content="Max Range (km):"
-                                   VerticalAlignment="Center"
-                                   Width="130"/>
-
-                            <TextBox Width="80"
-                                     Text="{Binding Configuration.MaxRange,
-                                                    UpdateSourceTrigger=PropertyChanged}"/>
-
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="0,20,0,0">
-
-                            <Button Content="Save Configuration"
-                                    Click="btnSaveConfig_Click"
-                                    HorizontalAlignment="Left"/>
-
-                        </StackPanel>
-
-                    </StackPanel>
-                </Border>
-
-                <Border Grid.Column="1"
-                        Style="{StaticResource CardStyle}">
-
-                    <StackPanel>
-
-                        <TextBlock Text="ניהול מאגר נתונים"
-                                   Style="{StaticResource SectionTitleTextBlockStyle}"
-                                   HorizontalAlignment="Stretch"/>
-
+                <StackPanel Grid.Column="1" >
+                    <!-- courier details -->
+                    <Border  Style="{StaticResource CardStyle}">
                         <StackPanel>
+                            <TextBlock Text=" פרטים אישיים "
+                            Style="{StaticResource SectionTitleTextBlockStyle}"
+                            HorizontalAlignment="Center"/>
+                            <Button Content="צפיה ועדכון"
+                           HorizontalAlignment="Stretch" Click="viewAndUpdateDetails"/>
+                        </StackPanel>
+                    </Border>
+                    <Button Content="בחירת הזמנה " 
+                             Margin="20" Click="Button_Click"/>
+                    <Button Content="היסטוריית משלוחים"  
+                            Margin="20"/>
+                </StackPanel>
+                <!-- hande orders -->
+                <Border Grid.Column="2" Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <StackPanel Visibility="{Binding orderInProgress, Converter={StaticResource  ConvertHasOrderInProgressToVisible}}">
 
-                            <Button Content="Initialize DB"
-                                    Click="Button_InitializeDB"
-                                    HorizontalAlignment="Stretch"/>
+                            <TextBlock Text="הזמנה בטיפול"
+                            Style="{StaticResource SectionTitleTextBlockStyle}"
+                            HorizontalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" >
+                                        <TextBlock 
+                                        Text="Order ID:"
+                                        FontWeight="Bold"
+                                        HorizontalAlignment="Left" Margin="0,0,0,22" />
 
-                            <Button Content="Reset DB"
-                                    Click="Button_ResetDB"
-                                    HorizontalAlignment="Stretch"
-                                    Margin="6,4,6,16"/>
+                                        <TextBlock 
+                                        Text="{Binding CurrentOrderInProgress.orderId, Mode=TwoWay, 
+                                                        NotifyOnValidationError=true,  ValidatesOnExceptions=true}"
+                                        HorizontalAlignment="Left" Margin="118,0,0,22" Grid.RowSpan="3"/>
+
+                                    </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Order Type -->
+                            <TextBlock Grid.Row="2" 
+            Text="Order Type:"
+           />
+                                <ComboBox 
+                                ItemsSource="{Binding Source={StaticResource OrderTypeCollectionKey}}"
+                                SelectedItem="{Binding orderInProgress.orderType, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" SelectionChanged="ComboBox_SelectionChanged" Width="219"/>
+
+                            </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Description -->
+                            <TextBlock 
+            Text="Description:"
+            FontWeight="Bold" Margin="0,0,0,16" Grid.RowSpan="2"/>
+
+                            <TextBlock Grid.Row="3"
+            Text="{Binding CurrentOrderInProgress.description}"
+            TextWrapping="Wrap" Grid.ColumnSpan="3" Margin="118,0,0,16" Grid.RowSpan="2"/>
+
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Address -->
+                            <TextBlock Grid.Row="4" Grid.Column="0"
+            Text="Customer Address:"
+            FontWeight="Bold" Margin="0,0,0,16" Grid.RowSpan="2"/>
+
+                            <TextBlock Grid.Row="4"
+            Text="{Binding CurrentOrderInProgress.CustomerAddress}"
+            TextWrapping="Wrap" Grid.ColumnSpan="3" Margin="118,0,0,16" Grid.RowSpan="2"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Distances -->
+                            <TextBlock Grid.Row="5" Grid.Column="0"
+            Text="Air Distance:"
+            FontWeight="Bold" Margin="0,0,0,16" Grid.RowSpan="2"/>
+
+                            <TextBlock Grid.Row="5"
+            Text="{Binding CurrentOrderInProgress.AirDistance,
+                            StringFormat={}{0} km}" Grid.ColumnSpan="3" Margin="118,0,0,16" Grid.RowSpan="2"/>
+
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Grid.Row="6" Grid.Column="0"
+Text="Actual Distance:"
+FontWeight="Bold" Margin="0,0,0,16" Grid.RowSpan="2"/>
+
+                                    <TextBlock Grid.Row="6"
+Text="{Binding CurrentOrderInProgress.actualDistance,
+            StringFormat={}{0} km}" Grid.ColumnSpan="3" Margin="118,0,0,16" Grid.RowSpan="2"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Grid.Row="7" Grid.Column="0"
+Text="Courier:"
+FontWeight="Bold" Margin="0,0,0,16" Grid.RowSpan="2"/>
+
+                                    <TextBlock Grid.Row="7"
+Text="{Binding CurrentOrderInProgress.CourierFullName}" Grid.ColumnSpan="3" Margin="118,0,0,16" Grid.RowSpan="2"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Grid.Row="8" Grid.Column="0"
+Text="Courier Phone:"
+FontWeight="Bold" Margin="0,0,0,22" Grid.RowSpan="2"/>
+
+                                    <TextBlock Grid.Row="8"
+Text="{Binding CurrentOrderInProgress.CourierPhone}" Grid.ColumnSpan="3" Margin="118,0,0,22" Grid.RowSpan="2"/>
+
+                                </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Grid.Row="9" Grid.Column="0"
+    Text="Order Status:"
+    FontWeight="Bold"/>
+
+                                <ComboBox Grid.Row="9"
+ItemsSource="{Binding Source={StaticResource OrderStatusCollectionKey}}"
+SelectedItem="{Binding orderInProgress.orderStatus , Mode=TwoWay, 
+NotifyOnValidationError=true,  ValidatesOnExceptions=true}" 
+/>
+                            </StackPanel>
+
+
+
+                            <DockPanel FlowDirection="RightToLeft"  >
+                                <Button Content="סיים טיפול"
+                                    HorizontalAlignment="Stretch" />
+
+                                <Button Content="Reset DB"
+                                     HorizontalAlignment="Stretch"/>
+                            </DockPanel>
+
 
                             <Separator/>
+                        </StackPanel>
 
-                            <TextBlock Text="ניהול ישויות"
-                                       Margin="0,12,0,4"
-                                       Foreground="{StaticResource TextSoftBrush}"
-                                       FontWeight="SemiBold"
-                                       Style="{StaticResource SectionTitleTextBlockStyle}"
-                                       HorizontalAlignment="Center"/>
+
+                        <StackPanel>
+                            <TextBlock Text="ניהול משלוחים"
+                            Foreground="{StaticResource TextSoftBrush}"
+                            FontWeight="SemiBold"
+                            Style="{StaticResource SectionTitleTextBlockStyle}"
+                            HorizontalAlignment="Center"/>
 
                             <Button Content="Handle Courier"
-                                    Click="btnHandleCourier"
-                                    HorizontalAlignment="Stretch"/>
-
-                            <Button Content="Handle Orders"
-                                    Click="btnHandleOrders"
-                                    HorizontalAlignment="Stretch"/>
-
+                            HorizontalAlignment="Stretch"/>
                         </StackPanel>
 
                     </StackPanel>
+
+
+
                 </Border>
 
             </Grid>
 
+
         </Grid>
 
+
     </Grid>
-    -->
 
 </Window>

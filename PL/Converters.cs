@@ -38,23 +38,21 @@ public class ConvertUpdateToVisible : IValueConverter
     }
 
 }
-//public class ConvertUpdate : IValueConverter
-//{
-//    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-//    {
-//        string? text = value?.ToString();
-//        return string.Equals(text, "Update", StringComparison.OrdinalIgnoreCase)
-//            ? Visibility.Visible
-//            : Visibility.Collapsed;
-//    }
+public class ConvertHasOrderInProgressToVisible : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+       return value is not null
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
 
-//    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-//    {
-//        throw new NotImplementedException();
-//    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
 
-//}
-
+}
 
 public class TimeSpanToDaysHoursConverter : IValueConverter
 {

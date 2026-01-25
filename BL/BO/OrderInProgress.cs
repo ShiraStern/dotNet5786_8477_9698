@@ -12,32 +12,22 @@ namespace BO;
 /// order and its schedule.</remarks>
 public class OrderInProgress
 {
-    public int Id { init; get; }   
-    public string? CustomerFullName { init; get; }
-    public string? Phone { init; get; } 
-    public string? email { init; get; }
-    public string? password { init; get; }  
-    public bool IsActive { init; get; }
-    public double? MaxDeliveryDistance { init; get; }
-    public DeliveryType deliveryType { init; get; }  
-    public DateTime EmploymentStartDate { init; get; }
-    public int NumberOfOrdersInProgress { init; get; }
-    int DeliveryId { get; init; }
-    int orderId { get; init; }
-    OrderType orderType { get; init; }
-    string? description { get; set; }
-    string? CustomerAddress{ get; init; }
-    double AirDistance { get; init; }
-    double actualDistance { get; init; }
-    string? CourierFullName { get; init; }
-    string? CourierPhone { get; init; }
-    DateTime OrderCreation { get; init; }
-    DateTime DeliveryStart { get; init; }
-    DateTime ExpectedDeliveryTime { get; init; }
-    DateTime MaximumDeliveryTime { get; init; }
-    OrderStatus orderStatus { get; set; }
-    ScheduleStatus ScheduleStatus { get; set; }
-    TimeSpan? deliveryTimeLeft { get; set; }
+    public int DeliveryId { get; init; }
+    public int orderId { get; init; }
+    public OrderType orderType { get; init; }
+    public string? description { get; set; }
+    public string? CustomerAddress{ get; init; }
+    public double AirDistance { get; init; }
+    public double actualDistance { get; init; }
+    public string? CourierFullName { get; init; }
+    public string? CourierPhone { get; init; }
+    public DateTime OrderCreation { get; init; }
+    public DateTime DeliveryStart { get; init; }
+    public DateTime ExpectedDeliveryTime { get; init; }
+    public DateTime MaximumDeliveryTime { get; init; }
+   public  OrderStatus orderStatus { get; set; }
+   public  ScheduleStatus ScheduleStatus { get; set; }
+    public TimeSpan? deliveryTimeLeft { get; set; }
 
 }
 

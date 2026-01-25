@@ -353,16 +353,23 @@ internal class OrderImplementation : BlApi.IOrder
             throw new BO.BlDataAccessException(
                 "Failed to access data layer while retrieving order details.", ex);
         }
-    }   
+    }
 
+    public BO.OrderInProgress GetOrderInProgress(int deliveryID, BO.Order order)
+    {
 
-   
+       return OrderManager.ConvertToOrderInProgress(DeliveryManager.Read(deliveryID), order);
+    }
 
     public IEnumerable<int> GetOrdersStatusCounts(int applicantId)//מתודת בקשת סיכום כמויות הזמנות  done
     {
         return OrderManager.GetOrdersStatusCountsInternal(applicantId);
     }
 
+    public IEnumerable<BO.OpenOrderInList> GetList_OpenOrderInList()
+    {
+        return OrderManager.ReadAll().Select(x=> OrderManager.ConvertToOpenOrderInList(x));  
+    }
 
     public void HandleOrder(int applicantId, int courierId, int orderId)// done
     {

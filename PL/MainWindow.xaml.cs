@@ -27,7 +27,7 @@ namespace PL
         public MainWindow()
         {
             InitializeComponent();
-            UserContext.UserId= 216318477;
+            PL.Tools.UserContext.UserId= 216318477;
         }
         public DateTime CurrentTime //תכונת תלות  שמיצגת את ערכו של התאריך המוצג על המסך.
         {
@@ -132,7 +132,14 @@ namespace PL
 
         private void btnHandleCourier(object sender, RoutedEventArgs e)
         {
+            try
+            {
             new CourierListWindow().Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         //מטודות התצפית על השעון והקונפיגורציה

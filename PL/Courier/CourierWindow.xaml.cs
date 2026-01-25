@@ -94,8 +94,8 @@ namespace PL.Courier
                     MessageBox.Show("Email is required.");
                     return;
                 }
-                Tools.ValidateFullName(CurrentCourier.FullName);
-                Tools.ValidateIdNumber(CurrentCourier.ID);
+                //Tools.ValidateFullName(CurrentCourier.FullName);
+                //Tools.ValidateIdNumber(CurrentCourier.ID);
 
 
 
@@ -113,7 +113,8 @@ namespace PL.Courier
                     MessageBox.Show("Courier updated successfully!");
                 }
 
-                this.Close();
+                    this.Close();
+                
             }
             catch (Exception ex)
             {

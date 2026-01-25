@@ -16,7 +16,7 @@ namespace PL.Order
     /// <summary>
     /// Interaction logic for OrderListWindow.xaml
     /// </summary>
-    public partial class OrderListWindow : Window
+    public partial class OpenOrderListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         int _applicantId = PL.Tools.UserContext.UserId;
@@ -38,13 +38,13 @@ namespace PL.Order
 
 
         
-        public OrderListWindow()
+        public OpenOrderListWindow()
         {
             try
             {
                 
                 InitializeComponent();
-                OrderInList = s_bl.Order.GetOrderList(_applicantId);
+               // OrderInList = s_bl.Order.GetList_OpenOrderInList();
                
 
             }

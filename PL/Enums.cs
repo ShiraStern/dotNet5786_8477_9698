@@ -71,9 +71,6 @@ internal class DeliveryTypeCollection : IEnumerable
     public IEnumerator GetEnumerator() => deliveries.GetEnumerator();
 }
 
-public static class UserContext
-{
-    public static int UserId { get; set; }
-}
+
 
 
