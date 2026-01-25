@@ -85,7 +85,7 @@
                         </StackPanel>
                     </Border>
                     <Button Content="בחירת הזמנה " 
-                             Margin="20" Click="Button_Click"/>
+                             Margin="20" Click="Button_OpenOrderListWindow"/>
                     <Button Content="היסטוריית משלוחים"  
                             Margin="20"/>
                 </StackPanel>

@@ -96,7 +96,14 @@ namespace PL.Courier
                 }
                 //Tools.ValidateFullName(CurrentCourier.FullName);
                 //Tools.ValidateIdNumber(CurrentCourier.ID);
-
+                if (!(PL.Tools.ValidateFullName(CurrentCourier.FullName) &&
+                      PL.Tools.IsValidPhone(CurrentCourier.PhoneNember)&& 
+                      PL.Tools.IsValidEmail(CurrentCourier.Email) 
+                      
+                      ))
+                {
+                    return;
+                }
 
 
                 if (IsAddMode)
