@@ -59,8 +59,9 @@ namespace Helpers
         /// deliveries are found for the order.</returns>
         internal static DO.Delivery? GetLastDelivery(int orderID)
         {
-            var x = GetList_DoDeliveriesByOrderId(orderID);
-            return x is null ? null : x.LastOrDefault();
+            var x = GetList_DoDeliveriesByOrderId(orderID).OrderBy(d=> d.DeliveryStartTime);
+            return x is null ? null : 
+                x.LastOrDefault(d=> d.DeliveryTermintionType== DeliveryTermintionType.DeliveredSeccessfully)?? x.Last();
         }
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace Helpers
 
             if( deliveries is null || deliveries.Count == 0)
                 return null;
-            return deliveries.Where(x=> x.DeliveryTermintionType== DeliveryTermintionType.DeliveredSeccessfully)
+            return deliveries.Where(x=> x.DeliveryTermintionType/*==*/ !=DeliveryTermintionType.DeliveredSeccessfully)
                 .Select(d => ConvertTODeliveryPerOrderInList(d))
                 .OrderBy(x=> x.DeliveryStart).ToList() ?? null;
         }
@@ -82,10 +83,10 @@ namespace Helpers
         
 
 
-        internal static List< DO.Delivery>?  GetList_DelivriesPerCourier(int id)
+        internal static IEnumerable< DO.Delivery>?  GetList_DelivriesPerCourier(int id)
         {
             var deliveryList = s_dal.Delivery.ReadAll();
-            return deliveryList.Where(d => d.CourierId == id).ToList() ??
+            return deliveryList.Where(d => d.CourierId == id) ??
                 throw new BO.BlArgumentNullException($"No deliveries found for the given courier with ID: {id}.");
         }
 

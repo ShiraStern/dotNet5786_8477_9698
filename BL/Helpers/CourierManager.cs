@@ -1,7 +1,10 @@
-﻿using DalApi;
+﻿using BO;
+using DalApi;
+using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -63,6 +66,25 @@ internal static class CourierManager
        return s_dal.Courier.ReadAll();
     }
 
+   
+
+    internal static BO.OrderInProgress? GetOrderInProgres(int courierId)
+    {
+        
+        var delivery =
+            DeliveryManager.GetList_DelivriesPerCourier(courierId)!
+            .Where(x => x.DeliveryTermintionType != DO.DeliveryTermintionType.None
+            || x.DeliveryTermintionType != DO.DeliveryTermintionType.DeliveredSeccessfully).FirstOrDefault();
+        if (delivery is null)
+            return null;
+        var order= OrderManager.GetOrderDetails(delivery.OrderId);
+        return  OrderManager. ConvertToOrderInProgress(delivery, order);
+
+
+
+    }
+
+
     internal static DO.Courier ConvertToCourier(BO.Courier courier)
     {
 
@@ -77,6 +99,7 @@ internal static class CourierManager
             MaxDistance = courier.MaxDistance,
             DeliveryType = (DO.DeliveryType)courier.DeliveryType,
             EmploymentStartDate = courier.EmploymentStartDate
+
         };
         return dalCourier;
     }
@@ -88,25 +111,37 @@ internal static class CourierManager
         {
             ID = courier.Id,
             FullName = courier.FullName,
-            PhoneNember= courier.Phone,
+            PhoneNember = courier.Phone,
             Email = courier.Email,
             Password = courier.Password,
             Active = courier.Active,
             MaxDistance = courier.MaxDistance,
             DeliveryType = (BO.DeliveryType)courier.DeliveryType,
-            EmploymentStartDate = courier.EmploymentStartDate
+            EmploymentStartDate = courier.EmploymentStartDate,
+            NumOfDeliveriesInTime = GetNumOfDeliveriesNotOnTime(courier.Id),
+            NumOfDeliveriesNotInTime = GetNumOfDeliveriesNotOnTime(courier.Id),
+            OrderInProgress = GetOrderInProgres(courier.Id)
+
         };
         return dalCourier;
     }
 
-   
 
-
-    internal static int? GetNumberOfDeliveriesInProcess(int id)
+    internal static BO.CourierInList ConvertToCourierInList(DO.Courier courier)
     {
-        return s_dal.Delivery.ReadAll().
-                    Where(c => c.CourierId == id &&
-                    c.DeliveryTermintionType== DO.DeliveryTermintionType.None ).Count();
+        int? orderID = GetOrderInProgres(courier.Id) is null 
+            ? null : GetOrderInProgres(courier.Id)!.orderId;
+        return new BO.CourierInList()
+        {
+            ID = courier.Id,
+            FullName = courier.FullName,
+            Active = courier.Active,
+            DeliveryType = (BO.DeliveryType)courier.DeliveryType,
+            EmploymentStartDate = courier.EmploymentStartDate,
+            NumOfDeliveriesOnTime = CourierManager.GetNumOfDeliveriesOnTime(courier.Id),
+            NumOfDeliveriesNotOnTime = CourierManager.GetNumOfDeliveriesNotOnTime(courier.Id),
+            IdOfDeliveryInProcess = orderID
+         };
     }
 
     internal static int GetNumOfDeliveriesNotOnTime(int id)
@@ -124,5 +159,8 @@ internal static class CourierManager
             c.DeliveryTermintionType==DO.DeliveryTermintionType.DeliveredSeccessfully &&
             c.DeliveryEndTime<= c.DeliveryStartTime+AdminManager.MaxDeliveryDuration).Count();
     }
+
+
+   
 
 }

@@ -139,6 +139,7 @@ namespace PL.Order
             var order = ((FrameworkElement)sender).DataContext as BO.OrderInList;
 
             if (order == null)
+
                 return;
 
             if (MessageBox.Show("Are you sure you want to delete this order?",
@@ -147,9 +148,8 @@ namespace PL.Order
             {
                 try
                 {
-                    s_bl.Order.Delete(_applicantId, order.OrderId);
+                    s_bl.Order.CancelOrder(_applicantId, order.OrderId);
                     
-                    //queryOrderList(); // רענון הרשימה
                     MessageBox.Show("Order deleted successfully!");
                 }
                 catch (Exception ex)

@@ -10,7 +10,7 @@ namespace BO
         public DateTime EmploymentStartDate { get; set; }
         public int NumOfDeliveriesOnTime { get; set; }
         public int NumOfDeliveriesNotOnTime { get; set; }
-        public int? NumberOfDeliveriesInProcess { get; set; }
+        public int? IdOfDeliveryInProcess { get; set; }
 
         }
 }

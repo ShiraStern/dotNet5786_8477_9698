@@ -73,7 +73,8 @@ namespace PL
                 switch (role)
                 {
                     case "Courier":
-                        new PL.Courier.CourierWindow(id).Show(); // משתמשים ב-int
+                        UserContext.UserId = id;
+                        new PL.CourierMainWindow().Show(); // משתמשים ב-int
                         break;
 
                     case "Manager":
@@ -97,7 +98,7 @@ namespace PL
                             MessageBoxImage.Error);
                         return;
                 }
-                UserContext.UserId = id;
+                
 
                 this.Close();
             }

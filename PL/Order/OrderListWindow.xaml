@@ -183,7 +183,7 @@
                         <DataGridTemplateColumn Header="" Width="80">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="Delete"
+                                    <Button Content="cancel"
                                             Width="60"
                                             Click="DeleteOrder_Click"/>
                                 </DataTemplate>

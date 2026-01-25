@@ -345,10 +345,13 @@ internal class OrderImplementation : BlApi.IOrder
             throw new BO.BlDataAccessException(
                 "Failed to access data layer while retrieving order details.", ex);
         }
-    }   
+    }
 
+    public BO.OrderInProgress GetOrderInProgress(int deliveryID, BO.Order order)
+    {
 
-   
+       return OrderManager.ConvertToOrderInProgress(DeliveryManager.Read(deliveryID), order);
+    }
 
     public IEnumerable<int> GetOrdersStatusCounts(int applicantId)//מתודת בקשת סיכום כמויות הזמנות  done
     {

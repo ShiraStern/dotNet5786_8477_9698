@@ -71,20 +71,9 @@ internal class CourierImpementation : ICourier
             
             // get all couriers from DAL
             var dalCouriers = CourierManager.ReadAll();
-            
+
             // convert to BO list
-            var boCouriers = from dalCourier in dalCouriers
-                             select new BO.CourierInList()
-                             {
-                                 ID = dalCourier.Id,
-                                 FullName = dalCourier.FullName,
-                                 Active = dalCourier.Active,
-                                 DeliveryType = (BO.DeliveryType)dalCourier.DeliveryType,
-                                 EmploymentStartDate = dalCourier.EmploymentStartDate,
-                                 NumOfDeliveriesOnTime= CourierManager.GetNumOfDeliveriesOnTime(dalCourier.Id),
-                                 NumOfDeliveriesNotOnTime= CourierManager.GetNumOfDeliveriesNotOnTime(dalCourier.Id),
-                                 NumberOfDeliveriesInProcess = CourierManager.GetNumberOfDeliveriesInProcess(dalCourier.Id)
-                             };
+            var boCouriers = dalCouriers.Select(x => CourierManager.ConvertToCourierInList(x));
             // apply sorting if requested
             if (filterCouriersBy.HasValue)
             {

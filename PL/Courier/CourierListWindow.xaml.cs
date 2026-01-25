@@ -46,6 +46,7 @@ namespace PL.Courier
         public CourierListWindow()
         {
             InitializeComponent();
+            s_bl.Courier.AddObserver(courseListObserver);
         }
 
        
@@ -58,8 +59,7 @@ namespace PL.Courier
 
         private void queryCourierList()
         {
-            int managerId = s_bl.Admin.GetConfig().ManagerID;
-
+            //int managerId = s_bl.Admin.GetConfig().ManagerID;
             CourierInList = s_bl.Courier.GetCourierList(UserContext.UserId /*_applicantId*/, true, FilterCouriers)!;
         }
         private void courseListObserver()
@@ -107,12 +107,17 @@ namespace PL.Courier
 
                     queryCourierList(); // רענון הרשימה 
                 }
+                catch (BlInvalidStatusException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+
             }
-        }
+            }
 
     }
 }

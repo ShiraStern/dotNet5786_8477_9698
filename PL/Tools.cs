@@ -25,7 +25,7 @@ internal class Tools
         if (Regex.IsMatch(address.Trim(),
             @"^(?=.*[A-Za-zא-ת])(?=.*\d)[A-Za-zא-ת0-9\s.,'""/\-]{5,100}$"))
             return true;
-        MessageBox.Show("Phone number is not valid.");
+        MessageBox.Show("Address is not valid.");
         return false;
     }
 
@@ -66,5 +66,17 @@ internal class Tools
             return true;    
     }
 
-  
+    public static  bool IsValidEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+
+            return false;
+
+        if (Regex.IsMatch(email.Trim(), @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"))
+            return true;
+        MessageBox.Show(" email is not valid.");
+        return false;
+
+    }
+
 }
