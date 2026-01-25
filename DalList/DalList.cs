@@ -10,7 +10,7 @@ using Dal;
 
     public static IDal Instance => _instance.Value;// זה מוגדר כציבורי ומפה המשתמש יקרא לפונקציה כדי שתגדיר את האובייקט
     private DalList() { }  
-    public IOrder Order { get; } = new OrederImplementation();
+    public IOrder Order { get; } = new OrderImplementation();
 
     public ICourier Courier { get; } = new CourierImplementation();
 

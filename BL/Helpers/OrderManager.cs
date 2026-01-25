@@ -2,6 +2,7 @@
 using BO;
 using DalApi;
 using DO;
+using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Helpers
 
 
         #region Create / Update / Delete
-        internal static void AddOrder( BO.Order boOrder)
+        internal static async Task AddOrderAsync(BO.Order boOrder)
         {
             if (boOrder == null)
                 throw new BlArgumentNullException(nameof(boOrder));
@@ -25,11 +26,13 @@ namespace Helpers
             if ((boOrder.Latitude == 0 || boOrder.Longitude == 0) &&
                 !string.IsNullOrWhiteSpace(boOrder.FullAddressOfTheOrder))
             {
-                if (!Tools.IsValidAddress(boOrder.FullAddressOfTheOrder))
+                bool isValid =
+                    await Tools.IsValidAddressAsync(boOrder.FullAddressOfTheOrder);
+
+                if (!isValid)
                     throw new BO.BlDoesNotExistException("Invalid order address");
 
-                var (lat, lon) =
-                    Tools.GetCoordinates(boOrder.FullAddressOfTheOrder);
+                var (lat, lon) =  await Tools.GetCoordinatesAsync(boOrder.FullAddressOfTheOrder);
 
                 boOrder.Latitude = lat;
                 boOrder.Longitude = lon;

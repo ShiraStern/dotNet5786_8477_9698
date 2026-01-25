@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Helpers
 {
@@ -9,10 +10,11 @@ namespace Helpers
         private const string ApiKey = "696e41fdcca33758143655vuc857b7b";
         private const string BaseUrl = "https://geocode.maps.co/search";
 
-        /// <summary>
-        /// בדיקה האם כתובת קיימת במציאות
-        /// </summary>
-        internal static bool IsValidAddress(string address)
+        // ===============================
+        // בדיקה האם כתובת קיימת (Async)
+        // Checks if an address exists
+        // ===============================
+        internal static async Task<bool> IsValidAddressAsync(string address)
         {
             try
             {
@@ -22,7 +24,7 @@ namespace Helpers
                 using HttpClient client = new();
 
                 string response =
-                    client.GetStringAsync(url).GetAwaiter().GetResult();
+                    await client.GetStringAsync(url);
 
                 using JsonDocument doc = JsonDocument.Parse(response);
 
@@ -34,11 +36,11 @@ namespace Helpers
             }
         }
 
-        /// <summary>
-        /// קבלת קואורדינטות של כתובת
-        /// (נקרא רק בהוספת הזמנה)
-        /// </summary>
-        internal static (double lat, double lon) GetCoordinates(string address)
+        // =========================================
+        // קבלת קואורדינטות של כתובת (Async)
+        // Get coordinates from address
+        // =========================================
+        internal static async Task<(double lat, double lon)> GetCoordinatesAsync(string address)
         {
             try
             {
@@ -48,7 +50,7 @@ namespace Helpers
                 using HttpClient client = new();
 
                 string response =
-                    client.GetStringAsync(url).GetAwaiter().GetResult();
+                    await client.GetStringAsync(url);
 
                 using JsonDocument doc = JsonDocument.Parse(response);
 
@@ -71,14 +73,15 @@ namespace Helpers
             }
         }
 
-        /// <summary>
-        /// חישוב מרחק אווירי (בלי אינטרנט!)
-        /// </summary>
+        // =========================================
+        // חישוב מרחק אווירי (לוקאלי – בלי רשת)
+        // Air distance calculation (No internet)
+        // =========================================
         internal static double CalculateAirDistance(
             double lat1, double lon1,
             double lat2, double lon2)
         {
-            const double R = 6371; // רדיוס כדור הארץ בק"מ
+            const double R = 6371;
 
             double dLat = ToRadians(lat2 - lat1);
             double dLon = ToRadians(lon2 - lon1);

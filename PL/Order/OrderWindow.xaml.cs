@@ -73,9 +73,9 @@ namespace PL.Order
             s_bl.Order.RemoveObserver(CurrentOrder.ID, RefreshOrder);
         }
 
-        private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+        private async void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
-           
+
             try
             {
                 // בדיקות בסיסיות
@@ -111,7 +111,7 @@ namespace PL.Order
                 {
 
                     // הוספת הזמנה חדשה
-                    BlApi.Factory.Get().Order.AddOrder(_applicantId, CurrentOrder);
+                    await BlApi.Factory.Get().Order.AddOrderAsync(_applicantId, CurrentOrder);
 
                     MessageBox.Show("Order added successfully!");
                 }
