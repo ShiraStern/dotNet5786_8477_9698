@@ -32,7 +32,7 @@ internal class Program
         int courierID = int.Parse(Console.ReadLine()!);
         int orderID = int.Parse(Console.ReadLine()!);
         int deliveryID = int.Parse(Console.ReadLine()!);
-        s_bl.Order.EndOrderHandle(applicantID, courierID, orderID, deliveryID);
+        //s_bl.Order.EndOrderHandle(applicantID, courierID, orderID, deliveryID);
     }//
     private static void AddOrder()
     {

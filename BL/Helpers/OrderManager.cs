@@ -72,44 +72,60 @@ namespace Helpers
             
 
         }
-        internal static void UpdateOrder(BO.Order boOrder)// פונקציית עזר לפונקצייה UpdateDetails
+        internal static void UpdateOrder(BO.Order boOrder)
         {
-            DO.Order oldOrder = s_dal.Order.Read(boOrder.ID);
+            DO.Order oldOrder;
+            DO.Order updated;
 
-            DO.Order updated = oldOrder with
+            lock (AdminManager.BlMutex) // stage 7
             {
-                OrderType = (DO.OrderType)boOrder.OrderType,
-                OrderNote = boOrder.VerbalDescription ?? oldOrder.OrderNote,
-                Latitude = boOrder.Latitude,
-                Longitude = boOrder.Longitude,
-                CustomerAddress = boOrder.FullAddressOfTheOrder ?? oldOrder.CustomerAddress,
-                CustomerFullName = boOrder.FullNameOfTheInviter ?? oldOrder.CustomerFullName,
-                CustomerPhone = boOrder.OrderersPhoneNumber ?? oldOrder.CustomerPhone,
-                OrderProperties = (DO.OrderProperties)boOrder.OrderProperties,
-                OrderDate = boOrder.OrderOpenDate
-            };
+                // קריאה מה-DAL
+                oldOrder = s_dal.Order.Read(boOrder.ID);
 
-            s_dal.Order.Update(updated);
-            Observers.NotifyItemUpdated(boOrder.ID);//stage 5
-            Observers.NotifyListUpdated();//stage 5
+                // יצירת אובייקט מעודכן
+                updated = oldOrder with
+                {
+                    OrderType = (DO.OrderType)boOrder.OrderType,
+                    OrderNote = boOrder.VerbalDescription ?? oldOrder.OrderNote,
+                    Latitude = boOrder.Latitude,
+                    Longitude = boOrder.Longitude,
+                    CustomerAddress = boOrder.FullAddressOfTheOrder ?? oldOrder.CustomerAddress,
+                    CustomerFullName = boOrder.FullNameOfTheInviter ?? oldOrder.CustomerFullName,
+                    CustomerPhone = boOrder.OrderersPhoneNumber ?? oldOrder.CustomerPhone,
+                    OrderProperties = (DO.OrderProperties)boOrder.OrderProperties,
+                    OrderDate = boOrder.OrderOpenDate
+                };
 
+                // עדכון ב-DAL
+                s_dal.Order.Update(updated);
+            }
+
+            // Notifications מחוץ ל-lock
+            Observers.NotifyItemUpdated(boOrder.ID); // stage 5
+            Observers.NotifyListUpdated();          // stage 5
         }
-        internal static void DeleteOrder( int orderId)
+
+        internal static void DeleteOrder(int orderId)
         {
             try
             {
-                s_dal.Order.Delete(orderId);
-                Observers.NotifyItemUpdated(orderId);//stage 5
-                Observers.NotifyListUpdated();//stage 5
+                lock (AdminManager.BlMutex) // stage 7
+                    s_dal.Order.Delete(orderId);
+
+                // Notifications מחוץ ל-lock
+                Observers.NotifyItemUpdated(orderId); // stage 5
+                Observers.NotifyListUpdated();        // stage 5
             }
-            catch(DalDoesNotExistException)
+            catch (DalDoesNotExistException)
             {
                 throw new BlDoesNotExistException($"Order {orderId} does not exist");
             }
         }
+
         internal static IEnumerable<DO.Order> ReadAll()
         {
-            return s_dal.Order.ReadAll();
+            lock (AdminManager.BlMutex) // stage 7
+                return s_dal.Order.ReadAll().ToList();
         }
 
 
@@ -122,81 +138,97 @@ namespace Helpers
         /// notified of the update after the operation completes.</remarks>
         /// <param name="orderId">The unique identifier of the order to cancel.</param>
         /// <exception cref="BO.BlInvalidStatusException">Thrown if the order is not in a state that allows cancellation.</exception>
-        internal static void CancelOrder(int orderId)//מטודת עזר ל cancelOrder
+        internal static void CancelOrder(int orderId)
         {
-            //  קריאת ההזמנה
-            DO.Order doOrder = s_dal.Order.Read(orderId);
+            DO.Order doOrder;
+            BO.Order boOrder;
+            DateTime now;
 
-            //  המרה ל-BO כדי לדעת סטטוס לוגי
-            BO.Order boOrder = ConvertToOrder(doOrder);
-
-            //  בדיקת חוקיות
-            if (boOrder.OrderStatus == OrderStatus.Delivered
-                || boOrder.OrderStatus == OrderStatus.Refused
-                || boOrder.OrderStatus == OrderStatus.Cancelled)
-                
+            lock (AdminManager.BlMutex) // stage 7
             {
-                throw new BO.BlInvalidStatusException(
-                    $"Order {orderId} cannot be cancelled in status {boOrder.OrderStatus}");
-               
-            }
+                // קריאת ההזמנה
+                doOrder = s_dal.Order.Read(orderId);
 
-            DateTime now = s_dal.Config.Clock;
+                // המרה ל-BO כדי לדעת סטטוס לוגי
+                boOrder = ConvertToOrder(doOrder);
 
-            //  אם ההזמנה פתוחה – יצירת משלוח מדומה
-            if (boOrder.OrderStatus == OrderStatus.Open)
-            {
-                DO.Delivery fakeDelivery = new DO.Delivery
+                // בדיקת חוקיות
+                if (boOrder.OrderStatus == OrderStatus.Delivered
+                    || boOrder.OrderStatus == OrderStatus.Refused
+                    || boOrder.OrderStatus == OrderStatus.Cancelled)
                 {
-                    Id = 0,
-                    OrderId = orderId,
-                    CourierId = 0,
-                    DeliveryStartTime = now,
-                    DeliveryEndTime = now,
-                    DeliveryTermintionType = DO.DeliveryTermintionType.Cancelled,
-                    ActualDistance = 0
-                };
+                    throw new BO.BlInvalidStatusException(
+                        $"Order {orderId} cannot be cancelled in status {boOrder.OrderStatus}");
+                }
 
-                s_dal.Delivery.Create(fakeDelivery);
-               
-            }
+                // זמן מערכת
+                now = s_dal.Config.Clock;
 
-            //  אם ההזמנה בטיפול – עדכון משלוח קיים
-            if (boOrder.OrderStatus == OrderStatus.InTreatment)
-            {
-                // מציאת המשלוח הפעיל
-                DO.Delivery delivery = DeliveryManager.GetLastDelivery(orderId);
-                if (delivery != null)
+                // אם ההזמנה פתוחה – יצירת משלוח מדומה
+                if (boOrder.OrderStatus == OrderStatus.Open)
                 {
-
-
-                    DO.Delivery updatedDelivery = delivery with
+                    DO.Delivery fakeDelivery = new DO.Delivery
                     {
+                        Id = 0,
+                        OrderId = orderId,
+                        CourierId = 0,
+                        DeliveryStartTime = now,
                         DeliveryEndTime = now,
-                        DeliveryTermintionType = DO.DeliveryTermintionType.Cancelled
+                        DeliveryTermintionType = DO.DeliveryTermintionType.Cancelled,
+                        ActualDistance = 0
                     };
 
-                    s_dal.Delivery.Update(updatedDelivery);
+                    s_dal.Delivery.Create(fakeDelivery);
                 }
-            }
-            boOrder.OrderStatus = OrderStatus.Cancelled;
-            UpdateOrder(boOrder);
-            Observers.NotifyItemUpdated(orderId);//stage 5
-            Observers.NotifyListUpdated();//stage 5
 
+                // אם ההזמנה בטיפול – עדכון משלוח קיים
+                if (boOrder.OrderStatus == OrderStatus.InTreatment)
+                {
+                    DO.Delivery delivery = DeliveryManager.GetLastDelivery(orderId);
+
+                    if (delivery != null)
+                    {
+                        DO.Delivery updatedDelivery = delivery with
+                        {
+                            DeliveryEndTime = now,
+                            DeliveryTermintionType = DO.DeliveryTermintionType.Cancelled
+                        };
+
+                        s_dal.Delivery.Update(updatedDelivery);
+                    }
+                }
+
+                // עדכון סטטוס הזמנה
+                boOrder.OrderStatus = OrderStatus.Cancelled;
+                UpdateOrder(boOrder);
+            }
+
+            // Notifications מחוץ ל-lock
+            Observers.NotifyItemUpdated(orderId); // stage 5
+            Observers.NotifyListUpdated();        // stage 5
         }
+
         #endregion
 
         #region Get Details
-        internal static BO.Order GetOrderDetails(int orderId) //פונקציית עזר - לפונקציה GetDetails
+
+        internal static BO.Order GetOrderDetails(int orderId)
         {
-            DO.Order? doOrder = s_dal.Order.Read(orderId)
-                ?? throw new BlDoesNotExistException($"Order with ID {orderId} does not exist.");
-            return ConvertToOrder((DO.Order)doOrder);
+            DO.Order? doOrder;
+
+            lock (AdminManager.BlMutex) // stage 7
+                doOrder = s_dal.Order.Read(orderId);
+
+            if (doOrder is null)
+                throw new BlDoesNotExistException(
+                    $"Order with ID {orderId} does not exist.");
+
+            return ConvertToOrder(doOrder);
         }
 
         #endregion
-    
+
+
 
         #region Lists & Counts
 
@@ -207,8 +239,14 @@ namespace Helpers
             object? filterValue,
             sortOrdersByProperty? sortBy)
         {
+            List<DO.Order> doOrders;
+
+            lock (AdminManager.BlMutex) // stage 7
+                doOrders = s_dal.Order.ReadAll().ToList();
+
             IEnumerable<BO.Order> orders =
-                s_dal.Order.ReadAll().Select(ConvertToOrder);
+                doOrders.Select(ConvertToOrder);
+
 
             if (filterBy is not null && filterValue is not null && 
                 filterValue  is not OrderStatus.All)
@@ -252,14 +290,24 @@ namespace Helpers
         {
             // Since order status is not stored in DO.Order,
             // the count is currently calculated logically
-            return new List<int> { s_dal.Order.ReadAll().Count() };
+            List<DO.Order> list;
+
+            lock (AdminManager.BlMutex) // stage 7
+                list = s_dal.Order.ReadAll().ToList();
+
+            return new List<int> { list.Count };
         }
         internal static int[] GetOrdersStatusCountsInternal(int applicantId)//פונקצית עזר לפונקציה GetOrdersStatusCounts 
         {
             int[] summary = new int[Enum.GetValues(typeof(OrderStatus)).Length];
 
-           
-            var result = s_dal.Order.ReadAll()
+
+            List<DO.Order> list;
+
+            lock (AdminManager.BlMutex) // stage 7
+                list = s_dal.Order.ReadAll().ToList();
+
+            var result = list
                 .Select(o => ConvertToOrder(o))
                 .GroupBy(o => o.OrderStatus)
                 .Select(g => new
@@ -268,6 +316,7 @@ namespace Helpers
                     Count = g.Count()
                 })
                 .ToList();
+
 
 
             foreach (var item in result)
@@ -315,13 +364,17 @@ namespace Helpers
 
         internal static BO.Order ConvertToOrder(DO.Order order)
         {
+            var config = AdminManager.GetConfig(); // צילום Config
+
             BO.Order bo;
-            var currentDelivery = DeliveryManager.GetLastDelivery(order.Id) ?? null;
-            var maxDeliveryDate = order.OrderDate + s_dal.Config.MaxDeliveryDuration;
-            //BO.OrderStatus status;
+
+            var currentDelivery = DeliveryManager.GetLastDelivery(order.Id);
+
+            var maxDeliveryDate = order.OrderDate + config.MaxDeliveryDuration;
+
             if (currentDelivery is null)
-            // NO delivery with this Order ID.
             {
+                // NO delivery with this Order ID.
                 bo = new()
                 {
                     ID = order.Id,
@@ -338,21 +391,24 @@ namespace Helpers
                     deliveryPerOrderList = null,
                     MaximumDeliveryDate = maxDeliveryDate,
                     OrderStatus = BO.OrderStatus.Open,
+
                     ScheduleStatus =
-                    maxDeliveryDate < s_dal.Config.Clock ? ScheduleStatus.Late
-                    : maxDeliveryDate - s_dal.Config.DelayRiskTime < s_dal.Config.Clock ?
-                        ScheduleStatus.InRisk : ScheduleStatus.OnTime,
-                    TimeLeftToCompleteOrder = maxDeliveryDate >= s_dal.Config.Clock ?
-                    maxDeliveryDate - s_dal.Config.Clock : TimeSpan.Zero,
+                        maxDeliveryDate < config.Clock ? ScheduleStatus.Late
+                        : maxDeliveryDate - config.DelayRiskTime < config.Clock
+                            ? ScheduleStatus.InRisk
+                            : ScheduleStatus.OnTime,
+
+                    TimeLeftToCompleteOrder =
+                        maxDeliveryDate >= config.Clock
+                            ? maxDeliveryDate - config.Clock
+                            : TimeSpan.Zero,
+
                     EstimatedDeliveryDate = null
                 };
-
             }
-            //
             else
-            // Set BO.Order fields according to DO.Delivery
             {
-                //DeliveryManager.GetList_DeliveryPerOrderInList(order.Id)
+                // Set BO.Order fields according to DO.Delivery
                 bo = new()
                 {
                     ID = order.Id,
@@ -361,60 +417,91 @@ namespace Helpers
                     FullAddressOfTheOrder = order.CustomerAddress,
                     Latitude = order.Latitude,
                     Longitude = order.Longitude,
+
                     AirDistance = CalculateAirDistance(currentDelivery),
+
                     FullNameOfTheInviter = order.CustomerFullName,
                     OrderersPhoneNumber = order.CustomerPhone,
                     OrderProperties = (BO.OrderProperties)order.OrderProperties,
                     OrderOpenDate = order.OrderDate,
-                    deliveryPerOrderList = DeliveryManager.GetList_DeliveryPerOrderInList(order.Id)!.ToList(),
-                    EstimatedDeliveryDate = Calc_EstimatedDeliveryDate(currentDelivery),
-                    MaximumDeliveryDate = maxDeliveryDate,
-                    OrderStatus = Calc_OrderStatus(currentDelivery),
-                    ScheduleStatus = Calc_ScheduleStatus(maxDeliveryDate),
-                    TimeLeftToCompleteOrder = maxDeliveryDate >= s_dal.Config.Clock ?
-                    maxDeliveryDate - s_dal.Config.Clock : TimeSpan.Zero,
 
+                    deliveryPerOrderList =
+                        DeliveryManager
+                            .GetList_DeliveryPerOrderInList(order.Id)!
+                            .ToList(),
+
+                    EstimatedDeliveryDate = Calc_EstimatedDeliveryDate(currentDelivery),
+
+                    MaximumDeliveryDate = maxDeliveryDate,
+
+                    OrderStatus = Calc_OrderStatus(currentDelivery),
+
+                    ScheduleStatus = Calc_ScheduleStatus(maxDeliveryDate),
+
+                    TimeLeftToCompleteOrder =
+                        maxDeliveryDate >= config.Clock
+                            ? maxDeliveryDate - config.Clock
+                            : TimeSpan.Zero,
                 };
-               
             }
+
             return bo;
         }
 
-
         internal static BO.OpenOrderInList ConvertToOpenOrderInList(DO.Order order)
         {
-            // !!!!!
-            BO.Order bo;
-            var currentDelivery = DeliveryManager.GetLastDelivery(order.Id) ?? null;
-            var currentCourier = CourierManager.Read(order.Id) ?? null;
-            var maxDeliveryDate = order.OrderDate + s_dal.Config.MaxDeliveryDuration;
-           
-                return new BO.OpenOrderInList
-                {
-                    courierId = currentDelivery.OrderId,
-                    OrderId = order.Id,
-                    OrderType =(BO.OrderType) order.OrderType,
-                    OrderProperties = (BO.OrderProperties)order.OrderProperties,
-                    CustomerAddress = order.CustomerAddress,
-                    AirDistance = CalculateAirDistance(currentDelivery),
-                    actualDistance = CalculateActualDistance(currentDelivery),
-                    EstimatedDeliveryTime =s_dal.Config.Clock- Calc_EstimatedDeliveryDate(currentDelivery) ,
-                    ScheduleStatus = Calc_ScheduleStatus(maxDeliveryDate),
-                    deliveryTimeLeft = maxDeliveryDate >= s_dal.Config.Clock ?
-                    maxDeliveryDate - s_dal.Config.Clock : TimeSpan.Zero,
-                    MaximumDeliveryTime = maxDeliveryDate
-                };
-            
+            var config = AdminManager.GetConfig(); // צילום Config
+
+            var currentDelivery = DeliveryManager.GetLastDelivery(order.Id);
+
+            if (currentDelivery is null)
+                throw new BO.BlDoesNotExistException(
+                    $"Order {order.Id} has no active delivery");
+
+            var maxDeliveryDate = order.OrderDate + config.MaxDeliveryDuration;
+
+            return new BO.OpenOrderInList
+            {
+                courierId = currentDelivery.CourierId, // תיקון קטן (לא OrderId)
+                OrderId = order.Id,
+
+                OrderType = (BO.OrderType)order.OrderType,
+
+                OrderProperties = (BO.OrderProperties)order.OrderProperties,
+
+                CustomerAddress = order.CustomerAddress,
+
+                AirDistance = CalculateAirDistance(currentDelivery),
+
+                actualDistance = CalculateActualDistance(currentDelivery),
+
+                EstimatedDeliveryTime =
+                    config.Clock - (Calc_EstimatedDeliveryDate(currentDelivery) ?? config.Clock),
+
+                ScheduleStatus = Calc_ScheduleStatus(maxDeliveryDate),
+
+                deliveryTimeLeft =
+                    maxDeliveryDate >= config.Clock
+                        ? maxDeliveryDate - config.Clock
+                        : TimeSpan.Zero,
+
+                MaximumDeliveryTime = maxDeliveryDate
+            };
         }
-         #endregion
+
+        #endregion
 
         internal static BO.OrderInProgress ConvertToOrderInProgress(DO.Delivery delivery, BO.Order order)
         {
+            if (delivery == null)
+                throw new BO.BlArgumentNullException("Delivery is null");
+
             var courier = CourierManager.Read(delivery.CourierId)
-               ?? throw new BlDoesNotExistException($"courier with id:{delivery.CourierId} doed no exist");
+                ?? throw new BlDoesNotExistException(
+                    $"courier with id:{delivery.CourierId} does not exist");
+
             return new BO.OrderInProgress
             {
-
                 DeliveryId = delivery.Id,
                 orderId = order.ID,
 
@@ -425,26 +512,26 @@ namespace Helpers
 
                 actualDistance = delivery.ActualDistance ?? 0,
                 AirDistance = order.AirDistance,
+
                 OrderCreation = order.OrderOpenDate,
                 DeliveryStart = delivery.DeliveryStartTime,
-                ExpectedDeliveryTime = order.EstimatedDeliveryDate ?? DateTime.MinValue,
+
+                ExpectedDeliveryTime =
+                    order.EstimatedDeliveryDate ?? DateTime.MinValue,
+
                 MaximumDeliveryTime = order.MaximumDeliveryDate,
+
                 orderStatus = order.OrderStatus,
+
                 ScheduleStatus = BO.ScheduleStatus.OnTime,
+
                 deliveryTimeLeft = order.TimeLeftToCompleteOrder,
 
                 CourierFullName = courier.FullName,
                 CourierPhone = courier.Phone
             };
-
-
-
-
-            if (delivery == null)
-                throw new BO.BlArgumentNullException("Delivery is null");
-
-           
         }
+
 
 
 
@@ -452,27 +539,31 @@ namespace Helpers
 
         #region Calculation
 
-
         internal static double CalculateAirDistance(DO.Delivery delivery)
         {
             if (delivery == null)
                 throw new BO.BlArgumentNullException("Delivery is null");
 
             var config = AdminManager.GetConfig();
+
             if (config == null || config.Latitude == null || config.Longitude == null)
                 return 0;
 
-            DO.Order doOrder = s_dal.Order.Read(delivery.OrderId)
-                ?? throw new BO.BlDoesNotExistException($"Order {delivery.OrderId} does not exist");
+            DO.Order doOrder;
+
+            lock (AdminManager.BlMutex) // stage 7
+                doOrder = s_dal.Order.Read(delivery.OrderId)
+                    ?? throw new BO.BlDoesNotExistException(
+                        $"Order {delivery.OrderId} does not exist");
 
             return Tools.CalculateAirDistance(
                 config.Latitude.Value,
                 config.Longitude.Value,
-               doOrder.Latitude,
-               doOrder.Longitude
-
-                );
+                doOrder.Latitude,
+                doOrder.Longitude
+            );
         }
+
 
 
         internal static double CalculateAirDistance(double latitude, double longitude)
@@ -491,27 +582,67 @@ namespace Helpers
 
         internal static double CalculateActualDistance(DO.Delivery delivery)
         {
-            throw new Exception("Not implemented yet");
+            if (delivery == null)
+                throw new BO.BlArgumentNullException("Delivery is null");
+
+            // מביאים Config (נעול פנימית)
+            var config = AdminManager.GetConfig();
+
+            if (config == null ||
+                config.Latitude == null ||
+                config.Longitude == null)
+                return 0;
+
+            DO.Order doOrder;
+
+            // קריאה ל-DAL חייבת lock
+            lock (AdminManager.BlMutex) // stage 7
+                doOrder = s_dal.Order.Read(delivery.OrderId)
+                    ?? throw new BO.BlDoesNotExistException(
+                        $"Order {delivery.OrderId} does not exist");
+
+            // חישוב מרחק אווירי
+            double airDistance = Tools.CalculateAirDistance(
+                config.Latitude.Value,
+                config.Longitude.Value,
+                doOrder.Latitude,
+                doOrder.Longitude);
+
+            // פקטור כביש (בד"כ גדול מ-1)
+            const double roadFactor = 1.2;
+
+            return airDistance * roadFactor;
         }
         internal static DateTime? Calc_EstimatedDeliveryDate(DO.Delivery delivery)
         {
+            if (delivery == null)
+                throw new BO.BlArgumentNullException("Delivery is null");
+
+            var config = AdminManager.GetConfig(); // צילום Config
+
             BO.DeliveryType type = (BO.DeliveryType)delivery.DeliveryType;
-            double distance = delivery.ActualDistance ?? CalculateActualDistance(delivery);
 
-            return (BO.DeliveryType)type switch
+            double distance =
+                delivery.ActualDistance ?? CalculateActualDistance(delivery);
+
+            return type switch
             {
-                BO.DeliveryType.None
-                => delivery.DeliveryStartTime.AddHours(distance / s_dal.Config.AvgWalkingSpeed),
-                BO.DeliveryType.Bicycle
-                => delivery.DeliveryStartTime.AddHours(distance / s_dal.Config.AvgBicycleSpeed),
-                BO.DeliveryType.Motorcycle
-                => delivery.DeliveryStartTime.AddHours(distance / s_dal.Config.AvgMotorcycleSpeed),
-                BO.DeliveryType.Car
-                => delivery.DeliveryStartTime.AddHours(distance / s_dal.Config.AvgCarSpeed),
+                BO.DeliveryType.None =>
+                    delivery.DeliveryStartTime.AddHours(distance / config.AvgWalkingSpeed),
 
-                _ => throw new BlInvalidStatusException("Unknown delivery termination type")
+                BO.DeliveryType.Bicycle =>
+                    delivery.DeliveryStartTime.AddHours(distance / config.AvgBicycleSpeed),
+
+                BO.DeliveryType.Motorcycle =>
+                    delivery.DeliveryStartTime.AddHours(distance / config.AvgMotorcycleSpeed),
+
+                BO.DeliveryType.Car =>
+                    delivery.DeliveryStartTime.AddHours(distance / config.AvgCarSpeed),
+
+                _ => throw new BlInvalidStatusException("Unknown delivery type")
             };
         }
+
 
         internal static BO.OrderStatus Calc_OrderStatus(DO.Delivery delivery)
         {
@@ -529,12 +660,15 @@ namespace Helpers
         }
         internal static BO.ScheduleStatus Calc_ScheduleStatus(DateTime maxDeliveryDate)
         {
-            return maxDeliveryDate < s_dal.Config.Clock ? ScheduleStatus.Late
-                    : maxDeliveryDate - s_dal.Config.DelayRiskTime > s_dal.Config.Clock ?
-                        ScheduleStatus.InRisk : ScheduleStatus.OnTime;
-           
-            
+            var config = AdminManager.GetConfig(); // צילום Config
+
+            return maxDeliveryDate < config.Clock
+                ? ScheduleStatus.Late
+                : maxDeliveryDate - config.DelayRiskTime > config.Clock
+                    ? ScheduleStatus.InRisk
+                    : ScheduleStatus.OnTime;
         }
+
 
         /// This method is not permitted to delete orders and always throws a logical exception according to system requirements.
 
@@ -543,25 +677,28 @@ namespace Helpers
         #endregion
         internal static void HandleOrderInternal(int courierId, int orderId)
         {
-            // בדיקה שההזמנה קיימת
+            // בדיקה שההזמנה קיימת (כבר ננעלת בפנים)
             BO.Order order = GetOrderDetails(orderId);
 
-            // בדיקה שאין משלוח פעיל
-            if (DeliveryManager.GetLastDelivery(orderId) != null)
-                throw new BlInvalidStatusException("Order is already being handled.");
-
-            DO.Delivery newDelivery = new DO.Delivery
+            lock (AdminManager.BlMutex) // stage 7
             {
-                Id = 0,
-                OrderId = orderId,
-                CourierId = courierId,
-                DeliveryStartTime = DateTime.Now,
-                DeliveryEndTime = null,
-                DeliveryTermintionType = DO.DeliveryTermintionType.None,
-                ActualDistance = null
-            };
-            lock (AdminManager.BlMutex)
+                // בדיקה שאין משלוח פעיל
+                if (DeliveryManager.GetLastDelivery(orderId) != null)
+                    throw new BlInvalidStatusException("Order is already being handled.");
+
+                DO.Delivery newDelivery = new DO.Delivery
+                {
+                    Id = 0,
+                    OrderId = orderId,
+                    CourierId = courierId,
+                    DeliveryStartTime = DateTime.Now,
+                    DeliveryEndTime = null,
+                    DeliveryTermintionType = DO.DeliveryTermintionType.None,
+                    ActualDistance = null
+                };
+
                 s_dal.Delivery.Create(newDelivery);
+            }
         }
 
     }

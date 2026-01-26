@@ -259,7 +259,7 @@
     <Phone>0542136452</Phone>
     <Email>hgxfh@gmail.com</Email>
     <Password>123456</Password>
-    <Active>true</Active>
+    <Active>false</Active>
     <MaxDistance>60</MaxDistance>
     <DeliveryType>Motorcycle</DeliveryType>
     <EmploymentStartDate>2026-01-25T19:15:17.0632212+02:00</EmploymentStartDate>
