@@ -7,9 +7,6 @@ using PL.Helpers;
 
 namespace PL
 {
-    /// <summary>
-    /// Interaction logic for CourierMainWindow.xaml
-    /// </summary>
     public partial class CourierMainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
@@ -44,12 +41,6 @@ namespace PL
 
         // ---------------- Ctor ----------------
 
-
-        public string CourierName { get; set; }
-
-        
-        public BO.DeliveryTerminationType deliveryTerminationSelectedItem { get; set; }
-        public  BO.OrderInProgress? OrderInProgress { get; set; } 
         public CourierMainWindow()
         {
             InitializeComponent();
