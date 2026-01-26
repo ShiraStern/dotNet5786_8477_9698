@@ -91,7 +91,7 @@ namespace PL
 
         private void Button_OrderSelection(object sender, RoutedEventArgs e)
         {
-            new OpenOrderListWindow().Show();
+            new OpenOrderList_Window().Show();
         }
 
        
