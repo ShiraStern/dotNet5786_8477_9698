@@ -271,16 +271,13 @@ internal static class CourierManager
             lock (AdminManager.BlMutex) // stage 7
                 s_dal.Delivery.Update(finished);
 
-            // Notifications מחוץ ל-lock
+            // IMPORTANT FIX:
+            // notify by COURIER id for courier observers, not by OrderId.
+            if (delivery is not null)
+            {
                 Observers.NotifyItemUpdated(delivery.CourierId);
-
+            }
             Observers.NotifyListUpdated();
-        }
-        catch
-        {
-            // simulation ignores failures
-        }
-    }
 
     /// <summary>
     /// שלד בטוח: אם יש אצלכם לוגיקה "לקיחת הזמנה" אמיתית ב-OrderManager/DeliveryManager,
@@ -299,19 +296,15 @@ internal static class CourierManager
         }
     }
 
-    /// <summary>
-    /// שלד בטוח: אם יש אצלכם לוגיקה "ביטול הזמנה" אמיתית ב-OrderManager,
-    /// החליפו את הגוף לקריאה אליה.
-    /// </summary>
-    private static void SimulateCancelOrder()
+
+    private static void SimulateTakeOrder()
     {
-        try
-        {
-            // TODO: חברו ללוגיקה האמיתית שלכם
-        }
-        catch
-        {
-            // simulation ignores failures
-        }
+
     }
+
+    private static void SimulateCancelOrder()
+    { 
+
+    }
+
 }

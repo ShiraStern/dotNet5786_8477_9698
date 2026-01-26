@@ -103,6 +103,7 @@
             <local:OrderTypeCollection x:Key="OrderTypeCollectionKey"/>
             <local:OrderPropertiesCollection x:Key="OrderPropertiesCollectionKey"/>
             <local:DeliveryTypeCollection x:Key="DeliveryTypeCollectionKey"/>
+            <local:DeliveryTerminationCollection x:Key="DeliveryTerminationCollectionKey"/>
             <local:ConvertHasOrderInProgressToVisible x:Key="ConvertHasOrderInProgressToVisible"/>
 
         </ResourceDictionary>

@@ -38,6 +38,7 @@ namespace Helpers
                 s_dal.Delivery.Update(doDelivery);
 
             Observers.NotifyItemUpdated(doDelivery.Id);
+            OrderManager.Observers.NotifyItemUpdated(doDelivery.OrderId);
             Observers.NotifyListUpdated();
         }
 
@@ -52,16 +53,15 @@ namespace Helpers
 
         #region Lists
 
-        internal static List<DO.Delivery> GetList_DoDeliveriesByOrderId(int orderId)
+        internal static IEnumerable<DO.Delivery>? GetList_DoDeliveriesByOrderId(int orderId)
         {
             List<DO.Delivery> list;
 
             lock (AdminManager.BlMutex)
-                list = s_dal.Delivery.ReadAll().ToList();
-
-            return list
-                .Where(d => d.OrderId == orderId)
-                .ToList();
+            {
+                return s_dal.Delivery.ReadAll()
+                    .Where(c => c.OrderId == orderId);
+            }
         }
 
         internal static DO.Delivery? GetLastDelivery(int orderID)
@@ -70,47 +70,28 @@ namespace Helpers
 
             if (list is null || list.Count == 0)
                 return null;
-
-            return list
-                .OrderBy(d => d.DeliveryStartTime)
-                .LastOrDefault(d =>
-                    d.DeliveryTermintionType ==
-                    DeliveryTermintionType.DeliveredSeccessfully)
-                ?? list.Last();
+            return x.OrderBy(d => d.DeliveryStartTime)
+                  .LastOrDefault(d => d.DeliveryTermintionType == DeliveryTermintionType.DeliveredSeccessfully)
+                  ?? x.Last();
+            
         }
 
-        internal static List<BO.DeliveryPerOrderInList>? GetList_DeliveryPerOrderInList(int id)
+        internal static IEnumerable<BO.DeliveryPerOrderInList>? GetList_DeliveryPerOrderInList(int id)
         {
             var deliveries = GetList_DoDeliveriesByOrderId(id);
 
-            if (deliveries is null || deliveries.Count == 0)
+            if (deliveries is null || deliveries.Count() == 0)
                 return null;
+            return deliveries.Where(x => x.DeliveryTermintionType != DeliveryTermintionType.DeliveredSeccessfully)
+                .Select(x=>ConvertTODeliveryPerOrderInList(x) );
 
-            return deliveries
-                .Where(x =>
-                    x.DeliveryTermintionType ==
-                    DeliveryTermintionType.DeliveredSeccessfully)
-                .Select(d => ConvertTODeliveryPerOrderInList(d))
-                .OrderBy(x => x.DeliveryStart)
-                .ToList();
         }
 
-        internal static List<DO.Delivery> GetList_DelivriesPerCourier(int id)
+        
+        internal static IEnumerable< DO.Delivery>?  GetList_DelivriesPerCourier(int id)
         {
-            List<DO.Delivery> list;
-
-            lock (AdminManager.BlMutex)
-                list = s_dal.Delivery.ReadAll().ToList();
-
-            var result = list
-                .Where(d => d.CourierId == id)
-                .ToList();
-
-            if (result.Count == 0)
-                throw new BO.BlArgumentNullException(
-                    $"No deliveries found for courier ID: {id}");
-
-            return result;
+            var deliveryList = s_dal.Delivery.ReadAll();
+            return deliveryList.Where(d => d.CourierId == id) ?? deliveryList;
         }
 
         #endregion
