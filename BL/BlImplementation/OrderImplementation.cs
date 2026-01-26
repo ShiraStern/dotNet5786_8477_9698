@@ -171,6 +171,7 @@ internal class OrderImplementation : BlApi.IOrder
 
             // saving to dal
             DeliveryManager .Update(updatedDelivery);
+            
         }
         catch (DalDoesNotExistException ex)
         {

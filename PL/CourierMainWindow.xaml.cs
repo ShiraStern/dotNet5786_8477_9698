@@ -141,7 +141,7 @@ namespace PL
 
             s_bl.Courier.AddObserver(id, RefreshCourierObserver);
 
-            if (_currentOrderId != 0)
+            if (CurrentCourier.OrderInProgress is not null)
             {
                 s_bl.Order.AddObserver(
                     _currentOrderId,
@@ -184,6 +184,8 @@ namespace PL
                 OrderInProgress.DeliveryId,
                 (DO.DeliveryTermintionType)
                     deliveryTerminationSelectedItem);
+            MessageBox.Show($"Order delivered");
+
         }
 
         private void Button_OrderSelection(object sender, RoutedEventArgs e)

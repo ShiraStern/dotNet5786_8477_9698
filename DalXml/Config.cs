@@ -54,7 +54,7 @@ internal class Config
     internal static double? MaxRange
     {
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "MaxRange");
-        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "MaxRange", value/* = 290*/);
+        set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "MaxRange", value /*= 250*/);
     }  // in KM,only in Israel
     internal static double AvgCarSpeed
     {
@@ -102,7 +102,7 @@ internal class Config
         CompanyAddress = null;
         Latitude = null;
         Longitude = null;
-        MaxRange = null;
+        MaxRange = 290;
         AvgCarSpeed = 50;
         AvgBicycleSpeed = 60;
         AvgMotorcycleSpeed = 20;

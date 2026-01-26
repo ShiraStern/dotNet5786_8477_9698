@@ -83,6 +83,10 @@ internal class CourierImpementation : ICourier
                 {
                     FilterCouriersByProperty.IsActive => boCouriers.Where(c => c.Active),
                     FilterCouriersByProperty.IsNotActive => boCouriers.Where(c => !c.Active),
+                    FilterCouriersByProperty.None => boCouriers.Where(c => c.DeliveryType == BO.DeliveryType.None),
+                    FilterCouriersByProperty.Bicycle => boCouriers.Where(c => c.DeliveryType == BO.DeliveryType.Bicycle),
+                    FilterCouriersByProperty.Motorcycle => boCouriers.Where(c => c.DeliveryType == BO.DeliveryType.Motorcycle),
+                    FilterCouriersByProperty.Car => boCouriers.Where(c =>c.DeliveryType == BO.DeliveryType.Car),
                     FilterCouriersByProperty.All => boCouriers
 
                 };

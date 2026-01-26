@@ -521,7 +521,7 @@ namespace Helpers
 
                 MaximumDeliveryTime = order.MaximumDeliveryDate,
 
-                orderStatus = order.OrderStatus,
+                orderStatus = BO.OrderStatus.InTreatment,
 
                 ScheduleStatus = BO.ScheduleStatus.OnTime,
 

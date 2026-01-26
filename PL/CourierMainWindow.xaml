@@ -59,7 +59,7 @@
                         VerticalAlignment="Center"
                         FontSize="14"
                         DockPanel.Dock="Right"
-                        Text="{Binding CourierName, StringFormat= Courier:  {0}}" />
+                        Text="{Binding CurrentCourier.FullName, StringFormat= Courier:  {0}}" />
 
                 </DockPanel>
             </Border>
@@ -69,7 +69,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.3*"/>
                     <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="0.3*"/>
                 </Grid.ColumnDefinitions>
 
@@ -96,7 +96,8 @@
                     
                 </StackPanel>
                 <!-- hande orders -->
-                <Border Grid.Column="2" Style="{StaticResource CardStyle}">
+                <Border Grid.Column="2" Style="{StaticResource CardStyle}" Visibility="{Binding CurrentCourier.OrderInProgress , 
+                            Converter={StaticResource  ConvertHasOrderInProgressToVisible}}">
                     <StackPanel>
                         <StackPanel Visibility="{Binding CurrentCourier.OrderInProgress , 
                             Converter={StaticResource  ConvertHasOrderInProgressToVisible}}">

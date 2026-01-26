@@ -10,6 +10,12 @@ namespace PL
     public partial class MainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        static int[] sums = s_bl.Order.GetOrdersStatusCounts(PL.Tools.UserContext.UserId);
+        public int Open { get; set; } = sums[(int)OrderStatus.Open];
+        public int InTreatment { get; set; } = sums[(int)OrderStatus.InTreatment];
+        public static int Closed { get; set; } =
+            sums[(int)OrderStatus.Delivered] + sums[(int)OrderStatus.Refused] + sums[(int)OrderStatus.Cancelled];
+
 
         // -------- Stage 7 Mutex --------
         private readonly ObserverMutex _clockMutex = new();
