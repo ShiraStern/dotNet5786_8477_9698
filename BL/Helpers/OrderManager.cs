@@ -52,7 +52,8 @@ namespace Helpers
             );
             try
             {
-                s_dal.Order.Create(doOrder);
+                lock (AdminManager.BlMutex)
+                    s_dal.Order.Create(doOrder);
                 
                 Observers.NotifyListUpdated(); //stage 5
                 
@@ -559,8 +560,8 @@ namespace Helpers
                 DeliveryTermintionType = DO.DeliveryTermintionType.None,
                 ActualDistance = null
             };
-
-            s_dal.Delivery.Create(newDelivery);
+            lock (AdminManager.BlMutex)
+                s_dal.Delivery.Create(newDelivery);
         }
 
     }
