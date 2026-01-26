@@ -45,5 +45,15 @@ internal class AdminImplementation : IAdmin
     AdminManager.ConfigUpdatedObservers -= configObserver;
     #endregion Stage 5
 
+    public void StartSimulator(int interval) // stage 7
+    {
+        AdminManager.ThrowOnSimulatorIsRunning(); // בדיקה
+        AdminManager.Start(interval);             // הפעלה
+    }
+
+    public void StopSimulator() // stage 7
+    {
+        AdminManager.Stop();
+    }
 
 }

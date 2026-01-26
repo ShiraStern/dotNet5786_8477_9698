@@ -4,8 +4,6 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Helpers;
@@ -13,89 +11,116 @@ namespace Helpers;
 internal static class CourierManager
 {
     private static readonly IDal s_dal = Factory.Get; //stage 4
-
     internal static ObserverManager Observers = new(); //stage 5
 
     internal static void PeriodicCourierUpdates(DateTime oldClock, DateTime newClock)
     {
-        var list = s_dal.Courier.ReadAll().ToList();
+        List<DO.Courier> list;
+        TimeSpan inactivityThreshold;
+
+        // לקרוא DAL בצורה נעולה וקצרה
+        lock (AdminManager.BlMutex) // stage 7
+        {
+            list = s_dal.Courier.ReadAll().ToList();
+            inactivityThreshold = s_dal.Config.InactivityThreshold;
+        }
 
         bool anyCourierUpdated = false; // stage 5
+        var updatedCourierIds = new List<int>();
 
         foreach (var doCourier in list)
         {
-            // if courier is not active more than inactivity threshold
-            // then courier should be automatically updated to 'not active'
+            // אם שליח פעיל יותר מדי זמן ללא פעילות => להפוך ללא פעיל
             if (doCourier.Active &&
-                AdminManager.Now - doCourier.EmploymentStartDate >= s_dal.Config.InactivityThreshold)
+                AdminManager.Now - doCourier.EmploymentStartDate >= inactivityThreshold)
             {
-                s_dal.Courier.Update(doCourier with { Active = false });
-                anyCourierUpdated = true;
+                // עדכון DAL חייב להיות בתוך lock
+                lock (AdminManager.BlMutex) // stage 7
+                    s_dal.Courier.Update(doCourier with { Active = false });
 
-                // notify specific courier updated (stage 5)
-                Observers.NotifyItemUpdated(doCourier.Id);
+                anyCourierUpdated = true;
+                updatedCourierIds.Add(doCourier.Id);
             }
         }
 
-        // notify list updated only if something actually changed (stage 5)
+        // Notifications חייבים להיות מחוץ ל-lock
+        foreach (var id in updatedCourierIds)
+            Observers.NotifyItemUpdated(id);
+
         if (anyCourierUpdated)
             Observers.NotifyListUpdated();
     }
 
+    #region CRUD
+
     internal static void Create(DO.Courier doCourier)
     {
-        s_dal.Courier.Create(doCourier);
+        lock (AdminManager.BlMutex) // stage 7
+            s_dal.Courier.Create(doCourier);
 
-        // stage 5
+        // stage 5 (מחוץ ל-lock)
         Observers.NotifyItemUpdated(doCourier.Id);
         Observers.NotifyListUpdated();
     }
 
     internal static void Delete(int courierId)
     {
-        s_dal.Courier.Delete(courierId);
+        lock (AdminManager.BlMutex) // stage 7
+            s_dal.Courier.Delete(courierId);
 
-        // stage 5
+        // stage 5 (מחוץ ל-lock)
         Observers.NotifyItemUpdated(courierId);
         Observers.NotifyListUpdated();
     }
 
     internal static void Update(DO.Courier doCourier)
     {
-        s_dal.Courier.Update(doCourier);
+        lock (AdminManager.BlMutex) // stage 7
+            s_dal.Courier.Update(doCourier);
 
-        // stage 5
+        // stage 5 (מחוץ ל-lock)
         Observers.NotifyItemUpdated(doCourier.Id);
         Observers.NotifyListUpdated();
     }
 
     internal static DO.Courier? Read(int courierId)
-        => s_dal.Courier.Read(courierId);
+    {
+        lock (AdminManager.BlMutex) // stage 7
+            return s_dal.Courier.Read(courierId);
+    }
 
     internal static bool IsValidCourierId(int applicantId)
-        => s_dal.Courier.ReadAll().Any(c => c.Id == applicantId);
+    {
+        List<DO.Courier> list;
+        lock (AdminManager.BlMutex) // stage 7
+            list = s_dal.Courier.ReadAll().ToList();
+
+        return list.Any(c => c.Id == applicantId);
+    }
 
     internal static IEnumerable<DO.Courier> ReadAll()
-        => s_dal.Courier.ReadAll();
+    {
+        lock (AdminManager.BlMutex) // stage 7
+            return s_dal.Courier.ReadAll().ToList(); // להחזיר snapshot כדי שלא "יזוז" בזמן איטרציה
+    }
 
-   
+    #endregion
 
     internal static BO.OrderInProgress? GetOrderInProgres(int courierId)
     {
-        
-        var delivery =
-            DeliveryManager.GetList_DelivriesPerCourier(courierId)!
-            .Where(x => x.DeliveryTermintionType != DO.DeliveryTermintionType.None
-            || x.DeliveryTermintionType != DO.DeliveryTermintionType.DeliveredSeccessfully).FirstOrDefault();
+        // DeliveryManager כבר אמור לנעול בפנים (לפי מה שסידרנו קודם),
+        // ולכן כאן לא צריך lock נוסף סביב הקריאה אליו.
+        var delivery = DeliveryManager.GetList_DelivriesPerCourier(courierId)
+            .FirstOrDefault(x =>
+                x.DeliveryTermintionType != DO.DeliveryTermintionType.None &&
+                x.DeliveryTermintionType != DO.DeliveryTermintionType.DeliveredSeccessfully);
+
         if (delivery is null)
             return null;
-        var order= OrderManager.GetOrderDetails(delivery.OrderId);
-        return  OrderManager. ConvertToOrderInProgress(delivery, order);
 
-
-
+        var order = OrderManager.GetOrderDetails(delivery.OrderId);
+        return OrderManager.ConvertToOrderInProgress(delivery, order);
     }
-
 
     internal static DO.Courier ConvertToCourier(BO.Courier courier)
     {
@@ -110,7 +135,6 @@ internal static class CourierManager
             MaxDistance = courier.MaxDistance,
             DeliveryType = (DO.DeliveryType)courier.DeliveryType,
             EmploymentStartDate = courier.EmploymentStartDate
-
         };
         return dalCourier;
     }
@@ -128,38 +152,51 @@ internal static class CourierManager
             MaxDistance = courier.MaxDistance,
             DeliveryType = (BO.DeliveryType)courier.DeliveryType,
             EmploymentStartDate = courier.EmploymentStartDate,
-            NumOfDeliveriesInTime = GetNumOfDeliveriesNotOnTime(courier.Id),
-            NumOfDeliveriesNotInTime = GetNumOfDeliveriesNotOnTime(courier.Id),
-            OrderInProgress = GetOrderInProgres(courier.Id)
 
+            // תיקון קטן: InTime צריך להיות "OnTime", לא "NotOnTime"
+            NumOfDeliveriesInTime = GetNumOfDeliveriesOnTime(courier.Id),
+            NumOfDeliveriesNotInTime = GetNumOfDeliveriesNotOnTime(courier.Id),
+
+            OrderInProgress = GetOrderInProgres(courier.Id)
         };
         return boCourier;
     }
 
     internal static int? GetNumberOfDeliveriesInProcess(int id)
     {
-        return s_dal.Delivery.ReadAll()
-            .Where(d => d.CourierId == id &&
-                        d.DeliveryTermintionType == DO.DeliveryTermintionType.None)
-            .Count();
+        List<DO.Delivery> deliveries;
+        lock (AdminManager.BlMutex) // stage 7
+            deliveries = s_dal.Delivery.ReadAll().ToList();
+
+        return deliveries.Count(d =>
+            d.CourierId == id &&
+            d.DeliveryTermintionType == DO.DeliveryTermintionType.None);
     }
 
     internal static int GetNumOfDeliveriesNotOnTime(int id)
     {
-        return s_dal.Delivery.ReadAll()
-            .Where(d => d.CourierId == id &&
-                        d.DeliveryTermintionType == DO.DeliveryTermintionType.DeliveredSeccessfully &&
-                        d.DeliveryEndTime > d.DeliveryStartTime + AdminManager.MaxDeliveryDuration)
-            .Count();
+        List<DO.Delivery> deliveries;
+        lock (AdminManager.BlMutex) // stage 7
+            deliveries = s_dal.Delivery.ReadAll().ToList();
+
+        return deliveries.Count(d =>
+            d.CourierId == id &&
+            d.DeliveryTermintionType == DO.DeliveryTermintionType.DeliveredSeccessfully &&
+            d.DeliveryEndTime is not null &&
+            d.DeliveryEndTime > d.DeliveryStartTime + AdminManager.MaxDeliveryDuration);
     }
 
     internal static int GetNumOfDeliveriesOnTime(int id)
     {
-        return s_dal.Delivery.ReadAll()
-            .Where(d => d.CourierId == id &&
-                        d.DeliveryTermintionType == DO.DeliveryTermintionType.DeliveredSeccessfully &&
-                        d.DeliveryEndTime <= d.DeliveryStartTime + AdminManager.MaxDeliveryDuration)
-            .Count();
+        List<DO.Delivery> deliveries;
+        lock (AdminManager.BlMutex) // stage 7
+            deliveries = s_dal.Delivery.ReadAll().ToList();
+
+        return deliveries.Count(d =>
+            d.CourierId == id &&
+            d.DeliveryTermintionType == DO.DeliveryTermintionType.DeliveredSeccessfully &&
+            d.DeliveryEndTime is not null &&
+            d.DeliveryEndTime <= d.DeliveryStartTime + AdminManager.MaxDeliveryDuration);
     }
 
     // -------------------- Simulation --------------------
@@ -186,11 +223,11 @@ internal static class CourierManager
         }
     }
 
-
     internal static BO.CourierInList ConvertToCourierInList(DO.Courier courier)
     {
-        int? orderID = GetOrderInProgres(courier.Id) is null 
-            ? null : GetOrderInProgres(courier.Id)!.orderId;
+        var oip = GetOrderInProgres(courier.Id);
+        int? orderID = oip?.orderId;
+
         return new BO.CourierInList()
         {
             ID = courier.Id,
@@ -198,20 +235,24 @@ internal static class CourierManager
             Active = courier.Active,
             DeliveryType = (BO.DeliveryType)courier.DeliveryType,
             EmploymentStartDate = courier.EmploymentStartDate,
-            NumOfDeliveriesOnTime = CourierManager.GetNumOfDeliveriesOnTime(courier.Id),
-            NumOfDeliveriesNotOnTime = CourierManager.GetNumOfDeliveriesNotOnTime(courier.Id),
+            NumOfDeliveriesOnTime = GetNumOfDeliveriesOnTime(courier.Id),
+            NumOfDeliveriesNotOnTime = GetNumOfDeliveriesNotOnTime(courier.Id),
             IdOfDeliveryInProcess = orderID
-         };
+        };
     }
 
     private static void SimulateFinishDelivery()
     {
         try
         {
-            // active deliveries (not finished yet)
-            var activeDeliveries = s_dal.Delivery.ReadAll()
-                .Where(d => d.DeliveryEndTime == null)
-                .ToList();
+            List<DO.Delivery> activeDeliveries;
+
+            lock (AdminManager.BlMutex) // stage 7
+            {
+                activeDeliveries = s_dal.Delivery.ReadAll()
+                    .Where(d => d.DeliveryEndTime == null)
+                    .ToList();
+            }
 
             if (!activeDeliveries.Any())
                 return;
@@ -219,28 +260,21 @@ internal static class CourierManager
             Random rand = new();
             var delivery = activeDeliveries[rand.Next(activeDeliveries.Count)];
 
-            // close delivery
+            // close delivery (עדכון DAL נעול)
             DO.Delivery finished = delivery with
             {
-                DeliveryEndTime = DateTime.Now,
+                DeliveryEndTime = AdminManager.Now, // עדיף Now של הסימולטור
                 DeliveryTermintionType = DO.DeliveryTermintionType.DeliveredSeccessfully,
                 ActualDistance = delivery.ActualDistance ?? 1
             };
 
-            s_dal.Delivery.Update(finished);
+            lock (AdminManager.BlMutex) // stage 7
+                s_dal.Delivery.Update(finished);
 
-            // IMPORTANT FIX:
-            // you must notify by COURIER id for courier observers, not by OrderId.
-            if (delivery.CourierId is not null)
-            {
-                Observers.NotifyItemUpdated(delivery.CourierId.Value);
-            }
+            // Notifications מחוץ ל-lock
+                Observers.NotifyItemUpdated(delivery.CourierId);
+
             Observers.NotifyListUpdated();
-
-            // Note:
-            // If you have OrderManager observers and your UI expects order list/details to refresh,
-            // OrderManager should notify its own observers inside its update methods.
-            // Here we only ensured courier UI gets refreshed correctly.
         }
         catch
         {
@@ -248,7 +282,36 @@ internal static class CourierManager
         }
     }
 
+    /// <summary>
+    /// שלד בטוח: אם יש אצלכם לוגיקה "לקיחת הזמנה" אמיתית ב-OrderManager/DeliveryManager,
+    /// החליפו את הגוף לקריאה אליה.
+    /// </summary>
+    private static void SimulateTakeOrder()
+    {
+        try
+        {
+            // TODO: חברו ללוגיקה האמיתית שלכם (למשל: לבחור שליח פנוי + לבחור הזמנה ממתינה + ליצור Delivery)
+            // כאן משאירים שלד שלא הורס ולא מניח מבנים שלא בטוח קיימים.
+        }
+        catch
+        {
+            // simulation ignores failures
+        }
+    }
 
-   
-
+    /// <summary>
+    /// שלד בטוח: אם יש אצלכם לוגיקה "ביטול הזמנה" אמיתית ב-OrderManager,
+    /// החליפו את הגוף לקריאה אליה.
+    /// </summary>
+    private static void SimulateCancelOrder()
+    {
+        try
+        {
+            // TODO: חברו ללוגיקה האמיתית שלכם
+        }
+        catch
+        {
+            // simulation ignores failures
+        }
+    }
 }
