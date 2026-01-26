@@ -10,6 +10,12 @@
                DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
 
       >
+    <Window.Resources>
+
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <local:SimulatorButtonTextConverter x:Key="SimulatorButtonTextConverter"/>
+
+    </Window.Resources>
 
     <!-- רקע כללי עם גרדיאנט פסטלי -->
     <Grid>
@@ -133,42 +139,72 @@
                     </StackPanel>
                 </Border>
 
-                <!-- כרטיס: ניהול בסיס נתונים ושליטה ביישויות -->
+                <!-- כרטיס: סימולטור + ניהול בסיס נתונים -->
                 <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+
                     <StackPanel>
+
+                        <!-- ===== Simulator ===== -->
+
+                        <TextBlock Text="סימולטור"
+                   Style="{StaticResource SectionTitleTextBlockStyle}"
+                   HorizontalAlignment="Center"/>
+
+                        <TextBlock Text="קצב (בדקות)"
+                   HorizontalAlignment="Center"
+                   Foreground="{StaticResource TextSoftBrush}"/>
+
+                        <TextBox Width="80"
+                 HorizontalAlignment="Center"
+                 Margin="0,5,0,5"
+                 Text="{Binding Interval}"
+                 IsEnabled="{Binding IsSimulatorRunning,
+                             Converter={StaticResource InverseBooleanConverter}}"/>
+
+                        <Button Content="{Binding IsSimulatorRunning,
+                          Converter={StaticResource SimulatorButtonTextConverter}}"
+                Click="btnStartStopSimulator_Click"
+                Margin="0,5,0,10"/>
+
+                        <Separator Margin="0,10"/>
+
+                        <!-- ===== Database ===== -->
+
                         <TextBlock Text="ניהול מאגר נתונים"
-                                   Style="{StaticResource SectionTitleTextBlockStyle}"
-                                   HorizontalAlignment="Stretch"/>
+                   Style="{StaticResource SectionTitleTextBlockStyle}"
+                   HorizontalAlignment="Center"/>
 
-                        <StackPanel>
-                            <Button Content="Initialize DB"
-                                    Click="Button_InitializeDB"
-                                    HorizontalAlignment="Stretch"/>
+                        <Button Content="Initialize DB"
+                Click="Button_InitializeDB"
+                IsEnabled="{Binding IsSimulatorRunning,
+                            Converter={StaticResource InverseBooleanConverter}}"/>
 
-                            <Button Content="Reset DB"
-                                    Click="Button_ResetDB"
-                                    HorizontalAlignment="Stretch"
-                                    Margin="6,4,6,16"/>
+                        <Button Content="Reset DB"
+                Click="Button_ResetDB"
+                Margin="6,4,6,16"
+                IsEnabled="{Binding IsSimulatorRunning,
+                            Converter={StaticResource InverseBooleanConverter}}"/>
 
-                            <Separator/>
+                        <Separator/>
 
-                            <TextBlock Text="ניהול ישויות"
-                                       Margin="0,12,0,4"
-                                       Foreground="{StaticResource TextSoftBrush}"
-                                       FontWeight="SemiBold"
-                                       Style="{StaticResource SectionTitleTextBlockStyle}"
-                                       HorizontalAlignment="Center"/>
+                        <!-- ===== Entities ===== -->
 
-                            <Button Content="Handle Courier"
-                                    Click="btnHandleCourier"
-                                    HorizontalAlignment="Stretch"/>
+                        <TextBlock Text="ניהול ישויות"
+                   Margin="0,12,0,4"
+                   Foreground="{StaticResource TextSoftBrush}"
+                   FontWeight="SemiBold"
+                   HorizontalAlignment="Center"/>
 
-                            <Button Content="Handle Orders"
-                                    Click="btnHandleOrders"
-                                    HorizontalAlignment="Stretch"/>
-                        </StackPanel>
+                        <Button Content="Handle Courier"
+                Click="btnHandleCourier"/>
+
+                        <Button Content="Handle Orders"
+                Click="btnHandleOrders"/>
+
                     </StackPanel>
+
                 </Border>
+
 
                 <!-- כרטיס: שעון מערכת -->
                 <Border Grid.Column="2" Style="{StaticResource CardStyle}">

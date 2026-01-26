@@ -1,35 +1,23 @@
 ﻿using BO;
+using PL.Helpers;
 using PL.Order;
 using System;
 using System.Windows;
 using System.Windows.Input;
-using PL.Helpers;
 
 namespace PL
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         // -------- Stage 7 Mutex --------
-        private readonly ObserverMutex _clockMutex = new();   // stage 7
-        private readonly ObserverMutex _configMutex = new();  // stage 7
-
-        static int[] sums = s_bl.Order.GetOrdersStatusCounts(PL.Tools.UserContext.UserId);
-
-        public int Open { get; set; } = sums[(int)OrderStatus.Open];
-        public int InTreatment { get; set; } = sums[(int)OrderStatus.InTreatment];
-
-        public static int Closed { get; set; } =
-            sums[(int)OrderStatus.Delivered] +
-            sums[(int)OrderStatus.Refused] +
-            sums[(int)OrderStatus.Cancelled];
+        private readonly ObserverMutex _clockMutex = new();
+        private readonly ObserverMutex _configMutex = new();
 
         // ---------------- Dependency Properties ----------------
 
+        // Clock
         public DateTime CurrentTime
         {
             get => (DateTime)GetValue(CurrentTimeProperty);
@@ -42,6 +30,7 @@ namespace PL
                 typeof(DateTime),
                 typeof(MainWindow));
 
+        // Config
         public BO.Config Configuration
         {
             get => (BO.Config)GetValue(ConfigurationProperty);
@@ -54,50 +43,110 @@ namespace PL
                 typeof(BO.Config),
                 typeof(MainWindow));
 
+        // Simulator Interval (minutes)
+        public int Interval
+        {
+            get => (int)GetValue(IntervalProperty);
+            set => SetValue(IntervalProperty, value);
+        }
+
+        public static readonly DependencyProperty IntervalProperty =
+            DependencyProperty.Register(
+                "Interval",
+                typeof(int),
+                typeof(MainWindow),
+                new PropertyMetadata(1));
+
+        // Is Simulator Running
+        public bool IsSimulatorRunning
+        {
+            get => (bool)GetValue(IsSimulatorRunningProperty);
+            set => SetValue(IsSimulatorRunningProperty, value);
+        }
+
+        public static readonly DependencyProperty IsSimulatorRunningProperty =
+            DependencyProperty.Register(
+                "IsSimulatorRunning",
+                typeof(bool),
+                typeof(MainWindow),
+                new PropertyMetadata(false));
+
         // ---------------- Constructor ----------------
 
         public MainWindow()
         {
             InitializeComponent();
 
-            this.Loaded += Window_Loaded;
-            this.Closing += Window_Closed;
+            DataContext = this;
+
+            Interval = 1;
+            IsSimulatorRunning = false;
+
+            Loaded += Window_Loaded;
+            Closing += Window_Closed;
+        }
+
+        // ---------------- Simulator ----------------
+
+        private void btnStartStopSimulator_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!IsSimulatorRunning)
+                {
+                    // Start
+                    s_bl.Admin.StartSimulator(Interval);
+                    IsSimulatorRunning = true;
+                }
+                else
+                {
+                    // Stop
+                    s_bl.Admin.StopSimulator();
+                    IsSimulatorRunning = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         // ---------------- Clock Buttons ----------------
 
         private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
-            => s_bl.Admin.ForwardClock(BO.TimeUnit.Minute);
+            => s_bl.Admin.ForwardClock(TimeUnit.Minute);
 
         private void btnAddOneHour_Click(object sender, RoutedEventArgs e)
-            => s_bl.Admin.ForwardClock(BO.TimeUnit.Hour);
+            => s_bl.Admin.ForwardClock(TimeUnit.Hour);
 
         private void btnAddOneDay_Click(object sender, RoutedEventArgs e)
-            => s_bl.Admin.ForwardClock(BO.TimeUnit.Day);
+            => s_bl.Admin.ForwardClock(TimeUnit.Day);
 
         private void btnAddOneMonth_Click(object sender, RoutedEventArgs e)
-            => s_bl.Admin.ForwardClock(BO.TimeUnit.Month);
+            => s_bl.Admin.ForwardClock(TimeUnit.Month);
 
         private void btnAddOneYear_Click(object sender, RoutedEventArgs e)
-            => s_bl.Admin.ForwardClock(BO.TimeUnit.Year);
+            => s_bl.Admin.ForwardClock(TimeUnit.Year);
 
         // ---------------- Config ----------------
 
         private void btnSaveConfig_Click(object sender, RoutedEventArgs e)
         {
             s_bl.Admin.SetConfig(Configuration);
-            MessageBox.Show("Configuration saved successfully!");
+            MessageBox.Show("Configuration saved!");
         }
 
         // ---------------- DB ----------------
 
         private void Button_InitializeDB(object sender, RoutedEventArgs e)
         {
+            if (IsSimulatorRunning)
+                return;
+
             var result = MessageBox.Show(
-                "Are you sure you want to initialize the database?",
-                "Confirmation",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
+                "Initialize database?",
+                "Confirm",
+                MessageBoxButton.YesNo);
 
             if (result != MessageBoxResult.Yes)
                 return;
@@ -113,11 +162,13 @@ namespace PL
 
         private void Button_ResetDB(object sender, RoutedEventArgs e)
         {
+            if (IsSimulatorRunning)
+                return;
+
             var result = MessageBox.Show(
-                "Are you sure you want to reset the database?",
-                "Confirmation",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
+                "Reset database?",
+                "Confirm",
+                MessageBoxButton.YesNo);
 
             if (result != MessageBoxResult.Yes)
                 return;
@@ -191,6 +242,13 @@ namespace PL
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            // Stop simulator on exit
+            if (IsSimulatorRunning)
+            {
+                s_bl.Admin.StopSimulator();
+                IsSimulatorRunning = false;
+            }
+
             s_bl.Admin.RemoveClockObserver(clockObserver);
             s_bl.Admin.RemoveConfigObserver(configObserver);
         }
