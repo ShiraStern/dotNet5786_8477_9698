@@ -2,7 +2,7 @@
 <config>
   <NextOrderId>1050</NextOrderId>
   <NextDeliveryId>100</NextDeliveryId>
-  <Clock>26/01/2026 22:15:49</Clock>
+  <Clock>26/01/2026 23:17:06</Clock>
   <ManagerID>216318477</ManagerID>
   <ManagerPassword>1111</ManagerPassword>
   <CompanyAddress>בית הדפוס 9 ירושלים</CompanyAddress>
@@ -10,7 +10,7 @@
   <!--רוחב-->
   <Longitude>35.18925479816518</Longitude>
   <!--אורך-->
-  <MaxRange>290</MaxRange>
+  <MaxRange></MaxRange>
   <AvgCarSpeed>50</AvgCarSpeed>
   <AvgMotorcycleSpeed>20</AvgMotorcycleSpeed>
   <AvgBicycleSpeed>60</AvgBicycleSpeed>

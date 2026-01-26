@@ -97,7 +97,6 @@ namespace PL
 
 
 
-
         private void ChooseOrder_Click(object sender, RoutedEventArgs e)
         {
             var order = ((FrameworkElement)sender).DataContext as BO.OpenOrderInList;
