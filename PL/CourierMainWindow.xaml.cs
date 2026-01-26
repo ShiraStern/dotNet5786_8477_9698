@@ -68,10 +68,7 @@ namespace PL
       
         
 
-        private void Button_OpenOrderListWindow(object sender, RoutedEventArgs e)
-        {
-          new OpenOrderListWindow().Show();  
-        }
+      
 
         private void Window_Loaded(object sender, EventArgs e)
         {
@@ -96,5 +93,14 @@ namespace PL
         {
             new OpenOrderListWindow().Show();
         }
+
+       
+
+        private void Button_DeliveriesHisrory(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+       
     }
 }

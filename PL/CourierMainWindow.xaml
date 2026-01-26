@@ -84,11 +84,14 @@
                            HorizontalAlignment="Stretch" Click="viewAndUpdateDetails"/>
                         </StackPanel>
                     </Border>
-                    <Border>
-                        <Button Content="בחירת הזמנה " 
-                             Margin="20" Click="Button_OpenOrderListWindow"/>
-                        <Button Content="היסטוריית משלוחים"  
-                            Margin="20"/>
+                    <Border Style="{StaticResource CardStyle}">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button Content=" בחירת הזמנה"  Height="27" Width="150" Click="Button_OrderSelection"/>
+
+                            <Button Content="היסטוריית משלוחים" Height="27"  Width="150" Click="Button_DeliveriesHisrory" />
+                        
+                        </StackPanel>
+                        
                     </Border>
                     
                 </StackPanel>
