@@ -78,6 +78,17 @@
     <EmploymentStartDate>2018-01-25T09:13:59</EmploymentStartDate>
   </Courier>
   <Courier>
+    <Id>253566707</Id>
+    <FullName>Dana Shapiro</FullName>
+    <Phone>053-4840997</Phone>
+    <Email>DanaShapiro@gmail.com</Email>
+    <Password>122012</Password>
+    <Active>false</Active>
+    <MaxDistance>40</MaxDistance>
+    <DeliveryType>None</DeliveryType>
+    <EmploymentStartDate>2017-01-25T09:13:59</EmploymentStartDate>
+  </Courier>
+  <Courier>
     <Id>362985425</Id>
     <FullName>Yossi Azulay</FullName>
     <Phone>055-6269093</Phone>
@@ -252,16 +263,5 @@
     <MaxDistance>60</MaxDistance>
     <DeliveryType>Motorcycle</DeliveryType>
     <EmploymentStartDate>2026-01-25T19:15:17.0632212+02:00</EmploymentStartDate>
-  </Courier>
-  <Courier>
-    <Id>253566707</Id>
-    <FullName>Dana Shapiro</FullName>
-    <Phone>053-4840997</Phone>
-    <Email>DanaShapiro@gmail.com</Email>
-    <Password>122012</Password>
-    <Active>false</Active>
-    <MaxDistance>10</MaxDistance>
-    <DeliveryType>None</DeliveryType>
-    <EmploymentStartDate>2017-01-25T09:13:59</EmploymentStartDate>
   </Courier>
 </ArrayOfOrder>

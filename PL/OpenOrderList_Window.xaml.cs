@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+/////////////////////////////////////////////////////////////////// לא לדכוח לתקן כאן את שלב 7.6
 namespace PL
 {
     /// <summary>

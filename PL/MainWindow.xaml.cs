@@ -1,185 +1,256 @@
 ﻿using BO;
-using PL.Courier;
+using PL.Helpers;
 using PL.Order;
-using System.Reflection.Metadata;
-using System.Text;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 
 namespace PL
 {
-
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        static int[] sums = s_bl.Order.GetOrdersStatusCounts(PL.Tools.UserContext.UserId);
-        public int Open { get; set; } = sums[(int)OrderStatus.Open];
-        public int InTreatment { get; set; } = sums[(int)OrderStatus.InTreatment];
+        // -------- Stage 7 Mutex --------
+        private readonly ObserverMutex _clockMutex = new();
+        private readonly ObserverMutex _configMutex = new();
 
+        // ---------------- Dependency Properties ----------------
 
-        public static int Closed { get; set; } =
-            sums[(int)OrderStatus.Delivered] + sums[(int)OrderStatus.Refused] + sums[(int)OrderStatus.Cancelled];
-
-
-        public MainWindow()
+        // Clock
+        public DateTime CurrentTime
         {
-            
-            InitializeComponent();
-            PL.Tools.UserContext.UserId= 216318477;
-            this.Loaded += Window_Loaded;
-            this.Closing += Window_Closed!;
+            get => (DateTime)GetValue(CurrentTimeProperty);
+            set => SetValue(CurrentTimeProperty, value);
+        }
 
-        }
-        public DateTime CurrentTime //תכונת תלות  שמיצגת את ערכו של התאריך המוצג על המסך.
-        {
-            get { return (DateTime)GetValue(CurrentTimeProperty); }
-            set { SetValue(CurrentTimeProperty, value); }
-        }
         public static readonly DependencyProperty CurrentTimeProperty =
-        DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
-        public BO.Config Configuration//תכונת תלות שמייצגת  את אובייקט התצורה הלוגי Config.BO.
+            DependencyProperty.Register(
+                "CurrentTime",
+                typeof(DateTime),
+                typeof(MainWindow));
+
+        // Config
+        public BO.Config Configuration
         {
-            get { return (BO.Config)GetValue(ConfigurationProperty); }
-            set { SetValue(ConfigurationProperty, value); }
-        }
-        //כפתור לשמירת הקונגפינג
-        private void btnSaveConfig_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.SetConfig(Configuration);
-            MessageBox.Show("Configuration saving completed successfully!");
+            get => (BO.Config)GetValue(ConfigurationProperty);
+            set => SetValue(ConfigurationProperty, value);
         }
 
         public static readonly DependencyProperty ConfigurationProperty =
             DependencyProperty.Register(
                 "Configuration",
                 typeof(BO.Config),
-                typeof(MainWindow)
-            );
-        //כפתורי עדכון השעה  והתאריך במערכת
-        private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
+                typeof(MainWindow));
+
+        // Simulator Interval (minutes)
+        public int Interval
         {
-            s_bl.Admin.ForwardClock(BO.TimeUnit.Minute);
-        }
-        private void btnAddOneHour_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.ForwardClock(BO.TimeUnit.Hour);
-        }
-        private void btnAddOneDay_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.ForwardClock(BO.TimeUnit.Day);
-        }
-        private void btnAddOneMonth_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.ForwardClock(BO.TimeUnit.Month);
-        }
-        private void btnAddOneYear_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.ForwardClock(BO.TimeUnit.Year);
+            get => (int)GetValue(IntervalProperty);
+            set => SetValue(IntervalProperty, value);
         }
 
-        //מטודות לטיפול בכפתורי אתחול ואיפוס מסד הנתונים
+        public static readonly DependencyProperty IntervalProperty =
+            DependencyProperty.Register(
+                "Interval",
+                typeof(int),
+                typeof(MainWindow),
+                new PropertyMetadata(1));
+
+        // Is Simulator Running
+        public bool IsSimulatorRunning
+        {
+            get => (bool)GetValue(IsSimulatorRunningProperty);
+            set => SetValue(IsSimulatorRunningProperty, value);
+        }
+
+        public static readonly DependencyProperty IsSimulatorRunningProperty =
+            DependencyProperty.Register(
+                "IsSimulatorRunning",
+                typeof(bool),
+                typeof(MainWindow),
+                new PropertyMetadata(false));
+
+        // ---------------- Constructor ----------------
+
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            DataContext = this;
+
+            Interval = 1;
+            IsSimulatorRunning = false;
+
+            Loaded += Window_Loaded;
+            Closing += Window_Closed;
+        }
+
+        // ---------------- Simulator ----------------
+
+        private void btnStartStopSimulator_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!IsSimulatorRunning)
+                {
+                    // Start
+                    s_bl.Admin.StartSimulator(Interval);
+                    IsSimulatorRunning = true;
+                }
+                else
+                {
+                    // Stop
+                    s_bl.Admin.StopSimulator();
+                    IsSimulatorRunning = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        // ---------------- Clock Buttons ----------------
+
+        private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
+            => s_bl.Admin.ForwardClock(TimeUnit.Minute);
+
+        private void btnAddOneHour_Click(object sender, RoutedEventArgs e)
+            => s_bl.Admin.ForwardClock(TimeUnit.Hour);
+
+        private void btnAddOneDay_Click(object sender, RoutedEventArgs e)
+            => s_bl.Admin.ForwardClock(TimeUnit.Day);
+
+        private void btnAddOneMonth_Click(object sender, RoutedEventArgs e)
+            => s_bl.Admin.ForwardClock(TimeUnit.Month);
+
+        private void btnAddOneYear_Click(object sender, RoutedEventArgs e)
+            => s_bl.Admin.ForwardClock(TimeUnit.Year);
+
+        // ---------------- Config ----------------
+
+        private void btnSaveConfig_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetConfig(Configuration);
+            MessageBox.Show("Configuration saved!");
+        }
+
+        // ---------------- DB ----------------
+
         private void Button_InitializeDB(object sender, RoutedEventArgs e)
         {
+            if (IsSimulatorRunning)
+                return;
+
             var result = MessageBox.Show(
-        "Are you sure you want to initialize the database?",
-        "Confirmation",
-        MessageBoxButton.YesNo,
-        MessageBoxImage.Warning);
+                "Initialize database?",
+                "Confirm",
+                MessageBoxButton.YesNo);
 
             if (result != MessageBoxResult.Yes)
                 return;
 
-            foreach (Window window in Application.Current.Windows)
-            {
-                if (window != this)
-                    window.Close();
-            }
+            CloseOtherWindows();
 
             Mouse.OverrideCursor = Cursors.Wait;
             s_bl.Admin.InitializeDB();
             Mouse.OverrideCursor = null;
-            MessageBox.Show("Database initialization completed successfully!");
 
+            MessageBox.Show("Database initialized!");
         }
+
         private void Button_ResetDB(object sender, RoutedEventArgs e)
         {
+            if (IsSimulatorRunning)
+                return;
+
             var result = MessageBox.Show(
-                    "Are you sure you want to reset the database?",
-                    "Confirmation",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
+                "Reset database?",
+                "Confirm",
+                MessageBoxButton.YesNo);
 
             if (result != MessageBoxResult.Yes)
                 return;
 
-            foreach (Window window in Application.Current.Windows)
-            {
-                if (window != this)
-                    window.Close();
-            }
+            CloseOtherWindows();
 
             Mouse.OverrideCursor = Cursors.Wait;
             s_bl.Admin.ResetDB();
             Mouse.OverrideCursor = null;
-            MessageBox.Show("Database reset completed successfully!");                                  
+
+            MessageBox.Show("Database reset!");
         }
 
-
-        //מטודות לטיפול בכפתורי ניהול משלוחים והזמנות
-        private void btnHandleOrders(object sender, RoutedEventArgs e)
+        private static void CloseOtherWindows()
         {
-            new OrderListWindow().Show();
-
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is not MainWindow)
+                    window.Close();
+            }
         }
+
+        // ---------------- Navigation ----------------
+
+        private void btnHandleOrders(object sender, RoutedEventArgs e)
+            => new OrderListWindow().Show();
 
         private void btnHandleCourier(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-            new CourierListWindow().Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+            => new Courier.CourierListWindow().Show();
 
-        //מטודות התצפית על השעון והקונפיגורציה
+        // ---------------- Observers (Stage 7) ----------------
+
         private void clockObserver()
         {
-            CurrentTime = s_bl.Admin.GetClock();
+            if (_clockMutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                CurrentTime = s_bl.Admin.GetClock();
+
+                if (await _clockMutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    clockObserver();
+            });
         }
+
         private void configObserver()
         {
-            Configuration = s_bl.Admin.GetConfig();
+            if (_configMutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                Configuration = s_bl.Admin.GetConfig();
+
+                if (await _configMutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    configObserver();
+            });
         }
-        //מטודות שטוענות את השעון ואת הקונפיגורציה בעת טעינת החלון וסגירתו
+
+        // ---------------- Window Events ----------------
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             CurrentTime = s_bl.Admin.GetClock();
             Configuration = s_bl.Admin.GetConfig();
+
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            // Stop simulator on exit
+            if (IsSimulatorRunning)
+            {
+                s_bl.Admin.StopSimulator();
+                IsSimulatorRunning = false;
+            }
+
             s_bl.Admin.RemoveClockObserver(clockObserver);
             s_bl.Admin.RemoveConfigObserver(configObserver);
         }
-
     }
 }

@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Controls.Ribbon;
 using System.Windows.Input;
+using PL.Helpers;
 
 namespace PL.Order
 {
@@ -20,6 +21,8 @@ namespace PL.Order
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         int _applicantId = PL.Tools.UserContext.UserId;
+        private readonly ObserverMutex _orderListMutex = new(); // stage 7
+
         public BO.OrderInList selectedOrder { get; set; }
 
         public BO.OrderType? filterOrderType { get; set; } = null;
@@ -88,9 +91,20 @@ namespace PL.Order
             }
         }
 
-
         private void OrderListObserver()
-            => queryOrderList();
+        {
+            if (_orderListMutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                // העבודה האמיתית
+                queryOrderList();
+
+                if (await _orderListMutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    OrderListObserver();
+            });
+        }
 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

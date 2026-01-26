@@ -2,18 +2,8 @@
 using PL.Courier;
 using PL.Order;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using PL.Helpers;
 
 namespace PL
 {
@@ -23,18 +13,36 @@ namespace PL
     public partial class CourierMainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+        private readonly ObserverMutex _courierMutex = new(); // stage 7
+        private readonly ObserverMutex _orderMutex = new();   // stage 7
+
+        private int _currentOrderId = 0;
+
+        // ---------------- Properties ----------------
+
         public BO.Courier CurrentCourier
         {
             get => (BO.Courier)GetValue(CurrentCourierProperty);
             set => SetValue(CurrentCourierProperty, value);
         }
-        
-       public static readonly DependencyProperty CurrentCourierProperty =
+
+        public static readonly DependencyProperty CurrentCourierProperty =
             DependencyProperty.Register(
                 "CurrentCourier",
                 typeof(BO.Courier),
                 typeof(CourierMainWindow),
                 new PropertyMetadata(null));
+
+        public BO.OrderInProgress? OrderInProgress { get; set; }
+
+        public BO.DeliveryTerminationType
+            deliveryTerminationSelectedItem
+        { get; set; }
+
+        public string CourierName { get; set; }
+
+        // ---------------- Ctor ----------------
 
 
         public string CourierName { get; set; }
@@ -43,52 +51,148 @@ namespace PL
         public BO.DeliveryTerminationType deliveryTerminationSelectedItem { get; set; }
         public  BO.OrderInProgress? OrderInProgress { get; set; } 
         public CourierMainWindow()
-        { 
-            InitializeComponent();
-            CurrentCourier = s_bl.Courier.GetDetails(PL.Tools.UserContext.UserId, PL.Tools.UserContext.UserId);
-            CourierName = CurrentCourier.FullName;
-            OrderInProgress=CurrentCourier.OrderInProgress;
-            DataContext = this;
-           
-            this.Loaded += Window_Loaded;
-            this.Closing += Window_Closed;
-        }
-
-        private void viewAndUpdateDetails(object sender, RoutedEventArgs e)
         {
-            new CourierWindow(CurrentCourier.ID, CurrentCourier.ID).Show();    
-        }
+            InitializeComponent();
 
-        private void RefreshCoureirObserver()
-        { 
-            CurrentCourier = s_bl.Courier.GetDetails(PL.Tools.UserContext.UserId, CurrentCourier.ID);
+            int id = PL.Tools.UserContext.UserId;
+
+            CurrentCourier =
+                s_bl.Courier.GetDetails(id, id);
+
+            CourierName = CurrentCourier.FullName;
+
             OrderInProgress = CurrentCourier.OrderInProgress;
-        }
-        private void RefreshOrderObserver()
-            =>OrderInProgress = CurrentCourier.OrderInProgress;
-      
-        
 
-      
+            _currentOrderId = OrderInProgress?.orderId ?? 0;
+
+            DataContext = this;
+
+            Loaded += Window_Loaded;
+            Closing += Window_Closed;
+        }
+
+        // ---------------- Observers ----------------
+
+        private void RefreshCourierObserver()
+        {
+            if (_courierMutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                int id = PL.Tools.UserContext.UserId;
+
+                CurrentCourier =
+                    s_bl.Courier.GetDetails(id, id);
+
+                OrderInProgress =
+                    CurrentCourier.OrderInProgress;
+
+                // handle order observer change
+                UpdateOrderObserver();
+
+                if (await _courierMutex
+                    .UnsetLoadInProgressAndCheckRestartRequested())
+                {
+                    RefreshCourierObserver();
+                }
+            });
+        }
+
+        private void RefreshOrderObserver()
+        {
+            if (_orderMutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                OrderInProgress =
+                    CurrentCourier.OrderInProgress;
+
+                if (await _orderMutex
+                    .UnsetLoadInProgressAndCheckRestartRequested())
+                {
+                    RefreshOrderObserver();
+                }
+            });
+        }
+
+        // ---------------- Observer Management ----------------
+
+        private void UpdateOrderObserver()
+        {
+            int newOrderId =
+                CurrentCourier.OrderInProgress?.orderId ?? 0;
+
+            if (newOrderId == _currentOrderId)
+                return;
+
+            // remove old
+            if (_currentOrderId != 0)
+                s_bl.Order.RemoveObserver(
+                    _currentOrderId,
+                    RefreshOrderObserver);
+
+            _currentOrderId = newOrderId;
+
+            // add new
+            if (_currentOrderId != 0)
+                s_bl.Order.AddObserver(
+                    _currentOrderId,
+                    RefreshOrderObserver);
+        }
+
+        // ---------------- Window Events ----------------
 
         private void Window_Loaded(object sender, EventArgs e)
         {
-            s_bl.Courier.AddObserver(PL.Tools.UserContext.UserId, RefreshCoureirObserver);
-            if (CurrentCourier.OrderInProgress is not null)
-                s_bl.Order.AddObserver(CurrentCourier.OrderInProgress!.orderId, RefreshOrderObserver);
+            int id = PL.Tools.UserContext.UserId;
+
+            s_bl.Courier.AddObserver(id, RefreshCourierObserver);
+
+            if (_currentOrderId != 0)
+            {
+                s_bl.Order.AddObserver(
+                    _currentOrderId,
+                    RefreshOrderObserver);
+            }
         }
+
         private void Window_Closed(object sender, EventArgs e)
         {
-            s_bl.Courier.RemoveObserver(PL.Tools.UserContext.UserId, RefreshCoureirObserver);
-            s_bl.Order.RemoveObserver(PL.Tools.UserContext.UserId, RefreshOrderObserver);
+            int id = PL.Tools.UserContext.UserId;
+
+            s_bl.Courier.RemoveObserver(id, RefreshCourierObserver);
+
+            if (_currentOrderId != 0)
+            {
+                s_bl.Order.RemoveObserver(
+                    _currentOrderId,
+                    RefreshOrderObserver);
+            }
+        }
+
+        // ---------------- Buttons ----------------
+
+        private void viewAndUpdateDetails(object sender, RoutedEventArgs e)
+        {
+            new CourierWindow(
+                CurrentCourier.ID,
+                CurrentCourier.ID).Show();
         }
 
         private void Button_EndOrderHandle(object sender, RoutedEventArgs e)
         {
-            if(CurrentCourier.OrderInProgress is not null)
-            s_bl.Order.EndOrderHandle(PL.Tools.UserContext.UserId, PL.Tools.UserContext.UserId,
-             OrderInProgress!.orderId, OrderInProgress!.DeliveryId, (DO.DeliveryTermintionType)deliveryTerminationSelectedItem);
-        
+            if (OrderInProgress is null)
+                return;
+
+            s_bl.Order.EndOrderHandle(
+                PL.Tools.UserContext.UserId,
+                PL.Tools.UserContext.UserId,
+                OrderInProgress.orderId,
+                OrderInProgress.DeliveryId,
+                (DO.DeliveryTermintionType)
+                    deliveryTerminationSelectedItem);
         }
 
         private void Button_OrderSelection(object sender, RoutedEventArgs e)
@@ -98,13 +202,9 @@ namespace PL
             MessageBox.Show($"Only active courier can choose an order");
         }
 
-       
-
         private void Button_DeliveriesHisrory(object sender, RoutedEventArgs e)
         {
-
+            // optional
         }
-
-       
     }
 }

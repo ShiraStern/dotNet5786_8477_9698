@@ -2,6 +2,7 @@
 using BO;
 using System;
 using System.Windows;
+using PL.Helpers;
 
 namespace PL.Order
 {
@@ -9,7 +10,8 @@ namespace PL.Order
     {
         static readonly IBl s_bl = Factory.Get();
         private int _applicantId = PL.Tools.UserContext.UserId;
-       
+        private readonly ObserverMutex _orderMutex = new(); // stage 7
+
         public BO.CourierInList selectedOrder { get; set; }
         public BO.OrderProperties OrderProperties { get; set; } = BO.OrderProperties.None;
 
@@ -59,8 +61,25 @@ namespace PL.Order
         }
 
         private void RefreshOrder()
-            =>CurrentOrder = s_bl.Order.GetDetails(_applicantId, CurrentOrder!.ID);
-        
+        {
+            if (_orderMutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                var id = CurrentOrder?.ID;
+
+                if (id is null || id == 0)
+                    return;
+
+                CurrentOrder =
+                    s_bl.Order.GetDetails(_applicantId, id.Value);
+
+                if (await _orderMutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    RefreshOrder();
+            });
+        }
+
 
         private void OrderWindow_Loaded(object sender, RoutedEventArgs e)
         {
