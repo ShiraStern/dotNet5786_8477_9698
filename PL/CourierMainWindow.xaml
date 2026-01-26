@@ -98,13 +98,14 @@
                 <!-- hande orders -->
                 <Border Grid.Column="2" Style="{StaticResource CardStyle}">
                     <StackPanel>
-                        <StackPanel Visibility="{Binding CurrentCourier , 
+                        <StackPanel Visibility="{Binding CurrentCourier.OrderInProgress , 
                             Converter={StaticResource  ConvertHasOrderInProgressToVisible}}">
 
                             <TextBlock Text="הזמנה בטיפול"
                             Style="{StaticResource SectionTitleTextBlockStyle}"
                             HorizontalAlignment="Center"/>
-                            <StackPanel Orientation="Horizontal" Margin="10,2">
+                            <StackPanel Orientation="Horizontal" Margin="10,2"
+                                      >
                                 <TextBlock 
                                 Text="Order ID:"
                                 FontWeight="Bold"

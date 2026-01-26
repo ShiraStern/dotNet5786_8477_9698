@@ -10,7 +10,7 @@
   <!--רוחב-->
   <Longitude>35.18925479816518</Longitude>
   <!--אורך-->
-  <MaxRange>290</MaxRange>
+  <MaxRange>300</MaxRange>
   <AvgCarSpeed>50</AvgCarSpeed>
   <AvgMotorcycleSpeed>60</AvgMotorcycleSpeed>
   <AvgBicycleSpeed>25</AvgBicycleSpeed>

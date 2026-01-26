@@ -29,26 +29,27 @@ namespace PL
             set => SetValue(CurrentCourierProperty, value);
         }
         
-        public BO.DeliveryTerminationType deliveryTerminationSelectedItem { get; set; }
-
-
-        public string CourierName { get; set; }
-
-        public static readonly DependencyProperty CurrentCourierProperty =
+       public static readonly DependencyProperty CurrentCourierProperty =
             DependencyProperty.Register(
                 "CurrentCourier",
                 typeof(BO.Courier),
                 typeof(CourierMainWindow),
                 new PropertyMetadata(null));
 
+
+        public string CourierName { get; set; }
+
+        
+        public BO.DeliveryTerminationType deliveryTerminationSelectedItem { get; set; }
         public  BO.OrderInProgress? OrderInProgress { get; set; } 
         public CourierMainWindow()
-        {
+        { 
+            InitializeComponent();
             CurrentCourier = s_bl.Courier.GetDetails(PL.Tools.UserContext.UserId, PL.Tools.UserContext.UserId);
             CourierName = CurrentCourier.FullName;
             OrderInProgress=CurrentCourier.OrderInProgress;
             DataContext = this;
-            InitializeComponent();
+           
             this.Loaded += Window_Loaded;
             this.Closing += Window_Closed;
         }
@@ -84,6 +85,7 @@ namespace PL
 
         private void Button_EndOrderHandle(object sender, RoutedEventArgs e)
         {
+            if(CurrentCourier.OrderInProgress is not null)
             s_bl.Order.EndOrderHandle(PL.Tools.UserContext.UserId, PL.Tools.UserContext.UserId,
              OrderInProgress!.orderId, OrderInProgress!.DeliveryId, (DO.DeliveryTermintionType)deliveryTerminationSelectedItem);
         
@@ -91,7 +93,9 @@ namespace PL
 
         private void Button_OrderSelection(object sender, RoutedEventArgs e)
         {
-            new OpenOrderList_Window().Show();
+            if (CurrentCourier.Active)
+                new OpenOrderList_Window().Show();
+            MessageBox.Show($"Only active courier can choose an order");
         }
 
        

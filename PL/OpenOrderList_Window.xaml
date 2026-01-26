@@ -5,8 +5,147 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="OpenOrderList_Window" Height="450" Width="800">
-    <Grid>
-        
+        Title="OpenOrderList_Window" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Header -->
+            <RowDefinition Height="*"/>
+            <!-- Card with grid -->
+        </Grid.RowDefinitions>
+
+        <!-- כותרת עליונה -->
+        <TextBlock Grid.Row="0"
+                Text="רשימת הזמנות"
+                Style="{StaticResource SectionTitleTextBlockStyle}"
+                FontSize="20"
+                Margin="0,0,0,10"
+                HorizontalAlignment="Right"/>
+
+        <!-- Card עיקרי -->
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Filters -->
+                    <RowDefinition Height="*"/>
+                    <!-- DataGrid -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Buttons -->
+                </Grid.RowDefinitions>
+
+                <!-- FILTER SECTION -->
+                <Grid Grid.Row="0" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="Filter by:"
+                        VerticalAlignment="Center"
+                        Margin="0,0,10,0"/>
+
+                    <ComboBox Grid.Column="1"
+                            MinWidth="180"
+                            SelectedValue="{Binding Path=filterOrderStatus, Mode=TwoWay}"
+                              
+                            SelectionChanged="OrderStatusFilterComboBox"/>
+
+
+                </Grid>
+
+                <!-- ORDERS LIST -->
+                <DataGrid 
+                        Grid.Row="1"
+                        Margin="0,0,0,10"
+                        ItemsSource="{Binding OpenOrderInList}"
+                        AutoGenerateColumns="False"
+                        SelectedItem="{Binding selectedOrder}"
+                        IsReadOnly="True"
+                        ColumnWidth="auto">
+
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Binding="{Binding OrderId}"
+                                        Header="Order ID"
+                                        Width="auto" />
+
+                        <DataGridTextColumn Binding="{Binding OrderType}"
+                                        Header="Type"
+                                        Width="auto" />
+                        <DataGridTextColumn Binding="{Binding OrderProperties}"
+                                        Header="Properties"
+                                        Width="auto" />
+
+                        <DataGridTextColumn Binding="{Binding CustomerAddress}"
+                                        Header="Address"
+                                        Width="auto" />
+                        <DataGridTextColumn Binding="{Binding AirDistance}"
+                                        Header="AirDistance"
+                                        Width="auto" />
+                        <DataGridTextColumn Binding="{Binding actualDistance}"
+                                        Header="actualDistance"
+                                        Width="auto" />
+
+                        <DataGridTextColumn Binding="{Binding ScheduleStatus}"
+                                        Header="Schedule Status"
+                                        Width="auto" />
+                        <DataGridTextColumn Binding="{Binding deliveryTimeLeft}"
+                                        Header="Time Left "
+                                        Width="auto" />
+                        <DataGridTextColumn Binding="{Binding EstimatedDeliveryTime}"
+                                        Header="Estimated date"
+                                        Width="auto" />
+
+                        <DataGridTextColumn Binding="{Binding MaximumDeliveryTime}"
+                                        Header=" Maximum date"
+                                        Width="auto" />
+
+                        <DataGridTextColumn Binding="{Binding ScheduleStatus}"
+                                        Header="Schedule Status"
+                                        Width="auto" />
+
+                        <DataGridTextColumn Header="Time Left"
+                                        Width="auto"
+                                        />
+
+                        <DataGridTextColumn Header="Handling Time"
+                                        Width="auto"
+                                            />
+
+                        <DataGridTextColumn Binding="{Binding TotalDeliveries}"
+                                        Header="Total Deliveries"
+                                        Width="auto" />
+
+                        <DataGridTemplateColumn Header=" " Width="auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="בחר"
+                                        Width="60"
+                                        Click="ChooseOrder_Click"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+                <!-- BUTTONS -->
+                <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                    <Button Content="Add Order"
+                        Width="130" Height="38"
+                        Click="AddOrder_Click"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
     </Grid>
+
 </Window>

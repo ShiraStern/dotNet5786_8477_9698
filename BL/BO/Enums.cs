@@ -90,6 +90,9 @@ public enum FilterCouriersByProperty
 {
     IsActive,
     IsNotActive,
+    Bicycle,
+    Motorcycle,
+    Car,
     All
 }
 

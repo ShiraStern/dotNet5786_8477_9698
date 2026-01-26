@@ -100,7 +100,7 @@ namespace PL
                 }
                 
 
-                this.Close();
+                //this.Close();
             }
             catch (Exception ex)
             {

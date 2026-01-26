@@ -12,7 +12,7 @@ internal class Tools
 {
     public static bool IsValidPhone(string phone)
     {
-        if (Regex.IsMatch(phone, @"^05([ -]?)\d{8}$"))
+        if (Regex.IsMatch(phone, @"^05\d([- ]?)\d{7}$"))
             return true;
         MessageBox.Show("Phone number is not valid.");
         return false;
