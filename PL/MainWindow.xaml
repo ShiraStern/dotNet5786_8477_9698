@@ -150,7 +150,7 @@
                    Style="{StaticResource SectionTitleTextBlockStyle}"
                    HorizontalAlignment="Center"/>
 
-                        <TextBlock Text="קצב (בדקות)"
+                        <TextBlock Text=" (קצב (בדקות "
                    HorizontalAlignment="Center"
                    Foreground="{StaticResource TextSoftBrush}"/>
 
