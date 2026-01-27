@@ -82,6 +82,6 @@ internal class Tools
 
     public static class UserContext
     {
-        public static int UserId { get; set; } = 263435017;
+        public static int UserId { get; set; } 
     }
 }

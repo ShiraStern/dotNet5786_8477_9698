@@ -2,27 +2,27 @@
 <ArrayOfOrder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Order>
     <Id>1000</Id>
-    <OrderType>Small</OrderType>
+    <OrderType>Large</OrderType>
     <OrderNote />
     <CustomerAddress>הרצל 12 תל אביב</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>David Cohen</CustomerFullName>
-    <CustomerPhone>0538521971</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-01T19:56:50</OrderDate>
+    <CustomerPhone>0544846063</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2026-01-02T07:20:53</OrderDate>
   </Order>
   <Order>
     <Id>1001</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>שדרות רוטשילד 45 תל אביב</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Moshe Levi</CustomerFullName>
-    <CustomerPhone>0597357325</CustomerPhone>
-    <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-02T20:17:50</OrderDate>
+    <CustomerPhone>0577963927</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-14T18:22:53</OrderDate>
   </Order>
   <Order>
     <Id>1002</Id>
@@ -32,33 +32,33 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Yossi Mizrahi</CustomerFullName>
-    <CustomerPhone>0545436564</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-26T04:02:50</OrderDate>
+    <CustomerPhone>0505226198</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2025-12-29T14:25:53</OrderDate>
   </Order>
   <Order>
     <Id>1003</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Medium</OrderType>
     <OrderNote />
     <CustomerAddress>בן יהודה 23 תל אביב</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Avi Kaplan</CustomerFullName>
-    <CustomerPhone>0554306674</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-13T12:13:50</OrderDate>
+    <CustomerPhone>0528498046</CustomerPhone>
+    <OrderProperties>FragileAndWeighty</OrderProperties>
+    <OrderDate>2026-01-13T07:54:53</OrderDate>
   </Order>
   <Order>
     <Id>1004</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Medium</OrderType>
     <OrderNote />
     <CustomerAddress>סוקולוב 56 רמת גן</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Noam Ben-David</CustomerFullName>
-    <CustomerPhone>0543269378</CustomerPhone>
-    <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-07T20:27:50</OrderDate>
+    <CustomerPhone>0514727876</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-17T18:20:53</OrderDate>
   </Order>
   <Order>
     <Id>1005</Id>
@@ -68,21 +68,21 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Yaakov Peretz</CustomerFullName>
-    <CustomerPhone>0564465011</CustomerPhone>
+    <CustomerPhone>0508000166</CustomerPhone>
     <OrderProperties>None</OrderProperties>
-    <OrderDate>2025-12-29T22:52:50</OrderDate>
+    <OrderDate>2026-01-12T16:05:53</OrderDate>
   </Order>
   <Order>
     <Id>1006</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Medium</OrderType>
     <OrderNote />
     <CustomerAddress>דרך בן גוריון 12 ראשון לציון</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Eli Shapira</CustomerFullName>
-    <CustomerPhone>0584142104</CustomerPhone>
-    <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-10T04:55:50</OrderDate>
+    <CustomerPhone>0535550957</CustomerPhone>
+    <OrderProperties>FragileAndWeighty</OrderProperties>
+    <OrderDate>2026-01-07T23:45:53</OrderDate>
   </Order>
   <Order>
     <Id>1007</Id>
@@ -92,9 +92,9 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Omer Katz</CustomerFullName>
-    <CustomerPhone>0557027836</CustomerPhone>
-    <OrderProperties>None</OrderProperties>
-    <OrderDate>2026-01-27T12:19:50</OrderDate>
+    <CustomerPhone>0524180727</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-07T08:17:53</OrderDate>
   </Order>
   <Order>
     <Id>1008</Id>
@@ -104,21 +104,21 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Itamar Weiss</CustomerFullName>
-    <CustomerPhone>0589382693</CustomerPhone>
+    <CustomerPhone>0589595613</CustomerPhone>
     <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-21T18:52:50</OrderDate>
+    <OrderDate>2026-01-04T13:31:53</OrderDate>
   </Order>
   <Order>
     <Id>1009</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>דגל ראובן 15 פתח תקווה</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Daniel Bar</CustomerFullName>
-    <CustomerPhone>0542181660</CustomerPhone>
-    <OrderProperties>None</OrderProperties>
-    <OrderDate>2026-01-11T16:12:50</OrderDate>
+    <CustomerPhone>0584126206</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-22T20:28:53</OrderDate>
   </Order>
   <Order>
     <Id>1010</Id>
@@ -128,33 +128,33 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Yonatan Azulay</CustomerFullName>
-    <CustomerPhone>0547778219</CustomerPhone>
+    <CustomerPhone>0526885549</CustomerPhone>
     <OrderProperties>None</OrderProperties>
-    <OrderDate>2026-01-26T03:30:50</OrderDate>
+    <OrderDate>2026-01-22T09:48:53</OrderDate>
   </Order>
   <Order>
     <Id>1011</Id>
-    <OrderType>Medium</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>דרך בית לחם 12 ירושלים</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Ariel Mor</CustomerFullName>
-    <CustomerPhone>0503022701</CustomerPhone>
+    <CustomerPhone>0548471319</CustomerPhone>
     <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-17T06:42:50</OrderDate>
+    <OrderDate>2026-01-23T22:52:53</OrderDate>
   </Order>
   <Order>
     <Id>1012</Id>
-    <OrderType>Medium</OrderType>
+    <OrderType>Large</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב שמאי 22 ירושלים</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Nadav Shalom</CustomerFullName>
-    <CustomerPhone>0588688957</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-06T06:50:50</OrderDate>
+    <CustomerPhone>0588906799</CustomerPhone>
+    <OrderProperties>FragileAndWeighty</OrderProperties>
+    <OrderDate>2026-01-15T02:44:53</OrderDate>
   </Order>
   <Order>
     <Id>1013</Id>
@@ -164,33 +164,33 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Asaf Regev</CustomerFullName>
-    <CustomerPhone>0559230059</CustomerPhone>
-    <OrderProperties>None</OrderProperties>
-    <OrderDate>2026-01-03T01:35:50</OrderDate>
+    <CustomerPhone>0584986364</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2025-12-31T20:24:53</OrderDate>
   </Order>
   <Order>
     <Id>1014</Id>
-    <OrderType>Small</OrderType>
+    <OrderType>Large</OrderType>
     <OrderNote />
     <CustomerAddress>אבן גבירול 15 תל אביב</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Boaz Nir</CustomerFullName>
-    <CustomerPhone>0589572987</CustomerPhone>
+    <CustomerPhone>0562135827</CustomerPhone>
     <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-20T12:33:50</OrderDate>
+    <OrderDate>2026-01-04T13:10:53</OrderDate>
   </Order>
   <Order>
     <Id>1015</Id>
-    <OrderType>Small</OrderType>
+    <OrderType>Large</OrderType>
     <OrderNote />
     <CustomerAddress>דיזנגוף 47 תל אביב</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Shai Dror</CustomerFullName>
-    <CustomerPhone>0516878534</CustomerPhone>
-    <OrderProperties>None</OrderProperties>
-    <OrderDate>2026-01-20T21:24:50</OrderDate>
+    <CustomerPhone>0517939445</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-03T09:50:53</OrderDate>
   </Order>
   <Order>
     <Id>1016</Id>
@@ -200,9 +200,9 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Tomer Giladi</CustomerFullName>
-    <CustomerPhone>0519004140</CustomerPhone>
-    <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-13T02:42:50</OrderDate>
+    <CustomerPhone>0528047906</CustomerPhone>
+    <OrderProperties>Weighty</OrderProperties>
+    <OrderDate>2026-01-05T23:05:53</OrderDate>
   </Order>
   <Order>
     <Id>1017</Id>
@@ -212,33 +212,33 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Amir Dahan</CustomerFullName>
-    <CustomerPhone>0519781140</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-06T03:20:50</OrderDate>
+    <CustomerPhone>0596263551</CustomerPhone>
+    <OrderProperties>Weighty</OrderProperties>
+    <OrderDate>2026-01-15T06:25:53</OrderDate>
   </Order>
   <Order>
     <Id>1018</Id>
-    <OrderType>Small</OrderType>
+    <OrderType>Medium</OrderType>
     <OrderNote />
     <CustomerAddress>הס 21 חיפה</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Eitan Rosen</CustomerFullName>
-    <CustomerPhone>0578761373</CustomerPhone>
-    <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-08T11:56:50</OrderDate>
+    <CustomerPhone>0542607983</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-14T18:19:53</OrderDate>
   </Order>
   <Order>
     <Id>1019</Id>
-    <OrderType>Small</OrderType>
+    <OrderType>Large</OrderType>
     <OrderNote />
     <CustomerAddress>דרך הכרמל 44 חיפה</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Ronen Halevi</CustomerFullName>
-    <CustomerPhone>0515230435</CustomerPhone>
-    <OrderProperties>None</OrderProperties>
-    <OrderDate>2026-01-27T03:28:50</OrderDate>
+    <CustomerPhone>0539229886</CustomerPhone>
+    <OrderProperties>FragileAndWeighty</OrderProperties>
+    <OrderDate>2026-01-09T20:08:53</OrderDate>
   </Order>
   <Order>
     <Id>1020</Id>
@@ -248,21 +248,21 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Gil Ben-Ami</CustomerFullName>
-    <CustomerPhone>0542273738</CustomerPhone>
-    <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-14T01:03:50</OrderDate>
+    <CustomerPhone>0524665391</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-14T14:33:53</OrderDate>
   </Order>
   <Order>
     <Id>1021</Id>
-    <OrderType>Medium</OrderType>
+    <OrderType>Large</OrderType>
     <OrderNote />
     <CustomerAddress>שדרות נחל הבשור 7 באר שבע</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Tal Oren</CustomerFullName>
-    <CustomerPhone>0541690631</CustomerPhone>
-    <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-02T22:01:50</OrderDate>
+    <CustomerPhone>0545903486</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-27T08:29:53</OrderDate>
   </Order>
   <Order>
     <Id>1022</Id>
@@ -272,21 +272,21 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Yair Hadad</CustomerFullName>
-    <CustomerPhone>0501754878</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-03T18:38:50</OrderDate>
+    <CustomerPhone>0562942051</CustomerPhone>
+    <OrderProperties>Weighty</OrderProperties>
+    <OrderDate>2025-12-31T19:20:53</OrderDate>
   </Order>
   <Order>
     <Id>1023</Id>
-    <OrderType>Medium</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>שדרות הנשיא 77 חיפה</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Harel Romano</CustomerFullName>
-    <CustomerPhone>0586741940</CustomerPhone>
-    <OrderProperties>None</OrderProperties>
-    <OrderDate>2026-01-08T04:23:50</OrderDate>
+    <CustomerPhone>0547542399</CustomerPhone>
+    <OrderProperties>FragileAndWeighty</OrderProperties>
+    <OrderDate>2026-01-12T18:54:53</OrderDate>
   </Order>
   <Order>
     <Id>1024</Id>
@@ -296,9 +296,9 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Oren Tal</CustomerFullName>
-    <CustomerPhone>0556154816</CustomerPhone>
+    <CustomerPhone>0517582593</CustomerPhone>
     <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-23T06:08:50</OrderDate>
+    <OrderDate>2026-01-24T14:32:53</OrderDate>
   </Order>
   <Order>
     <Id>1025</Id>
@@ -308,21 +308,21 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Barak Almog</CustomerFullName>
-    <CustomerPhone>0568811968</CustomerPhone>
-    <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-12T03:38:50</OrderDate>
+    <CustomerPhone>0544577414</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-13T04:42:53</OrderDate>
   </Order>
   <Order>
     <Id>1026</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>דרך יפו 56 ראשון לציון</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Lior Peled</CustomerFullName>
-    <CustomerPhone>0584742069</CustomerPhone>
+    <CustomerPhone>0523573373</CustomerPhone>
     <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-16T06:10:50</OrderDate>
+    <OrderDate>2026-01-13T19:33:53</OrderDate>
   </Order>
   <Order>
     <Id>1027</Id>
@@ -332,9 +332,9 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Ziv Avraham</CustomerFullName>
-    <CustomerPhone>0531464398</CustomerPhone>
-    <OrderProperties>None</OrderProperties>
-    <OrderDate>2026-01-14T14:26:50</OrderDate>
+    <CustomerPhone>0545181608</CustomerPhone>
+    <OrderProperties>Weighty</OrderProperties>
+    <OrderDate>2026-01-05T19:39:53</OrderDate>
   </Order>
   <Order>
     <Id>1028</Id>
@@ -344,33 +344,33 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Gal Sharon</CustomerFullName>
-    <CustomerPhone>0571731402</CustomerPhone>
-    <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-03T13:27:50</OrderDate>
+    <CustomerPhone>0538740038</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2026-01-04T04:24:53</OrderDate>
   </Order>
   <Order>
     <Id>1029</Id>
-    <OrderType>Small</OrderType>
+    <OrderType>Large</OrderType>
     <OrderNote />
     <CustomerAddress>דרך ירושלים 88 רחובות</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Nir Ravid</CustomerFullName>
-    <CustomerPhone>0533447517</CustomerPhone>
-    <OrderProperties>None</OrderProperties>
-    <OrderDate>2026-01-14T15:56:50</OrderDate>
+    <CustomerPhone>0528670954</CustomerPhone>
+    <OrderProperties>FragileAndWeighty</OrderProperties>
+    <OrderDate>2025-12-31T06:55:53</OrderDate>
   </Order>
   <Order>
     <Id>1030</Id>
-    <OrderType>Medium</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>דרך בן גוריון 7 אשדוד</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Oded Harel</CustomerFullName>
-    <CustomerPhone>0532867287</CustomerPhone>
-    <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-06T13:47:50</OrderDate>
+    <CustomerPhone>0523094928</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2026-01-18T08:39:53</OrderDate>
   </Order>
   <Order>
     <Id>1031</Id>
@@ -380,21 +380,21 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Rami Goldstein</CustomerFullName>
-    <CustomerPhone>0525100410</CustomerPhone>
-    <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-05T05:31:50</OrderDate>
+    <CustomerPhone>0523726644</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2026-01-09T11:48:53</OrderDate>
   </Order>
   <Order>
     <Id>1032</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Medium</OrderType>
     <OrderNote />
     <CustomerAddress>שדרות ירושלים 15 בני ברק</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Erez Shani</CustomerFullName>
-    <CustomerPhone>0539736128</CustomerPhone>
-    <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-03T15:59:50</OrderDate>
+    <CustomerPhone>0587729856</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-22T18:59:53</OrderDate>
   </Order>
   <Order>
     <Id>1033</Id>
@@ -404,9 +404,9 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Yoav Segal</CustomerFullName>
-    <CustomerPhone>0597895330</CustomerPhone>
+    <CustomerPhone>0523518688</CustomerPhone>
     <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-27T23:09:50</OrderDate>
+    <OrderDate>2026-01-03T04:04:53</OrderDate>
   </Order>
   <Order>
     <Id>1034</Id>
@@ -416,9 +416,9 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Itai Barkai</CustomerFullName>
-    <CustomerPhone>0512730556</CustomerPhone>
-    <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-21T03:08:50</OrderDate>
+    <CustomerPhone>0554847906</CustomerPhone>
+    <OrderProperties>Weighty</OrderProperties>
+    <OrderDate>2026-01-14T18:12:53</OrderDate>
   </Order>
   <Order>
     <Id>1035</Id>
@@ -428,45 +428,45 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Shlomi Dayan</CustomerFullName>
-    <CustomerPhone>0572358267</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-11T02:05:50</OrderDate>
+    <CustomerPhone>0565746476</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2026-01-19T15:34:53</OrderDate>
   </Order>
   <Order>
     <Id>1036</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב דגניה 12 כפר סבא</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Guy Arbel</CustomerFullName>
-    <CustomerPhone>0536068613</CustomerPhone>
+    <CustomerPhone>0582179232</CustomerPhone>
     <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-04T15:31:50</OrderDate>
+    <OrderDate>2026-01-15T02:37:53</OrderDate>
   </Order>
   <Order>
     <Id>1037</Id>
-    <OrderType>Small</OrderType>
+    <OrderType>Large</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב המלאכה 44 כפר סבא</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Yinon Aloni</CustomerFullName>
-    <CustomerPhone>0507938100</CustomerPhone>
+    <CustomerPhone>0545578447</CustomerPhone>
     <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-25T01:55:50</OrderDate>
+    <OrderDate>2026-01-20T21:42:53</OrderDate>
   </Order>
   <Order>
     <Id>1038</Id>
-    <OrderType>Medium</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב הרצל 7 רמלה</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Elad Pardo</CustomerFullName>
-    <CustomerPhone>0501695360</CustomerPhone>
-    <OrderProperties>None</OrderProperties>
-    <OrderDate>2026-01-26T21:11:50</OrderDate>
+    <CustomerPhone>0525517136</CustomerPhone>
+    <OrderProperties>Weighty</OrderProperties>
+    <OrderDate>2026-01-18T06:50:53</OrderDate>
   </Order>
   <Order>
     <Id>1039</Id>
@@ -476,33 +476,33 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Amit Refael</CustomerFullName>
-    <CustomerPhone>0504080687</CustomerPhone>
-    <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-18T22:11:50</OrderDate>
+    <CustomerPhone>0576221391</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-03T10:55:53</OrderDate>
   </Order>
   <Order>
     <Id>1040</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>שדרות הרצל 11 אילת</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Reuven Azulay</CustomerFullName>
-    <CustomerPhone>0501154570</CustomerPhone>
-    <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-05T18:22:50</OrderDate>
+    <CustomerPhone>0582106622</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-14T11:01:53</OrderDate>
   </Order>
   <Order>
     <Id>1041</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב הירדן 22 אילת</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Meir Cohen</CustomerFullName>
-    <CustomerPhone>0513085278</CustomerPhone>
+    <CustomerPhone>0561322214</CustomerPhone>
     <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-25T13:38:50</OrderDate>
+    <OrderDate>2026-01-19T13:27:53</OrderDate>
   </Order>
   <Order>
     <Id>1042</Id>
@@ -512,92 +512,92 @@
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Ariel Zaken</CustomerFullName>
-    <CustomerPhone>0505485021</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-09T10:03:50</OrderDate>
+    <CustomerPhone>0504461539</CustomerPhone>
+    <OrderProperties>Weighty</OrderProperties>
+    <OrderDate>2026-01-07T16:47:53</OrderDate>
   </Order>
   <Order>
     <Id>1043</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Medium</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב העצמאות 41 אשקלון</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Roi Meir</CustomerFullName>
-    <CustomerPhone>0507225616</CustomerPhone>
-    <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-10T06:30:50</OrderDate>
+    <CustomerPhone>0568607488</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-20T16:23:53</OrderDate>
   </Order>
   <Order>
     <Id>1044</Id>
-    <OrderType>Small</OrderType>
+    <OrderType>Medium</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב הגליל 12 קריית גת</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Ofer Tzur</CustomerFullName>
-    <CustomerPhone>0583937007</CustomerPhone>
-    <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-09T15:14:50</OrderDate>
+    <CustomerPhone>0545272421</CustomerPhone>
+    <OrderProperties>Weighty</OrderProperties>
+    <OrderDate>2026-01-25T16:59:53</OrderDate>
   </Order>
   <Order>
     <Id>1045</Id>
-    <OrderType>Medium</OrderType>
+    <OrderType>Small</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב הנרקיס 44 קריית גת</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Yehuda Koren</CustomerFullName>
-    <CustomerPhone>0597011801</CustomerPhone>
+    <CustomerPhone>0526645433</CustomerPhone>
     <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-12T12:58:50</OrderDate>
+    <OrderDate>2026-01-02T03:48:53</OrderDate>
   </Order>
   <Order>
     <Id>1046</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Medium</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב הרצל 5 מודיעין</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Tzachi Malka</CustomerFullName>
-    <CustomerPhone>0564691361</CustomerPhone>
-    <OrderProperties>FragileAndWeighty</OrderProperties>
-    <OrderDate>2026-01-08T21:30:50</OrderDate>
+    <CustomerPhone>0509651034</CustomerPhone>
+    <OrderProperties>None</OrderProperties>
+    <OrderDate>2026-01-24T02:45:53</OrderDate>
   </Order>
   <Order>
     <Id>1047</Id>
-    <OrderType>Small</OrderType>
+    <OrderType>Large</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב התמר 22 מודיעין</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Eyal Ben-Shushan</CustomerFullName>
-    <CustomerPhone>0588408066</CustomerPhone>
-    <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-12T13:54:50</OrderDate>
+    <CustomerPhone>0515254264</CustomerPhone>
+    <OrderProperties>Fragile</OrderProperties>
+    <OrderDate>2026-01-20T14:17:53</OrderDate>
   </Order>
   <Order>
     <Id>1048</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Medium</OrderType>
     <OrderNote />
     <CustomerAddress>רחוב יגאל אלון 18 רמת השרון</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Ofir Levi</CustomerFullName>
-    <CustomerPhone>0571001315</CustomerPhone>
+    <CustomerPhone>0546662678</CustomerPhone>
     <OrderProperties>Fragile</OrderProperties>
-    <OrderDate>2026-01-14T20:34:50</OrderDate>
+    <OrderDate>2025-12-30T04:23:53</OrderDate>
   </Order>
   <Order>
     <Id>1049</Id>
-    <OrderType>Large</OrderType>
+    <OrderType>Medium</OrderType>
     <OrderNote> </OrderNote>
     <CustomerAddress>רחוב סוקולוב 7 רמת השרון</CustomerAddress>
     <Latitude>0</Latitude>
     <Longitude>0</Longitude>
     <CustomerFullName>Ran Amar</CustomerFullName>
-    <CustomerPhone>0567039483</CustomerPhone>
-    <OrderProperties>Weighty</OrderProperties>
-    <OrderDate>2026-01-15T16:04:50</OrderDate>
+    <CustomerPhone>0527570102</CustomerPhone>
+    <OrderProperties>FragileAndWeighty</OrderProperties>
+    <OrderDate>2026-01-23T07:49:53</OrderDate>
   </Order>
 </ArrayOfOrder>

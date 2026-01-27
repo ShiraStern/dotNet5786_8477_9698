@@ -83,6 +83,7 @@ namespace PL
                             "Choose screen",
                             MessageBoxButton.YesNo,
                             MessageBoxImage.Question);
+                        PL.Tools.UserContext.UserId = id;
 
                         if (result == MessageBoxResult.Yes)
                             new MainWindow().Show();
