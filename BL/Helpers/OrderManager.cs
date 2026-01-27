@@ -450,7 +450,7 @@ namespace Helpers
 
         internal static BO.OpenOrderInList ConvertToOpenOrderInList(DO.Order order)
         {
-            var config = AdminManager.GetConfig(); // צילום Config
+            var config = AdminManager.GetConfig(); //  Config
 
             var currentDelivery = DeliveryManager.GetLastDelivery(order.Id);
 

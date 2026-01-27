@@ -144,17 +144,6 @@
     <EmploymentStartDate>2021-01-26T23:44:50</EmploymentStartDate>
   </Courier>
   <Courier>
-    <Id>263435017</Id>
-    <FullName>Gal Cohen</FullName>
-    <Phone>050-3714231</Phone>
-    <Email>GalCohen@gmail.com</Email>
-    <Password>98839</Password>
-    <Active>false</Active>
-    <MaxDistance>54</MaxDistance>
-    <DeliveryType>Bicycle</DeliveryType>
-    <EmploymentStartDate>2023-01-26T23:44:50</EmploymentStartDate>
-  </Courier>
-  <Courier>
     <Id>392754383</Id>
     <FullName>Ori Hadad</FullName>
     <Phone>050-5166218</Phone>
@@ -219,5 +208,16 @@
     <MaxDistance>152</MaxDistance>
     <DeliveryType>Bicycle</DeliveryType>
     <EmploymentStartDate>2017-01-26T23:44:50</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>263435017</Id>
+    <FullName>Gal Cohen</FullName>
+    <Phone>050-3714231</Phone>
+    <Email>GalCohen@gmail.com</Email>
+    <Password>98839</Password>
+    <Active>true</Active>
+    <MaxDistance>54</MaxDistance>
+    <DeliveryType>Bicycle</DeliveryType>
+    <EmploymentStartDate>2023-01-26T23:44:50</EmploymentStartDate>
   </Courier>
 </ArrayOfOrder>
