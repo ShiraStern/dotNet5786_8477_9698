@@ -46,8 +46,11 @@ internal class CourierImpementation : ICourier
             throw new BlUnauthorizedAccessException("Only admin can delete a courier.");
         try
         {
+            if (CourierManager.GetNumberOfDeliveriesInProcess(id) == 0)
+                CourierManager.Delete(id);
+                throw new BlInvalidOperationException("Cannot delete courier with ongoing deliveries.");
             // delete courier via DAL   
-            CourierManager.Delete(id);
+            
            
             
         }

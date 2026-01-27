@@ -141,6 +141,10 @@ namespace PL.Courier
 
                 MessageBox.Show("Courier deleted successfully!");
             }
+            catch(BO.BlInvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);

@@ -173,7 +173,7 @@ internal static class CourierManager
 
     // -------------------- Statistics --------------------
 
-    internal static int? GetNumberOfDeliveriesInProcess(int id)
+    internal static int? GetNumberOfDeliveriesInProcess(int courierId)
     {
         List<DO.Delivery> deliveries;
 
@@ -181,7 +181,7 @@ internal static class CourierManager
             deliveries = s_dal.Delivery.ReadAll().ToList();
 
         return deliveries.Count(d =>
-            d.CourierId == id &&
+            d.CourierId == courierId &&
             d.DeliveryTermintionType == DO.DeliveryTermintionType.None);
     }
 
