@@ -5,6 +5,7 @@ using BO;
 using DalApi;
 using DO;
 using Helpers;
+using System;
 using System.Collections.Generic;
 
 internal class OrderImplementation : BlApi.IOrder
@@ -156,8 +157,19 @@ internal class OrderImplementation : BlApi.IOrder
         {
             // DO/order from dal
             DO.Delivery? delivery = DeliveryManager.Read(deliveryId);
+            BO.Order? order = OrderManager.GetOrderDetails(orderId);
+            BO.Courier courier = CourierManager.ConvertToCourier( CourierManager.Read(courierId));
+            order.OrderStatus = termintionType switch
+            {
+                DeliveryTermintionType.None => OrderStatus.Open,
+                DeliveryTermintionType.Cancelled=> OrderStatus.Cancelled,
+                DeliveryTermintionType.CustomerNotHome=> OrderStatus.Open,
+                DeliveryTermintionType.RefusedToAccept=> OrderStatus.Refused,
+                DeliveryTermintionType.DeliveredSeccessfully=> OrderStatus.Delivered
 
-            
+
+            };
+            courier.OrderInProgress = null;
             if (delivery.OrderId != orderId || delivery.CourierId != courierId)
                 throw new BlUnauthorizedAccessException(
                     "The courier is not authorized to end this delivery.");
@@ -171,7 +183,12 @@ internal class OrderImplementation : BlApi.IOrder
 
             // saving to dal
             DeliveryManager .Update(updatedDelivery);
-            
+
+            OrderManager.UpdateOrder(order);
+
+            CourierManager.Update(courier);
+
+
         }
         catch (DalDoesNotExistException ex)
         {
@@ -426,9 +443,19 @@ internal class OrderImplementation : BlApi.IOrder
                 DeliveryTermintionType = DO.DeliveryTermintionType.None,
                 ActualDistance = null
             };
-
+            order.OrderStatus = OrderStatus.InTreatment;
+            OrderManager.UpdateOrder(order);
             // 5. שמירה ב-DAL
-           DeliveryManager.Create(newDelivery);
+            DeliveryManager.Create(newDelivery);
+
+            OrderManager.Observers.NotifyItemUpdated(orderId);
+            CourierManager.Observers.NotifyItemUpdated(courierId);
+            OrderManager.Observers.NotifyListUpdated();
+            CourierManager.Observers.NotifyListUpdated();
+
+
+
+           
         }
         catch (DalDoesNotExistException ex)
         {

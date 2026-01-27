@@ -327,32 +327,7 @@ namespace Helpers
 
         }
 
-        //private static int GetStatusIndex(BO.Order order)//פונקצית עזר לפונקציה GetOrdersStatusCounts היא מחזירה את האינדקס שבו צריך להיות ההזמנה על פי הסטטוס הזמנה והסטטוס זמן
-        //{
-        //    // סטטוסים פעילים – תלויי זמן
-        //    if (order.OrderStatus == OrderStatus.Open)
-        //    {
-        //        if (order.ScheduleStatus == ScheduleStatus.OnTime) return 0;
-        //        if (order.ScheduleStatus == ScheduleStatus.InRisk) return 1;
-        //        if (order.ScheduleStatus == ScheduleStatus.Late) return 2;
-        //    }
-
-        //    if (order.OrderStatus == OrderStatus.InTreatment)
-        //    {
-        //        if (order.ScheduleStatus == ScheduleStatus.OnTime) return 3;
-        //        if (order.ScheduleStatus == ScheduleStatus.InRisk) return 4;
-        //        if (order.ScheduleStatus == ScheduleStatus.Late) return 5;
-        //    }
-
-        //    // סטטוסים סופיים – לא תלויי זמן
-        //    if (order.OrderStatus == OrderStatus.Delivered) return 6;
-        //    if (order.OrderStatus == OrderStatus.Refused) return 7;
-        //    if (order.OrderStatus == OrderStatus.Cancelled) return 8;
-
-        //    throw new BO.BlInvalidStatusException(   //זריקת חריגה במידה ויש סטטוס לא מזוהה וערך לא תקין
-        //        $"Invalid status combination: OrderStatus={order.OrderStatus}, ScheduleStatus={order.ScheduleStatus}");
-
-        //}
+      
 
 
 
@@ -364,7 +339,7 @@ namespace Helpers
 
         internal static BO.Order ConvertToOrder(DO.Order order)
         {
-            var config = AdminManager.GetConfig(); // צילום Config
+            var config = AdminManager.GetConfig(); //  Config
 
             BO.Order bo;
 
@@ -646,14 +621,14 @@ namespace Helpers
 
         internal static BO.OrderStatus Calc_OrderStatus(DO.Delivery delivery)
         {
-            return (BO.DeliveryTerminationType)delivery.DeliveryTermintionType switch
+            return delivery.DeliveryTermintionType switch
             {
-                BO.DeliveryTerminationType.Cancelled => OrderStatus.Cancelled,
-                BO.DeliveryTerminationType.RefusedToAccept => OrderStatus.Refused,
-                BO.DeliveryTerminationType.DeliveredSeccessfully => OrderStatus.Delivered,
-                BO.DeliveryTerminationType.None => OrderStatus.Open,
-                BO.DeliveryTerminationType.FailedToDeliver => OrderStatus.Open,
-                BO.DeliveryTerminationType.CustomerNotHome => OrderStatus.Open,
+                DO.DeliveryTermintionType.Cancelled => OrderStatus.Cancelled,
+                DO.DeliveryTermintionType.RefusedToAccept => OrderStatus.Refused,
+                DO.DeliveryTermintionType.DeliveredSeccessfully => OrderStatus.Delivered,
+                DO.DeliveryTermintionType.None => OrderStatus.InTreatment,
+                DO.DeliveryTermintionType.FailedToDeliver => OrderStatus.Open,
+                DO.DeliveryTermintionType.CustomerNotHome => OrderStatus.Open,
                 _ => throw new BlInvalidStatusException("Unknown delivery termination type")
             };
             

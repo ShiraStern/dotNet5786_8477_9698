@@ -90,6 +90,15 @@ internal static class CourierManager
         Observers.NotifyItemUpdated(doCourier.Id);
         Observers.NotifyListUpdated();
     }
+    internal static void Update(BO.Courier doCourier)
+    {
+        lock (AdminManager.BlMutex)
+            s_dal.Courier.Update(ConvertToCourier( doCourier));
+
+
+        Observers.NotifyItemUpdated(doCourier.ID);
+        Observers.NotifyListUpdated();
+    }
 
     internal static DO.Courier? Read(int courierId)
     {
@@ -173,7 +182,7 @@ internal static class CourierManager
 
     // -------------------- Statistics --------------------
 
-    internal static int? GetNumberOfDeliveriesInProcess(int id)
+    internal static int? GetNumberOfDeliveriesInProcess(int courierId)
     {
         List<DO.Delivery> deliveries;
 
@@ -181,7 +190,7 @@ internal static class CourierManager
             deliveries = s_dal.Delivery.ReadAll().ToList();
 
         return deliveries.Count(d =>
-            d.CourierId == id &&
+            d.CourierId == courierId &&
             d.DeliveryTermintionType == DO.DeliveryTermintionType.None);
     }
 

@@ -1,4 +1,5 @@
 ﻿using BO;
+using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         int _applicantId = PL.Tools.UserContext.UserId;
+        int isAddedObserver = 0;
         public BO.OrderInList selectedOrder { get; set; }
 
         public BO.OrderType? filterOrderType { get; set; } = null;
@@ -41,18 +43,18 @@ namespace PL
 
 
         public OpenOrderList_Window()
-        { 
+        {
             InitializeComponent();
             try
             {
-               
+
                 OpenOrderInList = s_bl.Order.GetList_OpenOrderInList();
             }
-             catch(BlDoesNotExistException)
+            catch (BlDoesNotExistException)
             {
                 MessageBoxResult result = MessageBox.Show(
-                
-                " Would you like to reset DB?","Failed to load data.",
+
+                " Would you like to reset DB?", "Failed to load data.",
                 MessageBoxButton.OKCancel);
 
                 if (result == MessageBoxResult.OK)
@@ -60,8 +62,8 @@ namespace PL
                     s_bl.Admin.InitializeDB(); // retry logic
                 }
                 this.Close();
-            } 
-           
+            }
+
             this.Loaded += Window_Loaded; // single subscription
             this.Closing += Window_Closed;
         }
@@ -92,7 +94,9 @@ namespace PL
 
 
         private void Window_Closed(object sender, EventArgs e)
-            => s_bl.Order.RemoveObserver(OrderListObserver);
+        { s_bl.Order.RemoveObserver(OrderListObserver);
+          if( isAddedObserver is not 0) s_bl.Order.RemoveObserver(isAddedObserver, OrderListObserver); }
+
 
 
 
@@ -111,6 +115,8 @@ namespace PL
             {
                 try
                 {
+                    isAddedObserver = order.OrderId;
+                    s_bl.Order.AddObserver(order.OrderId, OrderListObserver);
                     s_bl.Order.HandleOrder(_applicantId, _applicantId, order.OrderId);
 
                     MessageBox.Show("The order was selected successfully!");

@@ -4,6 +4,7 @@ using PL.Order;
 using System;
 using System.Windows;
 using PL.Helpers;
+using DO;
 
 namespace PL
 {
@@ -202,7 +203,7 @@ namespace PL
 
         private void Button_DeliveriesHisrory(object sender, RoutedEventArgs e)
         {
-            
+            new DeliveriesPerCourier_Window().Show();
         }
     }
 }

@@ -44,3 +44,7 @@ public class BlInvalidStatusException : Exception//חריגה של אם ישנו
 {
     public BlInvalidStatusException(string? message) : base(message) { }
 }
+public class BlInvalidOperationException : Exception//חריגה של אם ישנומצב שאינו תקין לדוגמא סטטוס הזמנה שלא קיים 
+{
+    public BlInvalidOperationException(string? message) : base(message) { }
+}
