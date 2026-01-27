@@ -114,15 +114,7 @@
                                      Header="Total Deliveries"
                                      Width="auto" />
 
-                            <DataGridTemplateColumn Header=" " Width="auto">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="בחר"
-                                     Width="60"
-                                     Click="ChooseOrder_Click"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
+                           
 
                         </DataGrid.Columns>
 
