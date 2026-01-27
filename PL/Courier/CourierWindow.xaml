@@ -130,12 +130,12 @@
          Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
         <!-- OrderInProgress -->
-        <Label Grid.Row="11" Grid.Column="0" Content="Order In Progress:"
-       Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+        <Label Grid.Row="11" Grid.Column="0" Content="Order In Progress(ID):"
+       Visibility="{Binding CurrentCourier.OrderInProgress, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
         <TextBlock Grid.Row="11" Grid.Column="2"
-           Text="{Binding CurrentCourier.OrderInProgress}"
-           Visibility="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+           Text="{Binding CurrentCourier.OrderInProgress.orderId}"
+           Visibility="{Binding CurrentCourier.OrderInProgress, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
 
 
         <!-- Button -->

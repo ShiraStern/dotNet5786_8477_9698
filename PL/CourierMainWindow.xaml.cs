@@ -11,6 +11,8 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+        private bool flagAddedObserver = false;
+
         private readonly ObserverMutex _courierMutex = new(); // stage 7
         private readonly ObserverMutex _orderMutex = new();   // stage 7
 
@@ -143,6 +145,7 @@ namespace PL
 
             if (CurrentCourier.OrderInProgress is not null)
             {
+                flagAddedObserver= true;
                 s_bl.Order.AddObserver(
                     _currentOrderId,
                     RefreshOrderObserver);
@@ -155,11 +158,12 @@ namespace PL
 
             s_bl.Courier.RemoveObserver(id, RefreshCourierObserver);
 
-            if (_currentOrderId != 0)
+            if (flagAddedObserver)
             {
                 s_bl.Order.RemoveObserver(
                     _currentOrderId,
                     RefreshOrderObserver);
+                flagAddedObserver= false;
             }
         }
 
@@ -192,12 +196,13 @@ namespace PL
         {
             if (CurrentCourier.Active)
                 new OpenOrderList_Window().Show();
+            else
             MessageBox.Show($"Only active courier can choose an order");
         }
 
         private void Button_DeliveriesHisrory(object sender, RoutedEventArgs e)
         {
-            // optional
+            
         }
     }
 }

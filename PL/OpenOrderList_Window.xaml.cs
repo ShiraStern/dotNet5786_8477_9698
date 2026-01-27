@@ -51,8 +51,8 @@ namespace PL
              catch(BlDoesNotExistException)
             {
                 MessageBoxResult result = MessageBox.Show(
-                "Failed to load data.",
-                " Would you like to try again?",
+                
+                " Would you like to reset DB?","Failed to load data.",
                 MessageBoxButton.OKCancel);
 
                 if (result == MessageBoxResult.OK)
@@ -113,7 +113,7 @@ namespace PL
                 {
                     s_bl.Order.HandleOrder(_applicantId, _applicantId, order.OrderId);
 
-                    MessageBox.Show("Order deleted successfully!");
+                    MessageBox.Show("The order was selected successfully!");
                 }
                 catch (Exception ex)
                 {

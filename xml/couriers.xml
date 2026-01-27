@@ -126,14 +126,25 @@
     <FullName>Shiran Malka</FullName>
     <Phone>052-3000628</Phone>
     <Email>ShiranMalka@gmail.com</Email>
-    <Password>129313</Password>
-    <Active>false</Active>
-    <MaxDistance>258</MaxDistance>
-    <DeliveryType>Bicycle</DeliveryType>
-    <EmploymentStartDate>2023-01-27T02:46:53</EmploymentStartDate>
+    <Password>123009</Password>
+    <Active>true</Active>
+    <MaxDistance>243</MaxDistance>
+    <DeliveryType>None</DeliveryType>
+    <EmploymentStartDate>2018-01-26T23:44:50</EmploymentStartDate>
   </Courier>
   <Courier>
-    <Id>223057744</Id>
+    <Id>227963589</Id>
+    <FullName>Nadav Friedman</FullName>
+    <Phone>050-6177377</Phone>
+    <Email>NadavFriedman@gmail.com</Email>
+    <Password>149998</Password>
+    <Active>false</Active>
+    <MaxDistance>46</MaxDistance>
+    <DeliveryType>Motorcycle</DeliveryType>
+    <EmploymentStartDate>2021-01-26T23:44:50</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>392754383</Id>
     <FullName>Ori Hadad</FullName>
     <Phone>056-6814758</Phone>
     <Email>OriHadad@gmail.com</Email>
@@ -197,5 +208,16 @@
     <MaxDistance>198</MaxDistance>
     <DeliveryType>Car</DeliveryType>
     <EmploymentStartDate>2026-01-27T02:46:53</EmploymentStartDate>
+  </Courier>
+  <Courier>
+    <Id>263435017</Id>
+    <FullName>Gal Cohen</FullName>
+    <Phone>050-3714231</Phone>
+    <Email>GalCohen@gmail.com</Email>
+    <Password>98839</Password>
+    <Active>true</Active>
+    <MaxDistance>54</MaxDistance>
+    <DeliveryType>Bicycle</DeliveryType>
+    <EmploymentStartDate>2023-01-26T23:44:50</EmploymentStartDate>
   </Courier>
 </ArrayOfOrder>

@@ -370,7 +370,29 @@ internal class OrderImplementation : BlApi.IOrder
 
     public IEnumerable<BO.OpenOrderInList> GetList_OpenOrderInList()
     {
-        return OrderManager.ReadAll().Select(x=> OrderManager.ConvertToOpenOrderInList(x));  
+        List<BO.OpenOrderInList> list = new List<OpenOrderInList>();
+        BO.OpenOrderInList? boOrder;
+        var orders= OrderManager.ReadAll();
+        foreach(var order in orders)
+            try
+            {
+                boOrder = OrderManager.ConvertToOpenOrderInList(order);
+                list.Add(boOrder);   
+            }
+            catch(BlDoesNotExistException )
+            {
+                continue;
+                //throw new BO.BlArgumentNullException("Order cannot be null.");  
+            }
+            catch(Exception)
+            {
+                continue;
+                //throw new BO.BlArgumentNullException("Order cannot be null.");  
+            }
+        return list?? throw new  BO.BlArgumentNullException("no open orders"); ;
+        
+
+        
     }
 
     public void HandleOrder(int applicantId, int courierId, int orderId)// done
