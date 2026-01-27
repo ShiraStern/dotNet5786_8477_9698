@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="OpenOrderList_Window" Height="450" Width="800"
+        Title="OpenOrderList_Window" Height="600" Width="1200"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
 
@@ -100,21 +100,10 @@
                                         Header=" Maximum date"
                                         Width="auto" />
 
-                        <DataGridTextColumn Binding="{Binding ScheduleStatus}"
-                                        Header="Schedule Status"
-                                        Width="auto" />
 
-                        <DataGridTextColumn Header="Time Left"
-                                        Width="auto"
-                                        />
-
-                        <DataGridTextColumn Header="Handling Time"
-                                        Width="auto"
-                                            />
-
-                        <DataGridTextColumn Binding="{Binding TotalDeliveries}"
+                        <!--<DataGridTextColumn Binding="{Binding TotalDeliveries}"
                                         Header="Total Deliveries"
-                                        Width="auto" />
+                                        Width="auto" />-->
 
                         <DataGridTemplateColumn Header=" " Width="auto">
                             <DataGridTemplateColumn.CellTemplate>

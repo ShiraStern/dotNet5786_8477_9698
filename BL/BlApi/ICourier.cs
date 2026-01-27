@@ -11,4 +11,5 @@ public interface ICourier : IObservable //stage 5 ממשק הרחבת
     void UpdateDetails(int applicantId, BO.Courier boCourier);
     void Delete(int applicantId, int id);
     void AddCourier(int applicantId, BO.Courier boCourier);
+    IEnumerable<BO.DeliveryPerOrderInList> GetDeliveryPerOrderInLists(int courierID);
 }

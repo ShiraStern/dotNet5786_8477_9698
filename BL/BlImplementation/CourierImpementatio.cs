@@ -190,6 +190,10 @@ internal class CourierImpementation : ICourier
         }
     }
 
+    public IEnumerable<BO.DeliveryPerOrderInList> GetDeliveryPerOrderInLists( int courierID)
+    {
+       return DeliveryManager.GetList_DelivriesPerCourier (courierID).Select(x=> DeliveryManager.ConvertTODeliveryPerOrderInList(x));  
+    }
 
     // Observers methods
     public void AddObserver(Action listObserver) =>

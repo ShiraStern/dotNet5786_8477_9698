@@ -30,6 +30,8 @@ namespace Helpers
 
             Observers.NotifyItemUpdated(deliveryID);
             Observers.NotifyListUpdated();
+            //OrderManager.Observers.NotifyItemUpdated(deliveryID);
+            OrderManager.Observers.NotifyListUpdated();
         }
 
         internal static void Update(DO.Delivery doDelivery)
@@ -37,8 +39,7 @@ namespace Helpers
             lock (AdminManager.BlMutex)
                 s_dal.Delivery.Update(doDelivery);
 
-            Observers.NotifyItemUpdated(doDelivery.Id);
-            OrderManager.Observers.NotifyItemUpdated(doDelivery.OrderId);
+             Observers.NotifyItemUpdated(doDelivery.Id);
             Observers.NotifyListUpdated();
         }
 

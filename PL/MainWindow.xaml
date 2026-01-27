@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="מערכת ניהול משלוחים"
-        Height="520" Width="950"
+        Height="529" Width="950"
                DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
 
       >

@@ -177,7 +177,7 @@ public static class Initialization
 
         for (int i = 0; i < 30; i++)
         {
-            Order order = orders[s_random.Next(orders.Count)];
+            Order order = orders[i];
             Courier courier = couriers[s_random.Next(couriers.Count)];
 
             DateTime startDate;
@@ -189,9 +189,11 @@ public static class Initialization
 
 
 
-            do startDate = order.OrderDate.AddDays(s_random.Next(10)).AddHours(s_random.Next(24)).AddMinutes(s_random.Next(60));
-            while (startDate > s_dal.Config.Clock);
-            
+             startDate = order.OrderDate.AddDays(s_random.Next(4)).AddHours(s_random.Next(24)).AddMinutes(s_random.Next(60));
+            if (startDate > s_dal.Config.Clock)
+                terminetionType = DO.DeliveryTermintionType.None;
+
+
             switch (terminetionType)
             {
                 case DeliveryTermintionType.None:

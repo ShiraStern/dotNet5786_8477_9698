@@ -90,6 +90,15 @@ internal static class CourierManager
         Observers.NotifyItemUpdated(doCourier.Id);
         Observers.NotifyListUpdated();
     }
+    internal static void Update(BO.Courier doCourier)
+    {
+        lock (AdminManager.BlMutex)
+            s_dal.Courier.Update(ConvertToCourier( doCourier));
+
+
+        Observers.NotifyItemUpdated(doCourier.ID);
+        Observers.NotifyListUpdated();
+    }
 
     internal static DO.Courier? Read(int courierId)
     {
